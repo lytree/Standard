@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FreeSql" Version="3.2.698" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="FreeSql.DbContext">
+      <HintPath>E:\C#\nuget\freesql.dbcontext\3.2.698\lib\net6.0\FreeSql.DbContext.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Lazy.SlideCaptcha.Core" Version="2.0.0" />
+		<PackageReference Include="Mapster" Version="7.3.0" />
+		<PackageReference Include="UAParser" Version="3.1.47" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\plugins\Plugin.DynamicApi\Plugin.DynamicApi.csproj" />
+		<ProjectReference Include="..\..\infrastructure\Infrastructure.Repository\Infrastructure.Repository.csproj" />
+		<ProjectReference Include="..\..\infrastructure\Infrastructure.Service\Infrastructure.Service.csproj" />
+		<ProjectReference Include="..\..\infrastructure\Infrastructure\Infrastructure.csproj" />
+		<ProjectReference Include="..\..\repository\Repository.Admin\Repository.Admin.csproj" />
+	</ItemGroup>
+
+</Project>
