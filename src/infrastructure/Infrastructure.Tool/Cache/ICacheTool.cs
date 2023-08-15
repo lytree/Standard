@@ -47,7 +47,7 @@ public interface ICacheTool
 	/// </summary>
 	/// <param name="key">键</param>
 	/// <returns></returns>
-	string Get(string key);
+	string? Get(string key);
 
 	/// <summary>
 	/// 获取指定 key 的值

@@ -14,6 +14,7 @@
 		<ProjectReference Include="..\..\..\plugins\Plugin.DynamicApi\Plugin.DynamicApi.csproj" />
 		<ProjectReference Include="..\..\infrastructure\Infrastructure.Repository\Infrastructure.Repository.csproj" />
 		<ProjectReference Include="..\..\infrastructure\Infrastructure.Service\Infrastructure.Service.csproj" />
+		<ProjectReference Include="..\..\infrastructure\Infrastructure.Tool\Infrastructure.Tool.csproj" />
 		<ProjectReference Include="..\..\infrastructure\Infrastructure\Infrastructure.csproj" />
 		<ProjectReference Include="..\..\repository\Repository.Admin\Repository.Admin.csproj" />
 	</ItemGroup>

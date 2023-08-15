@@ -1,18 +1,18 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System;
+﻿using System;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Unicode;
 
 namespace Infrastructure;
 
 /// <summary>
 /// Json帮助类
 /// </summary>
-public class JsonHelper
+public static class JsonHelper
 {
-	private static readonly JsonSerializerSettings _jsonSerializerSettings = new()
+	private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
 	{
-		ContractResolver = new CamelCasePropertyNamesContractResolver(),
-		DateFormatString = "yyyy-MM-dd HH:mm:ss"
+		Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
 	};
 
 	/// <summary>
@@ -23,7 +23,7 @@ public class JsonHelper
 	/// <returns></returns>
 	public static string Serialize<T>(T obj)
 	{
-		return JsonConvert.SerializeObject(obj, typeof(T), _jsonSerializerSettings);
+		return JsonSerializer.Serialize(obj, typeof(T), _jsonSerializerOptions);
 	}
 
 	/// <summary>
@@ -32,9 +32,9 @@ public class JsonHelper
 	/// <typeparam name="T"></typeparam>
 	/// <param name="json"></param>
 	/// <returns></returns>
-	public static T Deserialize<T>(string json)
+	public static T? Deserialize<T>(string json)
 	{
-		return JsonConvert.DeserializeObject<T>(json, _jsonSerializerSettings);
+		return JsonSerializer.Deserialize<T>(json, _jsonSerializerOptions);
 	}
 
 	/// <summary>
@@ -43,8 +43,8 @@ public class JsonHelper
 	/// <param name="json">json文本</param>
 	/// <param name="type">类型</param>
 	/// <returns></returns>
-	public static object Deserialize(string json, Type type)
+	public static object? Deserialize(string json, Type type)
 	{
-		return JsonConvert.DeserializeObject(json, type, _jsonSerializerSettings);
+		return JsonSerializer.Deserialize(json, type, _jsonSerializerOptions);
 	}
 }

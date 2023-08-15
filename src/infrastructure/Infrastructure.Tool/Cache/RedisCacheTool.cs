@@ -48,8 +48,10 @@ public partial class RedisCacheTool : ICacheTool
 		long keyNum = default;
 		foreach (var server in servers)
 		{
-			var keys = server.Keys(pattern: pattern);
-			keyNum += keys.LongCount();
+			await foreach (var key in server.KeysAsync(pattern: pattern))
+			{
+				keyNum += Del(key!);
+			}
 		}
 
 		return keyNum;
@@ -57,66 +59,69 @@ public partial class RedisCacheTool : ICacheTool
 
 	public bool Exists(string key)
 	{
-		return _redisClient.Exists(key);
+		return _connection.GetDatabase().KeyExists(key);
 	}
 
 	public Task<bool> ExistsAsync(string key)
 	{
-		return _redisClient.ExistsAsync(key);
+		return _connection.GetDatabase().KeyExistsAsync(key);
 	}
 
-	public string Get(string key)
+	public string? Get(string key) => _connection.GetDatabase().StringGet(key);
+
+	public T? Get<T>(string key)
 	{
-		return _redisClient.Get(key);
+		return JsonHelper.Deserialize<T>(_connection.GetDatabase().StringGet(key));
 	}
 
-	public T Get<T>(string key)
+	public async Task<string?> GetAsync(string key)
 	{
-		return _redisClient.Get<T>(key);
+		return await _connection.GetDatabase().StringGetAsync(key);
 	}
 
-	public Task<string> GetAsync(string key)
+	public async Task<T?> GetAsync<T>(string key)
 	{
-		return _redisClient.GetAsync(key);
-	}
-
-	public Task<T> GetAsync<T>(string key)
-	{
-		return _redisClient.GetAsync<T>(key);
+		return JsonHelper.Deserialize<T>(await _connection.GetDatabase().StringGetAsync(key));
 	}
 
 	public void Set(string key, object value)
 	{
-		_redisClient.Set(key, value);
+		_connection.GetDatabase().SetAdd(key, JsonHelper.Serialize(value));
 	}
 
 	public void Set(string key, object value, TimeSpan expire)
 	{
-		_redisClient.Set(key, value, expire);
+		_connection.GetDatabase().SetAdd(key, JsonHelper.Serialize(value));
+		_connection.GetDatabase().KeyExpire(key, expire);
 	}
 
-	public Task SetAsync(string key, object value, TimeSpan? expire = null)
+	public async Task SetAsync(string key, object value, TimeSpan? expire = null)
 	{
-		return _redisClient.SetAsync(key, value, expire.HasValue ? expire.Value.TotalSeconds.ToInt() : 0);
+		await _connection.GetDatabase().SetAddAsync(key, JsonHelper.Serialize(value));
+		if (expire != null)
+		{
+			await _connection.GetDatabase().KeyExpireAsync(key, expire);
+		}
+
 	}
 
-	public async Task<T> GetOrSetAsync<T>(string key, Func<Task<T>> func, TimeSpan? expire = null)
+	public async Task<T?> GetOrSetAsync<T>(string key, Func<Task<T>> func, TimeSpan? expire = null)
 	{
-		if (await _redisClient.ExistsAsync(key))
+		if (await ExistsAsync(key))
 		{
 			try
 			{
-				return await _redisClient.GetAsync<T>(key);
+				return await GetAsync<T>(key);
 			}
 			catch
 			{
-				await _redisClient.DelAsync(key);
+				await DelAsync(key);
 			}
 		}
 
 		var result = await func.Invoke();
 
-		await _redisClient.SetAsync(key, result, expire.HasValue ? expire.Value.TotalSeconds.ToInt() : 0);
+		await SetAsync(key, result,expire);
 
 		return result;
 	}
