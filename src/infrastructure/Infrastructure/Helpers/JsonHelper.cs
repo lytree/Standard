@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+﻿
 using System;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Infrastructure;
 
@@ -9,10 +11,10 @@ namespace Infrastructure;
 /// </summary>
 public class JsonHelper
 {
-	private static readonly JsonSerializerSettings _jsonSerializerSettings = new()
+	private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
 	{
-		ContractResolver = new CamelCasePropertyNamesContractResolver(),
-		DateFormatString = "yyyy-MM-dd HH:mm:ss"
+		PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+		Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
 	};
 
 	/// <summary>
@@ -23,7 +25,7 @@ public class JsonHelper
 	/// <returns></returns>
 	public static string Serialize<T>(T obj)
 	{
-		return JsonConvert.SerializeObject(obj, typeof(T), _jsonSerializerSettings);
+		return JsonSerializer.Serialize(obj, typeof(T), _jsonSerializerOptions);
 	}
 
 	/// <summary>
@@ -34,7 +36,7 @@ public class JsonHelper
 	/// <returns></returns>
 	public static T Deserialize<T>(string json)
 	{
-		return JsonConvert.DeserializeObject<T>(json, _jsonSerializerSettings);
+		return JsonSerializer.Deserialize<T>(json, _jsonSerializerOptions);
 	}
 
 	/// <summary>
@@ -45,6 +47,6 @@ public class JsonHelper
 	/// <returns></returns>
 	public static object Deserialize(string json, Type type)
 	{
-		return JsonConvert.DeserializeObject(json, type, _jsonSerializerSettings);
+		return JsonSerializer.Deserialize(json, type, _jsonSerializerOptions);
 	}
 }
