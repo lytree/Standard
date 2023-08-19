@@ -9,7 +9,7 @@ namespace Infrastructure;
 /// <summary>
 /// Json帮助类
 /// </summary>
-public class JsonHelper
+public static class JsonHelper
 {
 	private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
 	{
@@ -34,7 +34,7 @@ public class JsonHelper
 	/// <typeparam name="T"></typeparam>
 	/// <param name="json"></param>
 	/// <returns></returns>
-	public static T Deserialize<T>(string json)
+	public static T? Deserialize<T>(string json)
 	{
 		return JsonSerializer.Deserialize<T>(json, _jsonSerializerOptions);
 	}
@@ -45,7 +45,7 @@ public class JsonHelper
 	/// <param name="json">json文本</param>
 	/// <param name="type">类型</param>
 	/// <returns></returns>
-	public static object Deserialize(string json, Type type)
+	public static object? Deserialize(string json, Type type)
 	{
 		return JsonSerializer.Deserialize(json, type, _jsonSerializerOptions);
 	}
