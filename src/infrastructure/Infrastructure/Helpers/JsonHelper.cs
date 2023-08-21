@@ -3,7 +3,7 @@ using System;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.Unicode;
+using System.Text.Json.Serialization;
 
 namespace Infrastructure;
 
@@ -14,10 +14,10 @@ public static class JsonHelper
 {
 	private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
 	{
-
+		PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
 		DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
 		PropertyNameCaseInsensitive = true,
-		Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+		Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
 
 	};
 
