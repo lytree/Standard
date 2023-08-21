@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Tool.Captcha.Dto;
+﻿namespace Infrastructure.Cache.Captcha.Dto;
 
 /// <summary>
 /// 滑动验证

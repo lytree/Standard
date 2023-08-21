@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Tool.Cache;
+namespace Infrastructure.Cache.Cache;
 
 /// <summary>
 /// 缓存接口

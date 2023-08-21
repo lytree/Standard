@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Infrastructure.Repository;
 using Infrastructure;
 using Microsoft.AspNetCore.Http;
-using Infrastructure.Tool.Cache;
+using Infrastructure.Cache.Cache;
 
 namespace Service.Admin;
 

@@ -3,14 +3,14 @@ using System.Collections;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Infrastructure.Tool.Cache;
+namespace Infrastructure.Cache.Cache;
 
 /// <summary>
 /// 内存缓存
 /// </summary>
 public partial class MemoryCacheTool : ICacheTool
 {
-	private static readonly Regex PatternRegex= new("\\{.*\\}");
+	private static readonly Regex PatternRegex = new("\\{.*\\}");
 
 	private readonly IMemoryCache _memoryCache;
 	public MemoryCacheTool(IMemoryCache memoryCache)
@@ -39,7 +39,7 @@ public partial class MemoryCacheTool : ICacheTool
 
 	public async Task<long> DelByPatternAsync(string pattern)
 	{
-		if (pattern==null)
+		if (pattern == null)
 			return default;
 
 		pattern = PatternRegex.Replace(pattern, "(.*)");

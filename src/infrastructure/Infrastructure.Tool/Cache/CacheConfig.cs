@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Tool.Cache;
+﻿namespace Infrastructure.Cache.Cache;
 
 /// <summary>
 /// 缓存配置

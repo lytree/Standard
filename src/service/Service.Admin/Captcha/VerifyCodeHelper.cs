@@ -10,7 +10,7 @@ using System.Text;
 using ZhonTai.Admin.Core.Attributes;
 using ZhonTai.Admin.Core.Configs;
 
-namespace Infrastructure.Tool.Captcha;
+namespace Infrastructure.Cache.Captcha;
 
 [SingleInstance]
 public class VerifyCodeHelper

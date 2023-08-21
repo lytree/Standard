@@ -1,7 +1,7 @@
-﻿using Infrastructure.Tool.Captcha.Dto;
+﻿using Infrastructure.Cache.Captcha.Dto;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Tool.Captcha;
+namespace Infrastructure.Cache.Captcha;
 
 /// <summary>
 /// 验证接口

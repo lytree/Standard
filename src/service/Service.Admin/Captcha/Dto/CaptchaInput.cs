@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Tool.Captcha.Dto;
+﻿namespace Infrastructure.Cache.Captcha.Dto;
 
 public class CaptchaInput
 {

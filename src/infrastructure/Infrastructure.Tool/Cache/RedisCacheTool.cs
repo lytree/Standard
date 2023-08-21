@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 
-namespace Infrastructure.Tool.Cache;
+namespace Infrastructure.Cache.Cache;
 
 /// <summary>
 /// Redis缓存
@@ -44,14 +44,15 @@ public partial class RedisCacheTool : ICacheTool
 			return default;
 
 		pattern = PatternRegex.Replace(pattern, "*");
-		var servers = _connection.GetServers();
+		var redisResult = await _connection.GetDatabase().ScriptEvaluateAsync(LuaScript.Prepare(
+				//Redis的keys模糊查询：
+				" local res = redis.call('KEYS', @keypattern) " +
+				" return res "), new { @keypattern = pattern });
 		long keyNum = default;
-		foreach (var server in servers)
+		if (redisResult.IsNull)
 		{
-			await foreach (var key in server.KeysAsync(pattern: pattern))
-			{
-				keyNum += Del(key!);
-			}
+
+			keyNum = await _connection.GetDatabase().KeyDeleteAsync(keys: (RedisKey[]?)redisResult);
 		}
 
 		return keyNum;
@@ -71,7 +72,7 @@ public partial class RedisCacheTool : ICacheTool
 
 	public T? Get<T>(string key)
 	{
-		return JsonHelper.Deserialize<T>(_connection.GetDatabase().StringGet(key));
+		return JsonHelper.Deserialize<T>(_connection!.GetDatabase().StringGet(key));
 	}
 
 	public async Task<string?> GetAsync(string key)
@@ -121,7 +122,7 @@ public partial class RedisCacheTool : ICacheTool
 
 		var result = await func.Invoke();
 
-		await SetAsync(key, result,expire);
+		await SetAsync(key, result, expire);
 
 		return result;
 	}
