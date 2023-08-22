@@ -107,11 +107,11 @@ static class ServiceExtensions
 		var state = true;
 		if (cmd == Command.Start)
 		{
-			state = ServiceInstallUtil.InstallAndStartService(serviceName, binaryPath);
+			//state = ServiceInstallUtil.InstallAndStartService(serviceName, binaryPath);
 		}
 		else if (cmd == Command.Stop)
 		{
-			state = ServiceInstallUtil.StopAndDeleteService(serviceName);
+			//state = ServiceInstallUtil.StopAndDeleteService(serviceName);
 		}
 
 		if (state == false)

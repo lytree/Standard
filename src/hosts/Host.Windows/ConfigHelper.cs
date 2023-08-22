@@ -7,16 +7,6 @@ namespace Infrastructure;
 /// </summary>
 public class ConfigHelper
 {
-	/* 使用热更新
-	var uploadConfig = new ConfigHelper().Load("uploadconfig", _env.EnvironmentName, true);
-	services.Configure<UploadConfig>(uploadConfig);
-
-	private readonly UploadConfig _uploadConfig;
-	public ImgController(IOptionsMonitor<UploadConfig> uploadConfig)
-	{
-		_uploadConfig = uploadConfig.CurrentValue;
-	}
-	*/
 
 	/// <summary>
 	/// 加载配置文件
