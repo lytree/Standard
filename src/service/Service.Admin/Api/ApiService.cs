@@ -4,10 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Service.Admin.Api.Dto;
 using Plugin.DynamicApi.Attributes;
-using Repository.Admin.Api;
 using Repository.Admin;
 using Infrastructure.Service;
-using Repository.Admin.Api.Dto;
+using Plugin.DynamicApi;
 
 namespace Service.Admin.Api;
 
@@ -183,7 +182,7 @@ public class ApiService : BaseService, IApiService, IDynamicApi
 		if (!(input?.Apis?.Count > 0)) return;
 
 		//查询分组下所有模块的api
-		var groupPaths = input.Apis.FindAll(a => a.ParentPath.IsNull()).Select(a => a.Path);
+		var groupPaths = input.Apis.FindAll(a => a.ParentPath == null).Select(a => a.Path);
 		var groups = await _apiRepository.Select.DisableGlobalFilter(FilterNames.Delete)
 			.Where(a => a.ParentId == 0 && groupPaths.Contains(a.Path)).ToListAsync();
 		var groupIds = groups.Select(a => a.Id);
@@ -206,7 +205,7 @@ public class ApiService : BaseService, IApiService, IDynamicApi
 		#region 执行插入
 
 		//执行父级api插入
-		var parentApis = input.Apis.FindAll(a => a.ParentPath.IsNull());
+		var parentApis = input.Apis.FindAll(a => a.ParentPath == null);
 		var pApis = (from a in parentApis where !paths.Contains(a.Path) select a).ToList();
 		if (pApis.Count > 0)
 		{
@@ -216,7 +215,7 @@ public class ApiService : BaseService, IApiService, IDynamicApi
 		}
 
 		//执行子级api插入
-		var childApis = input.Apis.FindAll(a => a.ParentPath.NotNull());
+		var childApis = input.Apis.FindAll(a => a.ParentPath == null);
 		var cApis = (from a in childApis where !paths.Contains(a.Path) select a).ToList();
 		if (cApis.Count > 0)
 		{

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Text;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -13,15 +10,18 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using FreeSql;
 
 using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
 using Service.Admin.Auth.Dto;
 using Service.Admin.LoginLog;
 using Service.Admin.User;
 using Plugin.DynamicApi.Attributes;
 using Plugin.DynamicApi;
 using Repository.Admin;
-using Infrastructure.Repository;
 using Infrastructure.Service;
+using Service.Admin.Captcha;
+using Infrastructure;
+using Plugin.SlideCaptcha.Validator;
+using static Plugin.SlideCaptcha.ValidateResult;
+using Service.Admin.LoginLog.Dto;
 
 namespace Service.Admin.Auth;
 
@@ -69,20 +69,10 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 			new Claim(ClaimAttributes.UserId, user.Id.ToString(), ClaimValueTypes.Integer64),
 			new Claim(ClaimAttributes.UserName, user.UserName),
 			new Claim(ClaimAttributes.Name, user.Name),
-			new Claim(ClaimAttributes.UserType, user.Type.ToInt().ToString(), ClaimValueTypes.Integer32),
+			new Claim(ClaimAttributes.UserType, user.Type.ToInt64().ToString(), ClaimValueTypes.Integer32),
 		};
 
-		if (_appConfig.Tenant)
-		{
-			claims.AddRange(new[]
-			{
-				new Claim(ClaimAttributes.TenantId, user.TenantId.ToString(), ClaimValueTypes.Integer64),
-				new Claim(ClaimAttributes.TenantType, user.Tenant?.TenantType.ToInt().ToString(), ClaimValueTypes.Integer32),
-				new Claim(ClaimAttributes.DbKey, user.Tenant?.DbKey ?? "")
-			});
-		}
-
-		var token = LazyGetRequiredService<IUserToken>().Create(claims.ToArray());
+		var token = LazyGetRequiredService<Infrastructure.Repository.IUserToken>().Create(claims.ToArray());
 
 		return token;
 	}
@@ -276,11 +266,11 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 
 			if (_appConfig.VarifyCode.Enable)
 			{
-				if (input.CaptchaId.IsNull() || input.CaptchaData.IsNull())
+				if (input.CaptchaId == null || input.CaptchaData == null)
 				{
 					throw ResultOutput.Exception("请完成安全验证");
 				}
-				var validateResult = _captcha.Validate(input.CaptchaId, JsonConvert.DeserializeObject<SlideTrack>(input.CaptchaData));
+				var validateResult = _captcha.Validate(input.CaptchaId, JsonHelper.Deserialize<SlideTrack>(input.CaptchaData));
 				if (validateResult.Result != ValidateResultType.Success)
 				{
 					throw ResultOutput.Exception($"安全{validateResult.Message}，请重新登录");
@@ -291,14 +281,14 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 
 			#region 密码解密
 
-			if (input.PasswordKey.NotNull())
+			if (input.PasswordKey != null)
 			{
 				var passwordEncryptKey = CacheKeys.PassWordEncrypt + input.PasswordKey;
 				var existsPasswordKey = await Cache.ExistsAsync(passwordEncryptKey);
 				if (existsPasswordKey)
 				{
 					var secretKey = await Cache.GetAsync(passwordEncryptKey);
-					if (secretKey.IsNull())
+					if (secretKey == null)
 					{
 						throw ResultOutput.Exception("解密失败");
 					}
@@ -343,15 +333,7 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 
 			#region 获得token
 			var authLoginOutput = Mapper.Map<AuthLoginOutput>(user);
-			if (_appConfig.Tenant)
-			{
-				var tenant = await _tenantRepository.Select.WhereDynamic(user.TenantId).ToOneAsync<AuthLoginTenantDto>();
-				if (!(tenant != null && tenant.Enabled))
-				{
-					throw ResultOutput.Exception("企业已停用，禁止登录");
-				}
-				authLoginOutput.Tenant = tenant;
-			}
+			
 			string token = GetToken(authLoginOutput);
 			#endregion
 
@@ -361,7 +343,7 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 
 			var loginLogAddInput = new LoginLogAddInput
 			{
-				TenantId = authLoginOutput.TenantId,
+			
 				Name = authLoginOutput.Name,
 				ElapsedMilliseconds = sw.ElapsedMilliseconds,
 				Status = true,
@@ -377,88 +359,88 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 		}
 	}
 
-	/// <summary>
-	/// 手机号登录
-	/// </summary>
-	/// <param name="input"></param>
-	/// <returns></returns>
-	[HttpPost]
-	[AllowAnonymous]
-	[NoOprationLog]
-	public async Task<dynamic> MobileLoginAsync(AuthMobileLoginInput input)
-	{
-		using (_userRepository.DataFilter.DisableAll())
-		{
-			var sw = new Stopwatch();
-			sw.Start();
+	///// <summary>
+	///// 手机号登录
+	///// </summary>
+	///// <param name="input"></param>
+	///// <returns></returns>
+	//[HttpPost]
+	//[AllowAnonymous]
+	//[NoOprationLog]
+	//public async Task<dynamic> MobileLoginAsync(AuthMobileLoginInput input)
+	//{
+	//	using (_userRepository.DataFilter.DisableAll())
+	//	{
+	//		var sw = new Stopwatch();
+	//		sw.Start();
 
-			#region 短信验证码验证
-			if (input.CodeId.IsNull() || input.Code.IsNull())
-			{
-				throw ResultOutput.Exception("验证码错误");
-			}
-			var codeKey = CacheKeys.GetSmsCodeKey(input.Mobile, input.CodeId);
-			var code = await Cache.GetAsync(codeKey);
-			if (code.IsNull())
-			{
-				throw ResultOutput.Exception("验证码错误");
-			}
-			await Cache.DelAsync(codeKey);
-			if (code != input.Code)
-			{
-				throw ResultOutput.Exception("验证码错误");
-			}
+	//		#region 短信验证码验证
+	//		if (input.CodeId.IsNull() || input.Code.IsNull())
+	//		{
+	//			throw ResultOutput.Exception("验证码错误");
+	//		}
+	//		var codeKey = CacheKeys.GetSmsCodeKey(input.Mobile, input.CodeId);
+	//		var code = await Cache.GetAsync(codeKey);
+	//		if (code.IsNull())
+	//		{
+	//			throw ResultOutput.Exception("验证码错误");
+	//		}
+	//		await Cache.DelAsync(codeKey);
+	//		if (code != input.Code)
+	//		{
+	//			throw ResultOutput.Exception("验证码错误");
+	//		}
 
-			#endregion
+	//		#endregion
 
-			#region 登录
-			var user = await _userRepository.Select.Where(a => a.Mobile == input.Mobile).ToOneAsync();
-			if (!(user?.Id > 0))
-			{
-				throw ResultOutput.Exception("账号不存在");
-			}
+	//		#region 登录
+	//		var user = await _userRepository.Select.Where(a => a.Mobile == input.Mobile).ToOneAsync();
+	//		if (!(user?.Id > 0))
+	//		{
+	//			throw ResultOutput.Exception("账号不存在");
+	//		}
 
-			if (!user.Enabled)
-			{
-				throw ResultOutput.Exception("账号已停用，禁止登录");
-			}
-			#endregion
+	//		if (!user.Enabled)
+	//		{
+	//			throw ResultOutput.Exception("账号已停用，禁止登录");
+	//		}
+	//		#endregion
 
-			#region 获得token
-			var authLoginOutput = Mapper.Map<AuthLoginOutput>(user);
-			if (_appConfig.Tenant)
-			{
-				var tenant = await _tenantRepository.Select.WhereDynamic(user.TenantId).ToOneAsync<AuthLoginTenantDto>();
-				if (!(tenant != null && tenant.Enabled))
-				{
-					throw ResultOutput.Exception("企业已停用，禁止登录");
-				}
-				authLoginOutput.Tenant = tenant;
-			}
-			string token = GetToken(authLoginOutput);
-			#endregion
+	//		#region 获得token
+	//		var authLoginOutput = Mapper.Map<AuthLoginOutput>(user);
+	//		if (_appConfig.Tenant)
+	//		{
+	//			var tenant = await _tenantRepository.Select.WhereDynamic(user.TenantId).ToOneAsync<AuthLoginTenantDto>();
+	//			if (!(tenant != null && tenant.Enabled))
+	//			{
+	//				throw ResultOutput.Exception("企业已停用，禁止登录");
+	//			}
+	//			authLoginOutput.Tenant = tenant;
+	//		}
+	//		string token = GetToken(authLoginOutput);
+	//		#endregion
 
-			sw.Stop();
+	//		sw.Stop();
 
-			#region 添加登录日志
+	//		#region 添加登录日志
 
-			var loginLogAddInput = new LoginLogAddInput
-			{
-				TenantId = authLoginOutput.TenantId,
-				Name = authLoginOutput.Name,
-				ElapsedMilliseconds = sw.ElapsedMilliseconds,
-				Status = true,
-				CreatedUserId = authLoginOutput.Id,
-				CreatedUserName = user.UserName,
-			};
+	//		var loginLogAddInput = new LoginLogAddInput
+	//		{
+	//			TenantId = authLoginOutput.TenantId,
+	//			Name = authLoginOutput.Name,
+	//			ElapsedMilliseconds = sw.ElapsedMilliseconds,
+	//			Status = true,
+	//			CreatedUserId = authLoginOutput.Id,
+	//			CreatedUserName = user.UserName,
+	//		};
 
-			await LazyGetRequiredService<ILoginLogService>().AddAsync(loginLogAddInput);
+	//		await LazyGetRequiredService<ILoginLogService>().AddAsync(loginLogAddInput);
 
-			#endregion 添加登录日志
+	//		#endregion 添加登录日志
 
-			return new { token };
-		}
-	}
+	//		return new { token };
+	//	}
+	//}
 
 	/// <summary>
 	/// 刷新Token
@@ -470,7 +452,7 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 	[AllowAnonymous]
 	public async Task<dynamic> Refresh([BindRequired] string token)
 	{
-		var jwtSecurityToken = LazyGetRequiredService<IUserToken>().Decode(token);
+		var jwtSecurityToken = LazyGetRequiredService<Infrastructure.Repository.IUserToken>().Decode(token);
 		var userClaims = jwtSecurityToken?.Claims?.ToArray();
 		if (userClaims == null || userClaims.Length == 0)
 		{
@@ -478,13 +460,13 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 		}
 
 		var refreshExpires = userClaims.FirstOrDefault(a => a.Type == ClaimAttributes.RefreshExpires)?.Value;
-		if (refreshExpires.IsNull() || refreshExpires.ToLong() <= DateTime.Now.ToTimestamp())
+		if (refreshExpires == null || Convert.ToInt64(refreshExpires) <= DateTime.Now.ToTimestamp())
 		{
 			throw ResultOutput.Exception("登录信息已过期");
 		}
 
-		var userId = userClaims.FirstOrDefault(a => a.Type == ClaimAttributes.UserId)?.Value;
-		if (userId.IsNull())
+		var userId = Array.Find(userClaims, a => a.Type == ClaimAttributes.UserId)?.Value;
+		if (userId == null)
 		{
 			throw ResultOutput.Exception("登录信息已失效");
 		}
@@ -498,7 +480,7 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 			throw ResultOutput.Exception("验签失败");
 		}
 
-		var user = await LazyGetRequiredService<IUserService>().GetLoginUserAsync(userId.ToLong());
+		var user = await LazyGetRequiredService<IUserService>().GetLoginUserAsync(Convert.ToInt64(userId));
 		if (!(user?.Id > 0))
 		{
 			throw ResultOutput.Exception("账号不存在");

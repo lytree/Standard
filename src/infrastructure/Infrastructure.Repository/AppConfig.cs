@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repository;
 
-public partial class AppConfig
+public class AppConfig
 {
+
 }
+

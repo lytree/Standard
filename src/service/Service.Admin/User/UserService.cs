@@ -1,17 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using FreeSql;
 using Microsoft.AspNetCore.Identity;
 using System.Linq.Expressions;
-using System;
-using System.ComponentModel.DataAnnotations;
 using Service.Admin.User.Dto;
 using Service.Admin.Auth.Dto;
-using Service.Admin.Auth;
 using Plugin.DynamicApi.Attributes;
 using Plugin.DynamicApi;
 using Repository.Admin;
@@ -72,7 +65,6 @@ public partial class UserService : BaseService, IUserService, IDynamicApi
 	[HttpPost]
 	public async Task<PageOutput<UserGetPageOutput>> GetPageAsync(PageInput<UserGetPageDto> input)
 	{
-		var dataPermission = await AppInfo.GetRequiredService<IUserService>().GetDataPermissionAsync();
 
 		var list = await _userRepository.Select
 		.WhereDynamicFilter(input.DynamicFilter)
@@ -341,49 +333,6 @@ public partial class UserService : BaseService, IUserService, IDynamicApi
 	}
 
 	/// <summary>
-	/// 修改会员
-	/// </summary>
-	/// <param name="input"></param>
-	/// <returns></returns>
-	[AdminTransaction]
-	public virtual async Task UpdateMemberAsync(UserUpdateMemberInput input)
-	{
-		Expression<Func<UserEntity, bool>> where = a => a.UserName == input.UserName;
-		where = where.Or(input.Mobile != null, a => a.Mobile == input.Mobile)
-			.Or(input.Email != null, a => a.Email == input.Email);
-
-		var existsUser = await _userRepository.Select.Where(a => a.Id != input.Id).Where(where)
-			.FirstAsync(a => new { a.UserName, a.Mobile, a.Email });
-
-		if (existsUser != null)
-		{
-			if (existsUser.UserName == input.UserName)
-			{
-				throw ResultOutput.Exception($"账号已存在");
-			}
-
-			if (input.Mobile != null && existsUser.Mobile == input.Mobile)
-			{
-				throw ResultOutput.Exception($"手机号已存在");
-			}
-
-			if (input.Email != null && existsUser.Email == input.Email)
-			{
-				throw ResultOutput.Exception($"邮箱已存在");
-			}
-		}
-
-		var user = await _userRepository.GetAsync(input.Id);
-		if (!(user?.Id > 0))
-		{
-			throw ResultOutput.Exception("用户不存在");
-		}
-
-		Mapper.Map(input, user);
-		await _userRepository.UpdateAsync(user);
-	}
-
-	/// <summary>
 	/// 更新用户基本信息
 	/// </summary>
 	/// <param name="input"></param>
@@ -451,23 +400,6 @@ public partial class UserService : BaseService, IUserService, IDynamicApi
 		return password;
 	}
 
-
-	/// <summary>
-	/// 设置启用
-	/// </summary>
-	/// <param name="input"></param>
-	/// <returns></returns>
-	public async Task SetEnableAsync(UserSetEnableInput input)
-	{
-		var entity = await _userRepository.GetAsync(input.UserId);
-		if (entity.Type == UserType.PlatformAdmin)
-		{
-			throw ResultOutput.Exception("平台管理员禁止禁用");
-		}
-		
-		entity.Enabled = input.Enabled;
-		await _userRepository.UpdateAsync(entity);
-	}
 
 	/// <summary>
 	/// 彻底删除用户
@@ -578,33 +510,4 @@ public partial class UserService : BaseService, IUserService, IDynamicApi
 		}
 	}
 
-	
-
-	/// <summary>
-	/// 一键登录用户
-	/// </summary>
-	/// <returns></returns>
-	[HttpGet]
-	public async Task<dynamic> OneClickLoginAsync([Required] string userName)
-	{
-		if (userName==null)
-		{
-			throw ResultOutput.Exception("请选择用户");
-		}
-
-		using var _ = _userRepository.DataFilter.DisableAll();
-
-		var user = await _userRepository.Select.Where(a => a.UserName == userName).ToOneAsync();
-
-		if (user == null)
-		{
-			throw ResultOutput.Exception("用户不存在");
-		}
-
-		var authLoginOutput = Mapper.Map<AuthLoginOutput>(user);
-
-		string token = AppInfo.GetRequiredService<IAuthService>().GetToken(authLoginOutput);
-
-		return new { token };
-	}
 }

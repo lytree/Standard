@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Service.Admin;
+namespace Repository.Admin;
 
 /// <summary>
 /// 数据库键名
 /// </summary>
-public partial class DbKeys
+internal static class DbKeys
 {
 	/// <summary>
 	/// 数据库注册键

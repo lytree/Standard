@@ -92,7 +92,7 @@ public class DesEncrypt
 		cStream.FlushFinalBlock();
 
 		var bytes = stream.ToArray();
-		return hex ? bytes.ToHex(lowerCase) : bytes.ToBase64();
+		return hex ? ConvertHelper.ToHex(bytes,lowerCase) : ConvertHelper.ToBase64(bytes);
 	}
 
 	/// <summary>
@@ -112,7 +112,7 @@ public class DesEncrypt
 			throw new ArgumentException("秘钥长度为8位", nameof(key));
 
 		var keyBytes = Encoding.UTF8.GetBytes(key[..8]);
-		var inputByteArray = hex ? decryptString.HexToBytes() : Convert.FromBase64String(decryptString);
+		var inputByteArray = hex ? ConvertHelper.HexToBytes(decryptString) : Convert.FromBase64String(decryptString);
 
 		var des = DES.Create();
 		des.Mode = CipherMode.ECB;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 
 namespace Infrastructure;
@@ -8,7 +9,7 @@ namespace Infrastructure;
 /// <summary>
 /// 字符串帮助类
 /// </summary>
-public class StringHelper
+public static class StringHelper
 {
 	private static readonly string _chars = "0123456789";
 	private static readonly char[] _constant = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
@@ -40,19 +41,19 @@ public class StringHelper
 		return new string(Enumerable.Repeat(_chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
 	}
 
-	public static string Format(string str, object obj)
+	public static string? Format(string? str, object obj)
 	{
-		if (str.IsNull())
+		if (str == null)
 		{
 			return str;
 		}
 		string s = str;
 		if (obj.GetType().Name == "JObject")
 		{
-			foreach (var item in (Newtonsoft.Json.Linq.JObject)obj)
+			foreach (var item in (JsonObject)obj)
 			{
-				var k = item.Key.ToString();
-				var v = item.Value.ToString();
+				var k = item.Key;
+				var v = item.Value?.ToString();
 				s = Regex.Replace(s, "\\{" + k + "\\}", v, RegexOptions.IgnoreCase);
 			}
 		}
@@ -61,7 +62,7 @@ public class StringHelper
 			foreach (System.Reflection.PropertyInfo p in obj.GetType().GetProperties())
 			{
 				var xx = p.Name;
-				var yy = p.GetValue(obj).ToString();
+				var yy = p.GetValue(obj)?.ToString();
 				s = Regex.Replace(s, "\\{" + xx + "\\}", yy, RegexOptions.IgnoreCase);
 			}
 		}

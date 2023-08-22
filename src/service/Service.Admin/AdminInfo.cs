@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -48,37 +49,37 @@ namespace Service.Admin
 		/// <summary>
 		/// 服务提供程序
 		/// </summary>
-		public static IServiceProvider ServiceProvider => IsRun ? AppInfoBase.ServiceProvider : null;
+		public static IServiceProvider? ServiceProvider => IsRun ? AdminInfoBase.ServiceProvider : null;
 
 		/// <summary>
 		/// Web主机环境
 		/// </summary>
-		public static IWebHostEnvironment WebHostEnvironment => AppInfoBase.WebHostEnvironment;
+		public static IWebHostEnvironment WebHostEnvironment => AdminInfoBase.WebHostEnvironment;
 
 		/// <summary>
 		/// 泛型主机环境
 		/// </summary>
-		public static IHostEnvironment HostEnvironment => AppInfoBase.HostEnvironment;
+		public static IHostEnvironment HostEnvironment => AdminInfoBase.HostEnvironment;
 
 		/// <summary>
 		/// 配置
 		/// </summary>
-		public static IConfiguration Configuration => AppInfoBase.Configuration;
+		public static IConfiguration Configuration => AdminInfoBase.Configuration;
 
 		/// <summary>
 		/// 请求上下文
 		/// </summary>
-		public static HttpContext HttpContext => ServiceProvider?.GetService<IHttpContextAccessor>()?.HttpContext;
+		public static HttpContext? HttpContext => ServiceProvider?.GetService<IHttpContextAccessor>()?.HttpContext;
 
 		/// <summary>
 		/// 用户
 		/// </summary>
-		public static IUser User => HttpContext == null ? null : ServiceProvider?.GetService<IUser>();
+		public static IUser? User => HttpContext == null ? null : ServiceProvider?.GetService<IUser>();
 
 		/// <summary>
 		/// 日志
 		/// </summary>
-		public static Logger Log => LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+		public static ILogger Log => (ServiceProvider?.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance).CreateLogger(typeof(AdminInfo));
 
 		#region private
 
@@ -91,7 +92,7 @@ namespace Service.Admin
 			}
 			catch (Exception e)
 			{
-				Log.Error(e, "GetTypes Exception:{msg}", e.Message);
+				Log.LogError(e, "GetTypes Exception:{msg}", e.Message);
 				Console.WriteLine($@"Error load `{ass.FullName}` assembly.");
 			}
 
@@ -112,7 +113,7 @@ namespace Service.Admin
 				}
 				catch (Exception e)
 				{
-					Log.Error(e, "GetAllAssemblies Exception:{msg}", e.Message);
+					Log.LogError(e, "GetAllAssemblies Exception:{msg}", e.Message);
 				}
 			}
 			return list;
@@ -130,7 +131,7 @@ namespace Service.Admin
 		public static IServiceProvider GetServiceProvider(Type serviceType, bool isBuild = false)
 		{
 			if (HostEnvironment == null || ServiceProvider != null &&
-				AppInfoBase.Services
+				AdminInfoBase.Services
 				.Where(u => u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType))
 				.Any(u => u.Lifetime == ServiceLifetime.Singleton))
 				return ServiceProvider;
@@ -150,7 +151,7 @@ namespace Service.Admin
 				throw new ApplicationException("The current is not available and must wait until the WebApplication Build is completed.");
 			}
 
-			ServiceProvider serviceProvider = AppInfoBase.Services.BuildServiceProvider();
+			ServiceProvider serviceProvider = AdminInfoBase.Services.BuildServiceProvider();
 
 			return serviceProvider;
 		}

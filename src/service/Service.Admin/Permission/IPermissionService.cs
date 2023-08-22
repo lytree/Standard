@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ZhonTai.Admin.Core.Dto;
 
 namespace Service.Admin.Permission;
 
@@ -22,8 +21,6 @@ public partial interface IPermissionService
 	Task<IEnumerable<dynamic>> GetPermissionListAsync();
 
 	Task<List<long>> GetRolePermissionListAsync(long roleId);
-
-	Task<List<long>> GetTenantPermissionListAsync(long tenantId);
 
 	Task<List<PermissionListOutput>> GetListAsync(string key, DateTime? start, DateTime? end);
 
@@ -48,6 +45,4 @@ public partial interface IPermissionService
 	Task SoftDeleteAsync(long id);
 
 	Task AssignAsync(PermissionAssignInput input);
-
-	Task SaveTenantPermissionsAsync(PermissionSaveTenantPermissionsInput input);
 }

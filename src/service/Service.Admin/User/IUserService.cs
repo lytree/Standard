@@ -37,15 +37,10 @@ public interface IUserService
 
 	Task<string> ResetPasswordAsync(UserResetPasswordInput input);
 
-	Task SetManagerAsync(UserSetManagerInput input);
-
 	Task UpdateBasicAsync(UserUpdateBasicInput input);
 
 	Task<UserGetBasicOutput> GetBasicAsync();
 
 	Task<IList<UserPermissionsOutput>> GetPermissionsAsync();
 
-	Task<string> AvatarUpload([FromForm] IFormFile file, bool autoUpdate = false);
-
-	Task<dynamic> OneClickLoginAsync(string userName);
 }

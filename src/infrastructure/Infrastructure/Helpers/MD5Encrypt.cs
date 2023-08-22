@@ -18,11 +18,11 @@ public class MD5Encrypt
 	/// <returns></returns>
 	public static string Encrypt16(string password, bool lowerCase = false)
 	{
-		if (password.IsNull())
+		if (password == null)
 			return null;
 
 		using var md5 = MD5.Create();
-		return md5.ComputeHash(Encoding.UTF8.GetBytes(password)).ToHex(lowerCase);
+		return ConvertHelper.ToHex(md5.ComputeHash(Encoding.UTF8.GetBytes(password)), lowerCase);
 	}
 
 	/// <summary>
@@ -33,7 +33,7 @@ public class MD5Encrypt
 	/// <returns></returns>
 	public static string Encrypt32(string password = "", bool lowerCase = false)
 	{
-		if (password.IsNull())
+		if (password == null)
 			return null;
 
 		using var md5 = MD5.Create();
@@ -54,12 +54,12 @@ public class MD5Encrypt
 	/// <returns></returns>
 	public static string Encrypt64(string password)
 	{
-		if (password.IsNull())
+		if (password == null)
 			return null;
 
 		using var md5 = MD5.Create();
 		byte[] s = md5.ComputeHash(Encoding.UTF8.GetBytes(password));
-		return s.ToBase64();
+		return ConvertHelper.ToBase64(s);
 	}
 
 	public static string GetHash(Stream stream)
