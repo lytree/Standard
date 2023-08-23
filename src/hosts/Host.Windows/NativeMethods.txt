@@ -1,4 +1,7 @@
 ﻿OpenSCManager
+CreateService
 OpenService
+StartService
 DeleteService
+ControlService
 QueryServiceStatus
