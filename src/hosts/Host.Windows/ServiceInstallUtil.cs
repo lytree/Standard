@@ -16,40 +16,41 @@ internal static class ServiceInstallUtil
 	[SupportedOSPlatform("windows")]
 	public static bool InstallAndStartService(string serviceName, string binaryPath)
 	{
-		var hSCManager = Windows.Win32.PInvoke.OpenSCManager("", "", ServiceManagerAccess.SC_MANAGER_ALL_ACCESS);
-		if (hSCManager.IsInvalid)
-		{
-			return false;
-		}
+		//var hSCManager = Windows.Win32.PInvoke.OpenSCManager("", "", ServiceManagerAccess.SC_MANAGER_ALL_ACCESS);
+		//if (hSCManager.IsInvalid)
+		//{
+		//	return false;
+		//}
 
-		var hService = Windows.Win32.PInvoke.OpenService(hSCManager, serviceName, ServiceAccess.SERVICE_ALL_ACCESS);
-		if (hService.IsInvalid)
-		{
-			hService = Windows.Win32.PInvoke.CreateService(
-				hSCManager,
-				serviceName,
-				serviceName,
-				ServiceAccess.SERVICE_ALL_ACCESS,
-				ServiceType.SERVICE_WIN32_OWN_PROCESS,
-				0x00000002,
-				ServiceErrorControl.SERVICE_ERROR_NORMAL,
-				Path.GetFullPath(binaryPath),
-				lpLoadOrderGroup: null,
-				lpdwTagId: 0,
-				lpDependencies: null,
-				lpServiceStartName: null,
-				lpPassword: null);
-		}
+		//var hService = Windows.Win32.PInvoke.OpenService(hSCManager, serviceName, ServiceAccess.SERVICE_ALL_ACCESS);
+		//if (hService.IsInvalid)
+		//{
+		//	hService = Windows.Win32.PInvoke.CreateService(
+		//		hSCManager,
+		//		serviceName,
+		//		serviceName,
+		//		ServiceAccess.SERVICE_ALL_ACCESS,
+		//		ServiceType.SERVICE_WIN32_OWN_PROCESS,
+		//		0x00000002,
+		//		ServiceErrorControl.SERVICE_ERROR_NORMAL,
+		//		Path.GetFullPath(binaryPath),
+		//		lpLoadOrderGroup: null,
+		//		lpdwTagId: 0,
+		//		lpDependencies: null,
+		//		lpServiceStartName: null,
+		//		lpPassword: null);
+		//}
 
-		if (hService.IsInvalid == true)
-		{
-			return false;
-		}
+		//if (hService.IsInvalid == true)
+		//{
+		//	return false;
+		//}
 
-		using (hService)
-		{
-			return Windows.Win32.PInvoke.StartService(hService, 0, null);
-		}
+		//using (hService)
+		//{
+		//	return Windows.Win32.PInvoke.StartService(hService, 0, null);
+		//}
+		return false;
 	}
 
 	/// <summary>
@@ -60,28 +61,29 @@ internal static class ServiceInstallUtil
 	[SupportedOSPlatform("windows")]
 	public static bool StopAndDeleteService(string serviceName)
 	{
-		var hSCManager = Windows.Win32.PInvoke.OpenSCManager(null, null, (uint)(0x000F0000 | 0x0001 | 0x0002 | 0x0004 | 0x0008 | 0x0010 | 0x0020));
-		if (hSCManager.IsInvalid)
-		{
-			return false;
-		}
+		//var hSCManager = Windows.Win32.PInvoke.OpenSCManager(null, null, (uint)(0x000F0000 | 0x0001 | 0x0002 | 0x0004 | 0x0008 | 0x0010 | 0x0020));
+		//if (hSCManager.IsInvalid)
+		//{
+		//	return false;
+		//}
 
-		var hService = Windows.Win32.PInvoke.OpenService(hSCManager, serviceName, ServiceAccess.SERVICE_ALL_ACCESS);
-		if (hService.IsInvalid == true)
-		{
-			return true;
-		}
+		//var hService = Windows.Win32.PInvoke.OpenService(hSCManager, serviceName, ServiceAccess.SERVICE_ALL_ACCESS);
+		//if (hService.IsInvalid == true)
+		//{
+		//	return true;
+		//}
 
-		var status = new SERVICE_STATUS();
-		if (Windows.Win32.PInvoke.QueryServiceStatus(hService, ref status) == true)
-		{
-			if (status.dwCurrentState != ServiceState.SERVICE_STOP_PENDING &&
-				status.dwCurrentState != ServiceState.SERVICE_STOPPED)
-			{
-				Windows.Win32.PInvoke.ControlService(hService, ServiceControl.SERVICE_CONTROL_STOP, ref status);
-			}
-		}
+		//var status = new SERVICE_STATUS();
+		//if (Windows.Win32.PInvoke.QueryServiceStatus(hService, ref status) == true)
+		//{
+		//	if (status.dwCurrentState != ServiceState.SERVICE_STOP_PENDING &&
+		//		status.dwCurrentState != ServiceState.SERVICE_STOPPED)
+		//	{
+		//		Windows.Win32.PInvoke.ControlService(hService, ServiceControl.SERVICE_CONTROL_STOP, ref status);
+		//	}
+		//}
 
-		return Windows.Win32.PInvoke.DeleteService(hService);
+		//return Windows.Win32.PInvoke.DeleteService(hService);
+		return false;
 	}
 }
