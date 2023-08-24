@@ -23,16 +23,10 @@ static class ServiceExtensions
 		Remove
 	}
 
+	[SupportedOSPlatform("linux")]
+	[DllImport("libc", SetLastError = true)]
+	private static extern uint geteuid();
 
-	/// <summary>
-	/// 使用windows服务
-	/// </summary>
-	/// <param name="hostBuilder"></param> 
-	/// <returns></returns>
-	public static IHostBuilder UseWindowsService(this IHostBuilder hostBuilder)
-	{
-		return WindowsServiceLifetimeHostBuilderExtensions.UseWindowsService(hostBuilder);
-	}
 
 	/// <summary>
 	/// 运行主机
@@ -72,9 +66,7 @@ static class ServiceExtensions
 		var action = cmd == Command.Start ? "启动" : "停止";
 		try
 		{
-
-			UseCommandAtWindows(cmd);
-
+			UseCommandAtLinux(cmd);
 			logger.LogInformation("服务{action}成功", action);
 		}
 		catch (Exception ex)
@@ -84,28 +76,55 @@ static class ServiceExtensions
 		return true;
 	}
 
+
+
 	/// <summary>
 	/// 应用控制指令
 	/// </summary> 
 	/// <param name="cmd"></param>
-	[SupportedOSPlatform("windows")]
-	private static void UseCommandAtWindows(Command cmd)
+	[SupportedOSPlatform("linux")]
+	private static void UseCommandAtLinux(Command cmd)
 	{
-		var binaryPath = Environment.GetCommandLineArgs().First();
+		if (geteuid() != 0)
+		{
+			throw new UnauthorizedAccessException("无法操作服务：没有root权限");
+		}
+
+		var binaryPath = Path.GetFullPath(Environment.GetCommandLineArgs().First());
 		var serviceName = Path.GetFileNameWithoutExtension(binaryPath);
-		var state = true;
+		var serviceFilePath = $"/etc/systemd/system/{serviceName}.service";
+
 		if (cmd == Command.Start)
 		{
-			//state = ServiceInstallUtil.InstallAndStartService(serviceName, binaryPath);
+			var serviceBuilder = new StringBuilder()
+				.AppendLine("[Unit]")
+				.AppendLine($"Description={serviceName}")
+				.AppendLine()
+				.AppendLine("[Service]")
+				.AppendLine("Type=notify")
+				.AppendLine($"User={Environment.UserName}")
+				.AppendLine($"ExecStart={binaryPath}")
+				.AppendLine($"WorkingDirectory={Path.GetDirectoryName(binaryPath)}")
+				.AppendLine()
+				.AppendLine("[Install]")
+				.AppendLine("WantedBy=multi-user.target");
+			File.WriteAllText(serviceFilePath, serviceBuilder.ToString());
+
+			Process.Start("chcon", $"--type=bin_t {binaryPath}").WaitForExit(); // SELinux
+			Process.Start("systemctl", "daemon-reload").WaitForExit();
+			Process.Start("systemctl", $"start {serviceName}.service").WaitForExit();
+			Process.Start("systemctl", $"enable {serviceName}.service").WaitForExit();
 		}
 		else if (cmd == Command.Stop)
 		{
-			//state = ServiceInstallUtil.StopAndDeleteService(serviceName);
-		}
+			Process.Start("systemctl", $"stop {serviceName}.service").WaitForExit();
+			Process.Start("systemctl", $"disable {serviceName}.service").WaitForExit();
 
-		if (state == false)
-		{
-			throw new Win32Exception();
+			if (File.Exists(serviceFilePath))
+			{
+				File.Delete(serviceFilePath);
+			}
+			Process.Start("systemctl", "daemon-reload").WaitForExit();
 		}
 	}
 }
