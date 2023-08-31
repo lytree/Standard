@@ -18,22 +18,11 @@ using System.Threading.Tasks;
 
 namespace Service.Admin
 {
-	public static class AdminInfo
+	internal static class AdminInfo
 	{
 		static AdminInfo()
 		{
 			EffectiveTypes = EffectiveAssemblies.SelectMany(GetTypes);
-		}
-
-		private static bool _isRun;
-
-		/// <summary>
-		/// 应用是否运行
-		/// </summary>
-		public static bool IsRun
-		{
-			get => _isRun;
-			set => _isRun = value;
 		}
 
 		/// <summary>
@@ -49,22 +38,22 @@ namespace Service.Admin
 		/// <summary>
 		/// 服务提供程序
 		/// </summary>
-		public static IServiceProvider? ServiceProvider => IsRun ? AdminInfoBase.ServiceProvider : null;
+		public static IServiceProvider? ServiceProvider => ServiceBase.IsRun ? ServiceBase.ServiceProvider : null;
 
 		/// <summary>
 		/// Web主机环境
 		/// </summary>
-		public static IWebHostEnvironment WebHostEnvironment => AdminInfoBase.WebHostEnvironment;
+		public static IWebHostEnvironment WebHostEnvironment => ServiceBase.WebHostEnvironment;
 
 		/// <summary>
 		/// 泛型主机环境
 		/// </summary>
-		public static IHostEnvironment HostEnvironment => AdminInfoBase.HostEnvironment;
+		public static IHostEnvironment HostEnvironment => ServiceBase.HostEnvironment;
 
 		/// <summary>
 		/// 配置
 		/// </summary>
-		public static IConfiguration Configuration => AdminInfoBase.Configuration;
+		public static IConfiguration Configuration => ServiceBase.Configuration;
 
 		/// <summary>
 		/// 请求上下文
@@ -131,7 +120,7 @@ namespace Service.Admin
 		public static IServiceProvider GetServiceProvider(Type serviceType, bool isBuild = false)
 		{
 			if (HostEnvironment == null || ServiceProvider != null &&
-				AdminInfoBase.Services
+				ServiceBase.Services
 				.Where(u => u.ServiceType == (serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : serviceType))
 				.Any(u => u.Lifetime == ServiceLifetime.Singleton))
 				return ServiceProvider;
@@ -151,7 +140,7 @@ namespace Service.Admin
 				throw new ApplicationException("The current is not available and must wait until the WebApplication Build is completed.");
 			}
 
-			ServiceProvider serviceProvider = AdminInfoBase.Services.BuildServiceProvider();
+			ServiceProvider serviceProvider = ServiceBase.Services.BuildServiceProvider();
 
 			return serviceProvider;
 		}

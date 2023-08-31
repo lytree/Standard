@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
-namespace ZhonTai.Common.Extensions;
+namespace Infrastructure;
 
 public static class EnumExtension
 {

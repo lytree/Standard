@@ -1,33 +1,33 @@
-﻿using Lazy.SlideCaptcha.Core;
-using Lazy.SlideCaptcha.Core.Storage;
-using Lazy.SlideCaptcha.Core.Validator;
+﻿using Plugin.SlideCaptcha;
+using Plugin.SlideCaptcha.Storage;
+using Plugin.SlideCaptcha.Validator;
+using Service.Admin.Captcha;
 
-namespace ZhonTai.Admin.Core.Captcha
+namespace ZhonTai.Admin.Core.Captcha;
+
+public class SlideCaptcha: ISlideCaptcha
 {
-    public class SlideCaptcha: ISlideCaptcha
+    private IValidator _validator;
+    private IStorage _storage;
+
+    public SlideCaptcha(IValidator validator, IStorage storage)
     {
-        private IValidator _validator;
-        private IStorage _storage;
+        _storage = storage;
+        _validator = validator;
+    }
 
-        public SlideCaptcha(IValidator validator, IStorage storage)
+    public ValidateResult Validate(string captchaId, SlideTrack slideTrack, bool removeIfSuccess = true)
+    {
+         
+        var captchaValidateData = _storage.Get<CaptchaValidateData>(captchaId);
+        if (captchaValidateData == null) return ValidateResult.Timeout();
+        var success = _validator.Validate(slideTrack, captchaValidateData);
+        if (!success || (success && removeIfSuccess))
         {
-            _storage = storage;
-            _validator = validator;
+            _storage.Remove(captchaId);
         }
 
-        public ValidateResult Validate(string captchaId, SlideTrack slideTrack, bool removeIfSuccess = true)
-        {
-             
-            var captchaValidateData = _storage.Get<CaptchaValidateData>(captchaId);
-            if (captchaValidateData == null) return ValidateResult.Timeout();
-            var success = _validator.Validate(slideTrack, captchaValidateData);
-            if (!success || (success && removeIfSuccess))
-            {
-                _storage.Remove(captchaId);
-            }
-
-            return success ? ValidateResult.Success() : ValidateResult.Fail();
-            
-        }
+        return success ? ValidateResult.Success() : ValidateResult.Fail();
+        
     }
 }

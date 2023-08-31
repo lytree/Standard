@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Host.Linux", "src\hosts\Hos
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Host.Shared", "src\hosts\Host.Shared\Host.Shared.csproj", "{910F4017-1B5D-4441-A9E8-E56F16D3BDE9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Core", "src\infrastructure\Infrastructure.Core\Infrastructure.Core.csproj", "{DF8F8812-983A-439C-B3AC-DE30AD891724}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,10 @@ Global
 		{910F4017-1B5D-4441-A9E8-E56F16D3BDE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{910F4017-1B5D-4441-A9E8-E56F16D3BDE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{910F4017-1B5D-4441-A9E8-E56F16D3BDE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF8F8812-983A-439C-B3AC-DE30AD891724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF8F8812-983A-439C-B3AC-DE30AD891724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF8F8812-983A-439C-B3AC-DE30AD891724}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF8F8812-983A-439C-B3AC-DE30AD891724}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +132,7 @@ Global
 		{0670033C-9358-488C-8F18-646535132D88} = {4AC4B29C-B0AF-4688-AA96-F6FE8BF80E38}
 		{0854E0E2-3C91-4698-B33C-6E772793B7F9} = {4AC4B29C-B0AF-4688-AA96-F6FE8BF80E38}
 		{910F4017-1B5D-4441-A9E8-E56F16D3BDE9} = {4AC4B29C-B0AF-4688-AA96-F6FE8BF80E38}
+		{DF8F8812-983A-439C-B3AC-DE30AD891724} = {343BE52D-C3EE-45A2-8F22-B8595DDA587D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64AC373D-DB1E-493F-A13D-96C6325B7291}

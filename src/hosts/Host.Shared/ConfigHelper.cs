@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Host.Window;
+namespace Host.Shared;
 
 /// <summary>
 /// 配置帮助类

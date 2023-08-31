@@ -20,4 +20,5 @@
 	<ItemGroup>
 		<EmbeddedResource Include="src/dist/**/*" />
 	</ItemGroup>
+
 </Project>
