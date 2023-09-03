@@ -79,34 +79,14 @@ internal static class ServiceInstallUtil
                 status.dwCurrentState != Windows.Win32.System.Services.SERVICE_STATUS_CURRENT_STATE.SERVICE_STOPPED)
             {
                 Windows.Win32.PInvoke.ControlService(hService, 0x00000001, out status);
-                return status.dwCurrentState == Windows.Win32.System.Services.SERVICE_STATUS_CURRENT_STATE.SERVICE_STOP_PENDING|| status.dwCurrentState == Windows.Win32.System.Services.SERVICE_STATUS_CURRENT_STATE.SERVICE_STOPPED;
             }
-        }
-        return false;
-        
-    }
-    /// <summary>
-    /// 删除服务
-    /// </summary>
-    /// <param name="serviceName"></param>
-    /// <returns></returns>
-    [SupportedOSPlatform("windows")]
-    public static unsafe bool DeleteService(string serviceName)
-    {
-        var hSCManager = Windows.Win32.PInvoke.OpenSCManager(new Windows.Win32.Foundation.PCWSTR(null), new Windows.Win32.Foundation.PCWSTR(null), 0xF003F);
-        if (hSCManager == IntPtr.Zero)
-        {
-            return false;
-        }
 
-        var hService = Windows.Win32.PInvoke.OpenService(hSCManager, serviceName, 0xF01FF);
-        if (hService == IntPtr.Zero)
-        {
-            return true;
         }
-
         return Windows.Win32.PInvoke.DeleteService(hService);
+
     }
+
+
 
 }
 #pragma warning restore CA1416 // 验证平台兼容性
