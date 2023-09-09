@@ -1,15 +1,5 @@
 ﻿using System;
 using System.Reflection;
-
-/* 项目“Plugin.DynamicApi (net7.0)”的未合并的更改
-在此之前:
-using Plugin.DynamicApi.Attributes;
-在此之后:
-using Plugin.DynamicApi.Attributes;
-using ZhonTai;
-using ZhonTai.DynamicApi;
-using Plugin.DynamicApi;
-*/
 using Plugin.DynamicApi.Attributes;
 using Plugin.DynamicApi.Helpers;
 
