@@ -1,6 +1,4 @@
-﻿
-
-using Repository.Admin;
+﻿using Repository.Admin.Repository.User;
 
 namespace Service.Admin.Auth.Dto;
 

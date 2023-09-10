@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
+using Infrastructure;
 using Infrastructure.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Plugin.DynamicApi;
 using Plugin.DynamicApi.Attributes;
-using Repository.Admin;
+using Repository.Admin.Repository;
+using Repository.Admin.Repository.OprationLog;
 using Service.Admin.OprationLog.Dto;
 
 namespace Service.Admin.OprationLog;

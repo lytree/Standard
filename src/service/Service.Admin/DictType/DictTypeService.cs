@@ -1,10 +1,13 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Infrastructure;
 using Infrastructure.Service;
 using Microsoft.AspNetCore.Mvc;
 using Plugin.DynamicApi;
 using Plugin.DynamicApi.Attributes;
-using Repository.Admin;
+using Repository.Admin.Repository.Dict;
+using Repository.Admin.Repository.DictType;
+using Repository.Admin.Repository.DictType.Dto;
 using Service.Admin.DictType.Dto;
 
 namespace Service.Admin.DictType;

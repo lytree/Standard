@@ -16,11 +16,6 @@ public class UserGetOutput : UserUpdateInput
 	public ICollection<UserGetOrgDto> Orgs { get; set; }
 
 	/// <summary>
-	/// 所属部门Ids
-	/// </summary>
-	public override long[] OrgIds => Orgs?.Select(a => a.Id)?.ToArray();
-
-	/// <summary>
 	/// 角色Ids
 	/// </summary>
 	public override long[] RoleIds => Roles?.Select(a => a.Id)?.ToArray();

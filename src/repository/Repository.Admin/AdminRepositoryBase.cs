@@ -1,6 +1,6 @@
 ﻿
 using FreeSql;
-using Infrastructure.Repository;
+using Repository.Admin.Core;
 
 namespace Repository.Admin;
 

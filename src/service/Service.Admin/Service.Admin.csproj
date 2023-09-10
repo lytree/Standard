@@ -12,9 +12,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\plugins\Plugin.DynamicApi\Plugin.DynamicApi.csproj" />
 		<ProjectReference Include="..\..\..\plugins\Plugin.SlideCaptcha\Plugin.SlideCaptcha.csproj" />
-		<ProjectReference Include="..\..\infrastructure\Infrastructure.Repository\Infrastructure.Repository.csproj" />
 		<ProjectReference Include="..\..\infrastructure\Infrastructure.Service\Infrastructure.Service.csproj" />
-		<ProjectReference Include="..\..\infrastructure\Infrastructure.Tool\Infrastructure.Cache.csproj" />
 		<ProjectReference Include="..\..\infrastructure\Infrastructure\Infrastructure.csproj" />
 		<ProjectReference Include="..\..\repository\Repository.Admin\Repository.Admin.csproj" />
 	</ItemGroup>

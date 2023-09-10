@@ -9,6 +9,12 @@ using Plugin.DynamicApi.Attributes;
 using Plugin.DynamicApi;
 using Repository.Admin;
 using Infrastructure.Service;
+using Repository.Admin.Repository.Role;
+using Repository.Admin.Repository.User;
+using Repository.Admin.Repository.UserRole;
+using Repository.Admin.Repository.RolePermission;
+using Repository.Admin.Repository.Permission;
+using Repository.Admin.Repository.PermissionApi;
 
 namespace Service.Admin.Permission;
 
@@ -19,7 +25,6 @@ namespace Service.Admin.Permission;
 [DynamicApi(Area = AdminConsts.AreaName)]
 public class PermissionService : BaseService, IPermissionService, IDynamicApi
 {
-	private AppConfig _appConfig => LazyGetRequiredService<AppConfig>();
 	private IPermissionRepository _permissionRepository => LazyGetRequiredService<IPermissionRepository>();
 	private IRoleRepository _roleRepository => LazyGetRequiredService<IRoleRepository>();
 	private IUserRepository _userRepository => LazyGetRequiredService<IUserRepository>();
@@ -294,7 +299,7 @@ public class PermissionService : BaseService, IPermissionService, IDynamicApi
 		var entity = await _permissionRepository.GetAsync(input.Id);
 		if (!(entity?.Id > 0))
 		{
-			throw ResultOutput.Exception("权限点不存在！");
+			throw Infrastructure.ResultOutput.Exception("权限点不存在！");
 		}
 
 		Mapper.Map(input, entity);
@@ -367,7 +372,7 @@ public class PermissionService : BaseService, IPermissionService, IDynamicApi
 		var exists = await _roleRepository.Select.WhereDynamic(input.RoleId).AnyAsync();
 		if (!exists)
 		{
-			throw ResultOutput.Exception("该角色不存在或已被删除！");
+			throw Infrastructure.ResultOutput.Exception("该角色不存在或已被删除！");
 		}
 
 		//查询角色权限

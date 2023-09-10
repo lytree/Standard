@@ -1,7 +1,8 @@
 ﻿
 using System.Threading.Tasks;
+using Infrastructure;
 using Infrastructure.Service;
-using Repository.Admin;
+using Repository.Admin.Repository.Dict.Dto;
 using Service.Admin.Dict.Dto;
 
 namespace Service.Admin.Dict;

@@ -28,12 +28,12 @@ public class CacheService : BaseService, ICacheService, IDynamicApi
 	/// 查询列表
 	/// </summary>
 	/// <returns></returns>
-	public List<dynamic> GetList()
+	public List<dynamic> GetList(string[] assemblyNames)
 	{
 		var list = new List<dynamic>();
 
-		var appConfig = LazyGetRequiredService<AppConfig>();
-		Assembly[] assemblies = AssemblyHelper.GetAssemblyList(appConfig.AssemblyNames);
+
+		Assembly[] assemblies = AssemblyHelper.GetAssemblyList(assemblyNames);
 
 		foreach (Assembly assembly in assemblies)
 		{

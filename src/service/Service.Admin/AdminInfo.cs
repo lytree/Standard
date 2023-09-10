@@ -1,4 +1,4 @@
-﻿using Infrastructure.Repository;
+﻿using Repository.Admin.Core;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;

@@ -15,13 +15,16 @@ using Service.Admin.LoginLog;
 using Service.Admin.User;
 using Plugin.DynamicApi.Attributes;
 using Plugin.DynamicApi;
-using Repository.Admin;
 using Infrastructure.Service;
 using Service.Admin.Captcha;
 using Infrastructure;
 using Plugin.SlideCaptcha.Validator;
 using static Plugin.SlideCaptcha.ValidateResult;
 using Service.Admin.LoginLog.Dto;
+using Repository.Admin.Repository.User;
+using Repository.Admin.Repository.UserRole;
+using Repository.Admin.Repository.RolePermission;
+using Repository.Admin.Repository.Permission;
 
 namespace Service.Admin.Auth;
 
@@ -31,7 +34,6 @@ namespace Service.Admin.Auth;
 [DynamicApi(Area = AdminConsts.AreaName)]
 public class AuthService : BaseService, IAuthService, IDynamicApi
 {
-	private readonly AppConfig _appConfig;
 	private readonly JwtConfig _jwtConfig;
 	private readonly IPermissionRepository _permissionRepository;
 	private readonly IUserRepository _userRepository;
@@ -39,13 +41,11 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 	private ISlideCaptcha _captcha => LazyGetRequiredService<ISlideCaptcha>();
 
 	public AuthService(
-		AppConfig appConfig,
 		JwtConfig jwtConfig,
 		IUserRepository userRepository,
 		IPermissionRepository permissionRepository
 	)
 	{
-		_appConfig = appConfig;
 		_jwtConfig = jwtConfig;
 		_userRepository = userRepository;
 		_permissionRepository = permissionRepository;
@@ -72,7 +72,7 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 			new Claim(ClaimAttributes.UserType, user.Type.ToInt64().ToString(), ClaimValueTypes.Integer32),
 		};
 
-		var token = LazyGetRequiredService<Infrastructure.Repository.IUserToken>().Create(claims.ToArray());
+		var token = LazyGetRequiredService<Repository.Admin.Core.IUserToken>().Create(claims.ToArray());
 
 		return token;
 	}
@@ -264,18 +264,18 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 
 			#region 验证码校验
 
-			if (_appConfig.VarifyCode.Enable)
-			{
-				if (input.CaptchaId == null || input.CaptchaData == null)
-				{
-					throw ResultOutput.Exception("请完成安全验证");
-				}
-				var validateResult = _captcha.Validate(input.CaptchaId, JsonHelper.Deserialize<SlideTrack>(input.CaptchaData));
-				if (validateResult.Result != ValidateResultType.Success)
-				{
-					throw ResultOutput.Exception($"安全{validateResult.Message}，请重新登录");
-				}
-			}
+			//if (_appConfig.VarifyCode.Enable)
+			//{
+			//	if (input.CaptchaId == null || input.CaptchaData == null)
+			//	{
+			//		throw ResultOutput.Exception("请完成安全验证");
+			//	}
+			//	var validateResult = _captcha.Validate(input.CaptchaId, JsonHelper.Deserialize<SlideTrack>(input.CaptchaData));
+			//	if (validateResult.Result != ValidateResultType.Success)
+			//	{
+			//		throw ResultOutput.Exception($"安全{validateResult.Message}，请重新登录");
+			//	}
+			//}
 
 			#endregion
 
@@ -359,88 +359,6 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 		}
 	}
 
-	///// <summary>
-	///// 手机号登录
-	///// </summary>
-	///// <param name="input"></param>
-	///// <returns></returns>
-	//[HttpPost]
-	//[AllowAnonymous]
-	//[NoOprationLog]
-	//public async Task<dynamic> MobileLoginAsync(AuthMobileLoginInput input)
-	//{
-	//	using (_userRepository.DataFilter.DisableAll())
-	//	{
-	//		var sw = new Stopwatch();
-	//		sw.Start();
-
-	//		#region 短信验证码验证
-	//		if (input.CodeId.IsNull() || input.Code.IsNull())
-	//		{
-	//			throw ResultOutput.Exception("验证码错误");
-	//		}
-	//		var codeKey = CacheKeys.GetSmsCodeKey(input.Mobile, input.CodeId);
-	//		var code = await Cache.GetAsync(codeKey);
-	//		if (code.IsNull())
-	//		{
-	//			throw ResultOutput.Exception("验证码错误");
-	//		}
-	//		await Cache.DelAsync(codeKey);
-	//		if (code != input.Code)
-	//		{
-	//			throw ResultOutput.Exception("验证码错误");
-	//		}
-
-	//		#endregion
-
-	//		#region 登录
-	//		var user = await _userRepository.Select.Where(a => a.Mobile == input.Mobile).ToOneAsync();
-	//		if (!(user?.Id > 0))
-	//		{
-	//			throw ResultOutput.Exception("账号不存在");
-	//		}
-
-	//		if (!user.Enabled)
-	//		{
-	//			throw ResultOutput.Exception("账号已停用，禁止登录");
-	//		}
-	//		#endregion
-
-	//		#region 获得token
-	//		var authLoginOutput = Mapper.Map<AuthLoginOutput>(user);
-	//		if (_appConfig.Tenant)
-	//		{
-	//			var tenant = await _tenantRepository.Select.WhereDynamic(user.TenantId).ToOneAsync<AuthLoginTenantDto>();
-	//			if (!(tenant != null && tenant.Enabled))
-	//			{
-	//				throw ResultOutput.Exception("企业已停用，禁止登录");
-	//			}
-	//			authLoginOutput.Tenant = tenant;
-	//		}
-	//		string token = GetToken(authLoginOutput);
-	//		#endregion
-
-	//		sw.Stop();
-
-	//		#region 添加登录日志
-
-	//		var loginLogAddInput = new LoginLogAddInput
-	//		{
-	//			TenantId = authLoginOutput.TenantId,
-	//			Name = authLoginOutput.Name,
-	//			ElapsedMilliseconds = sw.ElapsedMilliseconds,
-	//			Status = true,
-	//			CreatedUserId = authLoginOutput.Id,
-	//			CreatedUserName = user.UserName,
-	//		};
-
-	//		await LazyGetRequiredService<ILoginLogService>().AddAsync(loginLogAddInput);
-
-	//		#endregion 添加登录日志
-
-	//		return new { token };
-	//	}
-	//}
 
 	/// <summary>
 	/// 刷新Token
@@ -452,7 +370,7 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 	[AllowAnonymous]
 	public async Task<dynamic> Refresh([BindRequired] string token)
 	{
-		var jwtSecurityToken = LazyGetRequiredService<Infrastructure.Repository.IUserToken>().Decode(token);
+		var jwtSecurityToken = LazyGetRequiredService<Repository.Admin.Core.IUserToken>().Decode(token);
 		var userClaims = jwtSecurityToken?.Claims?.ToArray();
 		if (userClaims == null || userClaims.Length == 0)
 		{
@@ -493,15 +411,15 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 		return new { token = newToken };
 	}
 
-	/// <summary>
-	/// 是否开启验证码
-	/// </summary>
-	/// <returns></returns>
-	[HttpGet]
-	[AllowAnonymous]
-	[NoOprationLog]
-	public bool IsCaptcha()
-	{
-		return _appConfig.VarifyCode.Enable;
-	}
+	///// <summary>
+	///// 是否开启验证码
+	///// </summary>
+	///// <returns></returns>
+	//[HttpGet]
+	//[AllowAnonymous]
+	//[NoOprationLog]
+	//public bool IsCaptcha()
+	//{
+	//	return _appConfig.VarifyCode.Enable;
+	//}
 }

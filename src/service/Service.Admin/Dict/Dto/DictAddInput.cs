@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ZhonTai.Admin.Core.Validators;
+﻿using Infrastructure.Service;
+using System.ComponentModel.DataAnnotations;
 
 namespace Service.Admin.Dict.Dto;
 

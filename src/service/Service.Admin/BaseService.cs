@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
-using Infrastructure.Repository;
+using Repository.Admin.Core;
 using Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Infrastructure.Cache.Cache;

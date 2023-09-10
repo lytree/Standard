@@ -1,4 +1,5 @@
-﻿using Infrastructure.Service;
+﻿using Infrastructure;
+using Infrastructure.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Admin.Auth.Dto;
@@ -20,8 +21,6 @@ public interface IUserService
 	Task<AuthLoginOutput> GetLoginUserAsync(long id);
 
 	Task<long> AddAsync(UserAddInput input);
-
-	Task<long> AddMemberAsync(UserAddMemberInput input);
 
 	Task UpdateAsync(UserUpdateInput input);
 

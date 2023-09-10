@@ -1,7 +1,7 @@
 ﻿using Mapster;
+using Repository.Admin.Repository.Permission;
 using Service.Admin.Permission.Dto;
 using System.Linq;
-using ZhonTai.Admin.Domain.Permission;
 
 namespace Service.Admin.Permission;
 

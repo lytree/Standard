@@ -1,4 +1,6 @@
-﻿using ZhonTai.Admin.Domain.Permission;
+﻿
+
+using Repository.Admin.Repository.Permission;
 
 namespace Service.Admin.Permission.Dto;
 

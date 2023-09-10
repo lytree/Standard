@@ -1,7 +1,8 @@
 ﻿
 using System.Threading.Tasks;
+using Infrastructure;
 using Infrastructure.Service;
-using Repository.Admin;
+using Repository.Admin.Repository;
 using Service.Admin.LoginLog.Dto;
 
 namespace Service.Admin.LoginLog;

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
-using ZhonTai.Admin.Core.Validators;
+using Infrastructure.Service;
 
 namespace Service.Admin.User.Dto;
 

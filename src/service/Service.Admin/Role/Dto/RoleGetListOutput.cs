@@ -1,4 +1,6 @@
-﻿using ZhonTai.Admin.Domain.Role;
+﻿
+
+using Repository.Admin.Repository.Role;
 
 namespace Service.Admin.Role.Dto;
 

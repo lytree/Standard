@@ -12,7 +12,7 @@ public interface ICacheService
 	/// 缓存列表
 	/// </summary>
 	/// <returns></returns>
-	List<dynamic> GetList();
+	List<dynamic> GetList(string[] assemblyNames);
 
 	/// <summary>
 	/// 清除缓存

@@ -1,5 +1,6 @@
-﻿using Infrastructure.Service;
-using Repository.Admin;
+﻿using Infrastructure;
+using Infrastructure.Service;
+using Repository.Admin.Repository.Role.Dto;
 using Service.Admin.Role.Dto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -33,5 +34,4 @@ public interface IRoleService
 
 	Task BatchSoftDeleteAsync(long[] ids);
 
-	Task SetDataScopeAsync(RoleSetDataScopeInput input);
 }

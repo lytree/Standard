@@ -12,9 +12,11 @@ namespace Repository.Admin;
 /// </summary>
 public static class DbKeys
 {
-	/// <summary>
-	/// 数据库注册键
-	/// </summary>
-	[Description("管理平台库名")]
-	public static string AdminDb { get; set; } = "admindb";
+    /// <summary>
+    /// 数据库注册键
+    /// </summary>
+    [Description("管理平台库名")]
+    public static string AdminDb { get; set; } = "admindb";
 }
+
+public class AdminDb { }

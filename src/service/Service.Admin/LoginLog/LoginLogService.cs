@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Service.Admin.LoginLog.Dto;
 using Plugin.DynamicApi.Attributes;
 using Plugin.DynamicApi;
-using Repository.Admin;
 using Infrastructure.Service;
 using Infrastructure;
+using Repository.Admin.Repository.LoginLog;
+using Infrastructure;
+using Repository.Admin.Repository;
 
 namespace Service.Admin.LoginLog;
 

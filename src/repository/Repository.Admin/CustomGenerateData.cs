@@ -3,7 +3,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using FreeSql;
 using System.Reflection;
-using Infrastructure.Repository;
+using Repository.Admin.Core;
+using Repository.Admin.Repository.Role;
+using Repository.Admin.Repository.User;
+using Repository.Admin.Repository.View;
+using Repository.Admin.Repository.UserRole;
+using Repository.Admin.Repository.RolePermission;
+using Repository.Admin.Repository.Permission;
+using Repository.Admin.Repository.DictType;
+using Repository.Admin.Repository.Dict;
+using Repository.Admin.Repository.Api;
+using Repository.Admin.Repository.PermissionApi;
 
 namespace Repository.Admin;
 /// <summary>
@@ -11,7 +21,7 @@ namespace Repository.Admin;
 /// </summary>
 public class CustomGenerateData : GenerateData, IGenerateData
 {
-	public virtual async Task GenerateDataAsync(IFreeSql db, AppConfig appConfig)
+	public virtual async Task GenerateDataAsync(IFreeSql db)
 	{
 		#region 读取数据
 

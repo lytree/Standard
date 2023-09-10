@@ -10,7 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Service.Handler;
+namespace Infrastructure.Service;
 
 
 /// <summary>

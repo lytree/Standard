@@ -1,6 +1,6 @@
 ﻿
 
-using Infrastructure.Repository;
+using Repository.Admin.Core;
 
 namespace Service.Admin.User.Dto;
 
