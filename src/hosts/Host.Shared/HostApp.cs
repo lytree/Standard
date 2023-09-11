@@ -558,51 +558,51 @@ public class HostApp
         //添加内存缓存
         services.AddMemoryCache();
 
-        var cacheConfig = ConfigHelper.Get<CacheConfig>("cacheconfig", env.EnvironmentName);
-        if (cacheConfig.Type == CacheType.Redis)
-        {
-            ////FreeRedis客户端
-            //var redis = new RedisClient(cacheConfig.Redis.ConnectionString)
-            //{
-            //	Serialize = JsonConvert.SerializeObject,
-            //	Deserialize = JsonConvert.DeserializeObject
-            //};
-            //services.AddSingleton(redis);
-            ////Redis缓存
-            //services.AddSingleton<ICacheTool, RedisCacheTool>();
-            ////分布式Redis缓存
-            //services.AddSingleton<IDistributedCache>(new DistributedCache(redis));
-        }
-        else
-        {
-            //内存缓存
-            services.AddSingleton<ICacheTool, MemoryCacheTool>();
-            //分布式内存缓存
-            services.AddDistributedMemoryCache();
-        }
+        //var cacheConfig = ConfigHelper.Get<CacheConfig>("cacheconfig", env.EnvironmentName);
+        //if (cacheConfig.Type == CacheType.Redis)
+        //{
+        //    ////FreeRedis客户端
+        //    //var redis = new RedisClient(cacheConfig.Redis.ConnectionString)
+        //    //{
+        //    //	Serialize = JsonConvert.SerializeObject,
+        //    //	Deserialize = JsonConvert.DeserializeObject
+        //    //};
+        //    //services.AddSingleton(redis);
+        //    ////Redis缓存
+        //    //services.AddSingleton<ICacheTool, RedisCacheTool>();
+        //    ////分布式Redis缓存
+        //    //services.AddSingleton<IDistributedCache>(new DistributedCache(redis));
+        //}
+        //else
+        //{
+        //    //内存缓存
+        //    services.AddSingleton<ICacheTool, MemoryCacheTool>();
+        //    //分布式内存缓存
+        //    services.AddDistributedMemoryCache();
+        //}
 
         #endregion 缓存
 
-        //#region IP限流
+        #region IP限流
 
-        //if (appConfig.RateLimit)
+
+        services.Configure<IpRateLimitOptions>(configuration.GetSection("IpRateLimiting"));
+        services.Configure<IpRateLimitPolicies>(configuration.GetSection("IpRateLimitPolicies"));
+
+        //if (cacheConfig.TypeRateLimit == CacheType.Redis)
         //{
-        //    services.Configure<IpRateLimitOptions>(configuration.GetSection("IpRateLimiting"));
-        //    services.Configure<IpRateLimitPolicies>(configuration.GetSection("IpRateLimitPolicies"));
-
-        //    //if (cacheConfig.TypeRateLimit == CacheType.Redis)
-        //    //{
-        //    //    services.AddDistributedRateLimiting();
-        //    //}
-        //    //else
-        //    //{
-        //    services.AddInMemoryRateLimiting();
-        //    //}
-        //    services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
-        //    services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+        //    services.AddDistributedRateLimiting();
         //}
+        //else
+        //{
+        services.AddInMemoryRateLimiting();
+        //}
+        services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+        services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
-        //#endregion IP限流
+
+
+        #endregion IP限流
 
         //阻止NLog接收状态消息
         services.Configure<ConsoleLifetimeOptions>(opts => opts.SuppressStatusMessages = true);
@@ -656,7 +656,7 @@ public class HostApp
 
         //IP限流
 
-        //app.UseIpRateLimiting();
+        app.UseIpRateLimiting();
 
 
         //性能分析
