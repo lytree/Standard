@@ -1,5 +1,4 @@
 ﻿using Host.Shared;
-using Host.Shared.Config;
 using Host.Shared.Startup;
 using Infrastructure;
 using Infrastructure.Service;

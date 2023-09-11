@@ -17,17 +17,17 @@ public class PermissionApiEntity : EntityAdd
     /// </summary>
     public long PermissionId { get; set; }
 
-    /// <summary>
-    /// 权限
-    /// </summary>
-    [NotGen]
-    public PermissionEntity Permission { get; set; }
+
 
     /// <summary>
     /// 接口Id
     /// </summary>
     public long ApiId { get; set; }
-
+    /// <summary>
+    /// 权限
+    /// </summary>
+    [NotGen]
+    public PermissionEntity Permission { get; set; }
     /// <summary>
     /// 接口
     /// </summary>

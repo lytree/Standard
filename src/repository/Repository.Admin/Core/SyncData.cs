@@ -122,7 +122,7 @@ public abstract class SyncData
 			throw new Exception(msg);
 		}
 		var jsonData = FileHelper.ReadFile(filePath);
-		var data = JsonSerializer.Deserialize<T[]>(jsonData);
+		var data = JsonHelper.Deserialize<T[]>(jsonData);
 
 		return data;
 	}

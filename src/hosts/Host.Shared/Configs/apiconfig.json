@@ -1,0 +1,46 @@
+﻿{ //Swagger文档
+  "swagger": {
+    //启用
+    "enable": true,
+    //启用枚举架构过滤器
+    "enableEnumSchemaFilter": true,
+    //启用接口排序文档过滤器
+    "enableOrderTagsDocumentFilter": true,
+    //启用枚举属性名
+    "enableJsonStringEnumConverter": false,
+    //启用SchemaId命名空间
+    "enableSchemaIdNamespace": false,
+    //程序集列表，用于启用SchemaId命名空间
+    "assemblyNameList": [],
+    //路由前缀，如配置微服务文档地址：doc/module/swagger
+    "routePrefix": "admin/swagger",
+    //地址
+    "url": "http://localhost:8000",
+    "projects": [
+      {
+        "name": "中台Admin",
+        "code": "admin",
+        "version": "v3.7.0",
+        "description": ""
+      },
+      {
+        "name": "中台Web",
+        "code": "web",
+        "version": "v3.7.0",
+        "description": ""
+      }
+    ]
+  },
+  //ZhonTai接口文档
+  "apiUI": {
+    //启用
+    "enable": true,
+    //路由前缀，如配置微服务文档地址：doc/module
+    "routePrefix": "admin",
+    //页脚
+    "footer": {
+      "enable": false,
+      "content": "Copyright<a-icon type=\"copyright\" /> 2022-<a target=\"_blank\" href=\"https://www.zhontai.net\">中台Admin</a>"
+    }
+  }
+}

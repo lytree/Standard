@@ -1,6 +1,6 @@
 ﻿using Repository.Admin;
 
-namespace Host.Shared.Config;
+namespace Host.Shared;
 
 public class DbConfig
 {

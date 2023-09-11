@@ -6,7 +6,7 @@
   //跨域地址
   "corUrls": [],
   //程序集名称
-  "assemblyNames": [ "ZhonTai.Admin" ],
+  "assemblyNames": [ "Service.Admin" ],
   //租户
   "tenant": true,
   //分布式事务唯一标识admin，为空则不生成分布式事务表

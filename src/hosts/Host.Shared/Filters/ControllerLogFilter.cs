@@ -1,4 +1,4 @@
-﻿using Host.Shared.Config;
+﻿
 using Infrastructure.Service;
 using Microsoft.AspNetCore.Mvc.Filters;
 

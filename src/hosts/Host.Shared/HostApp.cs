@@ -17,7 +17,6 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -32,18 +31,15 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using Yitter.IdGenerator;
-using ZhonTai.Admin.Core.Captcha;
 using Infrastructure.JsonConverter;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Service.Admin.Auth;
-using Host.Shared.Config;
 using Host.Shared.Extensions;
 using System.Text.Json.Serialization;
 using Service.Admin.OprationLog;
 using FluentValidation.AspNetCore;
 using FluentValidation;
-using Microsoft.OpenApi.Models;
 using System.Text.Json;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -103,6 +99,7 @@ public class HostApp
 
             //应用配置
             services.AddSingleton(appConfig);
+            services.AddSingleton(apiConfig);
 
             var hostAppContext = new HostAppContext()
             {
@@ -218,7 +215,7 @@ public class HostApp
         services.TryAddScoped<IUser, User>();
 
         //数据库配置
-        var dbConfig = ConfigHelper.Get<Config.DbConfig>("dbconfig", env.EnvironmentName);
+        var dbConfig = ConfigHelper.Get<DbConfig>("dbconfig", env.EnvironmentName);
         services.AddSingleton(dbConfig);
 
         //添加数据库
@@ -586,26 +583,26 @@ public class HostApp
 
         #endregion 缓存
 
-        #region IP限流
+        //#region IP限流
 
-        if (appConfig.RateLimit)
-        {
-            services.Configure<IpRateLimitOptions>(configuration.GetSection("IpRateLimiting"));
-            services.Configure<IpRateLimitPolicies>(configuration.GetSection("IpRateLimitPolicies"));
+        //if (appConfig.RateLimit)
+        //{
+        //    services.Configure<IpRateLimitOptions>(configuration.GetSection("IpRateLimiting"));
+        //    services.Configure<IpRateLimitPolicies>(configuration.GetSection("IpRateLimitPolicies"));
 
-            if (cacheConfig.TypeRateLimit == CacheType.Redis)
-            {
-                services.AddDistributedRateLimiting();
-            }
-            else
-            {
-                services.AddInMemoryRateLimiting();
-            }
-            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+        //    //if (cacheConfig.TypeRateLimit == CacheType.Redis)
+        //    //{
+        //    //    services.AddDistributedRateLimiting();
+        //    //}
+        //    //else
+        //    //{
+        //    services.AddInMemoryRateLimiting();
+        //    //}
+        //    services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+        //    services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+        //}
 
-        }
-
-        #endregion IP限流
+        //#endregion IP限流
 
         //阻止NLog接收状态消息
         services.Configure<ConsoleLifetimeOptions>(opts => opts.SuppressStatusMessages = true);
@@ -631,7 +628,7 @@ public class HostApp
         //{
         //    options.StoreageKeyPrefix = CacheKeys.Captcha;
         //});
-        services.AddScoped<ISlideCaptcha, SlideCaptcha>();
+        //services.AddScoped<ISlideCaptcha, SlideCaptcha>();
 
         _hostAppOptions?.ConfigurePostServices?.Invoke(hostAppContext);
     }
@@ -659,7 +656,7 @@ public class HostApp
 
         //IP限流
 
-        app.UseIpRateLimiting();
+        //app.UseIpRateLimiting();
 
 
         //性能分析

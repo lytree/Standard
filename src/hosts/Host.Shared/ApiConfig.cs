@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Host.Shared.Config;
+namespace Host.Shared;
 
 public class ApiConfig
 {

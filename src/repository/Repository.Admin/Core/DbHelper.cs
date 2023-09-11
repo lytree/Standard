@@ -168,27 +168,27 @@ public class DbHelper
     /// <summary>
     /// 同步结构
     /// </summary>
-    public static void SyncStructure(IFreeSql db, DataType dataType, string[] assemblyNames, string msg = null, bool syncStructureSql = false)
+    public static void SyncStructure(IFreeSql db, DbConfig dbConfig, string msg = null)
     {
         //打印结构比对脚本
         //var dDL = db.CodeFirst.GetComparisonDDLStatements<PermissionEntity>();
         //Console.WriteLine($"{Environment.NewLine}" + dDL);
 
         //打印结构同步脚本
-        if (syncStructureSql)
+        if (dbConfig.SyncStructureSql)
         {
             db.Aop.SyncStructureAfter += SyncStructureAfter;
         }
 
         // 同步结构
-        var dbType = dataType.ToString();
+        var dbType = dbConfig.DbType.ToString();
         Console.WriteLine($"{Environment.NewLine}{(msg.NotNull() ? msg : $"sync {dbType} structure")} started");
 
         //获得指定程序集表实体
-        var entityTypes = GetEntityTypes(assemblyNames);
+        var entityTypes = GetEntityTypes(dbConfig.AssemblyNames);
         db.CodeFirst.SyncStructure(entityTypes);
 
-        if (syncStructureSql)
+        if (dbConfig.SyncStructureSql)
         {
             db.Aop.SyncStructureAfter -= SyncStructureAfter;
         }
@@ -213,14 +213,14 @@ public class DbHelper
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
     public static async Task SyncDataAsync(
-        IFreeSql db, string[] assemblyNames,
-        DbConfig dbConfig = null, bool syncDataCurd = false)
+        IFreeSql db, 
+        DbConfig dbConfig = null)
     {
         try
         {
             Console.WriteLine($"{Environment.NewLine}sync data started");
 
-            if (assemblyNames?.Length > 0)
+            if (dbConfig.AssemblyNames?.Length > 0)
             {
                 var user = dbConfig.SyncDataUser;
 
@@ -283,12 +283,12 @@ public class DbHelper
 
                 db.Aop.AuditValue += SyncDataAuditValue;
 
-                if (syncDataCurd)
+                if (dbConfig.SyncDataCurd)
                 {
                     db.Aop.CurdBefore += SyncDataCurdBefore;
                 }
 
-                Assembly[] assemblies = AssemblyHelper.GetAssemblyList(assemblyNames);
+                Assembly[] assemblies = AssemblyHelper.GetAssemblyList(dbConfig.AssemblyNames);
 
                 List<ISyncData> syncDatas = assemblies.Select(assembly => assembly.GetTypes()
                 .Where(x => typeof(ISyncData).GetTypeInfo().IsAssignableFrom(x.GetTypeInfo()) && x.GetTypeInfo().IsClass && !x.GetTypeInfo().IsAbstract))
@@ -299,7 +299,7 @@ public class DbHelper
                     await syncData.SyncDataAsync(db, dbConfig);
                 }
 
-                if (syncDataCurd)
+                if (dbConfig.SyncDataCurd)
                 {
                     db.Aop.CurdBefore -= SyncDataCurdBefore;
                 }
@@ -408,7 +408,7 @@ public class DbHelper
         //同步结构
         if (dbConfig.SyncStructure)
         {
-            SyncStructure(fsql, dbConfig.DbType, dbConfig.AssemblyNames, syncStructureSql: dbConfig.SyncStructureSql);
+            SyncStructure(fsql, dbConfig);
         }
 
         #region 审计数据
@@ -427,7 +427,7 @@ public class DbHelper
         //同步数据
         if (dbConfig.SyncData)
         {
-            SyncDataAsync(fsql, dbConfig.AssemblyNames, dbConfig, dbConfig.SyncDataCurd).Wait();
+            SyncDataAsync(fsql, dbConfig).Wait();
         }
 
         #endregion 初始化数据库
