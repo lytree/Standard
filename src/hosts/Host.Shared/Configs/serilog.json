@@ -10,7 +10,7 @@
       }
     },
 
-    "Enrich": [ "FromLogContext", "WithMachineName", "WithThreadId" ],
+    "Enrich": [ "FromLogContext", "WithMachineName", "WithThreadId", "WithProcessId" ],
     "Properties": {
       "Application": "App"
     }

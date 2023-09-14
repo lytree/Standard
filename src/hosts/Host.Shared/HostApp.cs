@@ -753,12 +753,12 @@ public class HostApp
 
     private void ConfigurationLogger(WebApplicationBuilder build)
     {
-        string template = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] ({ThreadId}) [Class:{SourceContext}] Message:{Message:lj}{NewLine}{Exception}";
+        string template = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] ({ProcessId})({ThreadId}) [Class:{SourceContext}] Message:{Message:lj}{NewLine}{Exception}";
         //应用程序启动
         Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(ConfigHelper.Load("serilog"))
             .WriteTo.Console(outputTemplate: template, theme: SystemConsoleTheme.Literate)
-            .WriteTo.Async(a => a.File(AppContext.BaseDirectory + "/Logs/App_.log", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, encoding: Encoding.UTF8))
+            .WriteTo.Async(a => a.File(AppContext.BaseDirectory + "/Logs/App_.log",outputTemplate:template, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, encoding: Encoding.UTF8, fileSizeLimitBytes: 10 * 1024 * 1024, retainedFileCountLimit:5))
         .CreateLogger();
 
     }
