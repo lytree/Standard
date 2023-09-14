@@ -1,0 +1,20 @@
+﻿{
+  "Serilog": {
+    "Using": [ "Serilog.Sinks.Console", "Serilog.Sinks.File", "Serilog.Sinks.Async", "Serilog.Expressions", "Serilog.Enrichers.Context" ],
+    "MinimumLevel": {
+      "Default": "Debug", //最小日志记录级别
+      "Override": { //系统日志最小记录级别
+        "Default": "Warning",
+        "System": "Warning",
+        "Microsoft": "Warning"
+      }
+    },
+
+    "Enrich": [ "FromLogContext", "WithMachineName", "WithThreadId" ],
+    "Properties": {
+      "Application": "App"
+    }
+  }
+
+
+}

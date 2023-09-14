@@ -42,6 +42,10 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using System.Text.Json;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Serilog.Events;
+using Microsoft.AspNetCore.Hosting;
+using System.IO.Compression;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Host.Shared;
 
@@ -66,17 +70,17 @@ public class HostApp
     {
         try
         {
-            //应用程序启动
-
-
             var builder = WebApplication.CreateBuilder(args);
+            ConfigurationLogger(builder);
+
+            Log.Logger.ForContext<HostApp>().Information("程序启动中");
             _hostAppOptions?.ConfigurePreWebApplicationBuilder?.Invoke(builder);
 
             builder.ConfigureApplication();
             //清空日志供应程序，避免.net自带日志输出到命令台
-            //builder.Logging.ClearProviders();
+            builder.Logging.ClearProviders();
             //使用Serilog日志
-            builder.Logging.AddSerilog();
+            builder.Logging.AddSerilog(Log.Logger, dispose: true);
 
             var services = builder.Services;
             var env = builder.Environment;
@@ -159,21 +163,21 @@ public class HostApp
 
             //配置中间件
             ConfigureMiddleware(app, env, configuration, appConfig, apiConfig);
-
+            Log.Logger.ForContext<HostApp>().Information("程序准备完毕");
             app.Run();
 
             //应用程序停止
-            Log.Logger.Information("Application shutdown");
+            Log.Logger.ForContext<HostApp>().Information("Application shutdown");
         }
         catch (Exception exception)
         {
             //应用程序异常
-            Log.Logger.Error(exception, "Application stopped because of exception");
+            Log.Logger.ForContext<HostApp>().Error(exception, "Application stopped because of exception");
             throw;
         }
         finally
         {
-
+            Log.CloseAndFlush();
         }
     }
 
@@ -745,5 +749,17 @@ public class HostApp
         }
 
         _hostAppOptions?.ConfigurePostMiddleware?.Invoke(hostAppMiddlewareContext);
+    }
+
+    private void ConfigurationLogger(WebApplicationBuilder build)
+    {
+        string template = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] ({ThreadId}) [Class:{SourceContext}] Message:{Message:lj}{NewLine}{Exception}";
+        //应用程序启动
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(ConfigHelper.Load("serilog"))
+            .WriteTo.Console(outputTemplate: template, theme: SystemConsoleTheme.Literate)
+            .WriteTo.Async(a => a.File(AppContext.BaseDirectory + "/Logs/App_.log", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, encoding: Encoding.UTF8))
+        .CreateLogger();
+
     }
 }
