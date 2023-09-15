@@ -3,10 +3,12 @@
     "Host.Shared": {
       "commandName": "Project",
       "launchBrowser": true,
+      "dotnetRunMessages": true,
+      "launchUrl": "admin",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:57223;http://localhost:57224"
+      "applicationUrl": "http://localhost:8000"
     }
   }
 }

@@ -78,7 +78,7 @@ public class HostApp
 
             builder.ConfigureApplication();
             //清空日志供应程序，避免.net自带日志输出到命令台
-            builder.Logging.ClearProviders();
+            //builder.Logging.ClearProviders();
             //使用Serilog日志
             builder.Logging.AddSerilog(Log.Logger, dispose: true);
 

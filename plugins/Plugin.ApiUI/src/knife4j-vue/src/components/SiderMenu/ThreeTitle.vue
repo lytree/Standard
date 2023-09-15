@@ -7,7 +7,7 @@
       :class="item.menuClass"
       class="knife4j-menu-badge-num"
     >{{item.num}}</span>
-    <span :title="item.title?item.title:''">{{item.name}}</span>
+    <span>{{item.name}}</span>
   </span>
 </template>
 

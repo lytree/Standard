@@ -1,16 +1,7 @@
 <template>
   <div>
-    <editor
-    ref="editor"
-      :value="value"
-      @init="editorInit"
-      :lang="lang"
-      theme="eclipse"
-      width="100%"
-      :height="editorHeight"
-      :options="{'expand-depth':1}"
-      @input="change"
-    ></editor>
+    <editor :value="value" @init="editorInit" :lang="lang" theme="eclipse" width="100%" :height="editorHeight"
+      @input="change"></editor>
   </div>
 </template>
 
@@ -21,7 +12,7 @@ export default {
   props: {
     value: {
       type: String,
-      required: true,
+      required: false,
       default: ""
     },
     xmlMode: {
@@ -38,19 +29,19 @@ export default {
     };
   },
   methods: {
-    change(value){
+    change(value) {
       this.$emit("change", value);
     },
     resetEditorHeight() {
       var that = this;
-      //重设高度
+      // 重设高度
       setTimeout(() => {
         var length_editor = that.editor.session.getLength();
         if (length_editor == 1) {
           length_editor = 10;
         }
         var rows_editor = length_editor * 16;
-        that.editorHeight = rows_editor > 500 ? 500:rows_editor;
+        that.editorHeight = rows_editor;
       }, 300);
     },
     editorInit(editor) {
@@ -63,15 +54,11 @@ export default {
         this.lang = "xml";
       }
       require("brace/theme/eclipse");
-      //重设高度
+      // 重设高度
       this.resetEditorHeight();
-      this.editor.renderer.on("afterRender", function() {
-        that.$emit("showDescription","123")
+      this.editor.renderer.on("afterRender", function () {
+        that.$emit("showDescription", "123")
       });
-
-      // this.editor.session.on('changeFold',function () {
-      //   that.resetEditorHeight();
-      // });
     }
   }
 };
