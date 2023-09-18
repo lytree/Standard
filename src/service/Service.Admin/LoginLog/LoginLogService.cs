@@ -16,7 +16,7 @@ namespace Service.Admin.LoginLog;
 /// 登录日志服务
 /// </summary>
 [Order(190)]
-[DynamicApi(Area = "web")]
+[DynamicApi(Area = AdminConsts.AreaName)]
 public class LoginLogService : BaseService, ILoginLogService, IDynamicApi
 {
 	private readonly IHttpContextAccessor _context;
@@ -83,5 +83,5 @@ public class LoginLogService : BaseService, ILoginLogService, IDynamicApi
 
 		return entity.Id;
 	}
-	
+
 }

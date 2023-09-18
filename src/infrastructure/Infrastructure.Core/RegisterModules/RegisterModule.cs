@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ public class RegisterModule : Module
 			Assembly[] assemblies = AssemblyHelper.GetAssemblyList(_assemblyNames);
 
 			static bool Predicate(Type a) => !a.IsDefined(typeof(NonRegisterIOCAttribute), true)
-				&&( typeof(IRegisterIOC).IsAssignableFrom(a))
+				&& (a.Name.EndsWith("Service") || a.Name.EndsWith("Repository") || typeof(IRegisterIOC).IsAssignableFrom(a))
 				&& !a.IsAbstract && !a.IsInterface && a.IsPublic;
 
 			//有接口实例
@@ -54,7 +55,12 @@ public class RegisterModule : Module
 			.PropertiesAutowired()// 属性注入
 			.InterceptedBy(interceptorServiceTypes.ToArray())
 			.EnableClassInterceptors();
+			//仓储泛型注入
+			//密码哈希泛型注入
+			builder.RegisterGeneric(typeof(PasswordHasher<>)).As(typeof(IPasswordHasher<>)).SingleInstance().PropertiesAutowired();
+
 		}
+
 	}
 }
 

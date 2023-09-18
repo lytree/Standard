@@ -155,24 +155,8 @@ const login = async () => {
 // 点击登录
 const onSignIn = async () => {
   formRef.value.validate(async (valid: boolean) => {
-    if (!valid) return
-
-    //检查是否开启验证码登录
-    state.disabled.signIn = true
-    const res = await new AuthApi()
-      .isCaptcha()
-      .catch(() => {})
-      .finally(() => {
-        state.disabled.signIn = false
-      })
-
-    if (res?.success) {
-      if (res.data) {
-        state.showDialog = true
-        //刷新滑块拼图
-        myCaptchaDialogRef.value?.refresh()
-      } else login()
-    }
+    if (!valid) return;
+    login();
   })
 }
 // 登录成功后的跳转

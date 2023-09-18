@@ -24,13 +24,13 @@ public class AuthLoginInput
 	/// </summary>
 	public string PasswordKey { get; set; }
 
-	/// <summary>
-	/// 验证码Id
-	/// </summary>
-	public string CaptchaId { get; set; }
+	///// <summary>
+	///// 验证码Id
+	///// </summary>
+	//public string CaptchaId { get; set; }
 
-	/// <summary>
-	/// 验证码数据
-	/// </summary>
-	public string CaptchaData { get; set; }
+	///// <summary>
+	///// 验证码数据
+	///// </summary>
+	//public string CaptchaData { get; set; }
 }
