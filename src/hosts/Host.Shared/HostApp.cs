@@ -582,9 +582,9 @@ public class HostApp
 		//else
 		//{
 		//    //内存缓存
-		//    services.AddSingleton<ICacheTool, MemoryCacheTool>();
+		services.AddSingleton<ICacheTool, MemoryCacheTool>();
 		//    //分布式内存缓存
-		//    services.AddDistributedMemoryCache();
+		services.AddDistributedMemoryCache();
 		//}
 
 		#endregion 缓存
