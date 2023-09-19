@@ -1,37 +1,27 @@
 <template>
   <div>
     <el-form ref="formRef" :model="state.ruleForm" size="large" class="login-content-form">
-      <el-form-item class="login-animation1" prop="userName" :rules="[{ required: true, message: '请输入用户名', trigger: ['blur', 'change'] }]">
-        <el-input
-          text
-          :placeholder="$t('message.account.accountPlaceholder1')"
-          v-model="state.ruleForm.userName"
-          clearable
-          autocomplete="off"
-          @keyup.enter="onSignIn"
-        >
+      <el-form-item class="login-animation1" prop="userName"
+        :rules="[{ required: true, message: '请输入用户名', trigger: ['blur', 'change'] }]">
+        <el-input text :placeholder="$t('message.account.accountPlaceholder1')" v-model="state.ruleForm.userName"
+          clearable autocomplete="off" @keyup.enter="onSignIn">
           <template #prefix>
             <el-icon class="el-input__icon"><ele-User /></el-icon>
           </template>
         </el-input>
       </el-form-item>
-      <el-form-item class="login-animation2" prop="password" :rules="[{ required: true, message: '请输入密码', trigger: ['blur', 'change'] }]">
-        <el-input
-          :type="state.isShowPassword ? 'text' : 'password'"
-          :placeholder="$t('message.account.accountPlaceholder2')"
-          v-model="state.ruleForm.password"
-          autocomplete="off"
-          @keyup.enter="onSignIn"
-        >
+      <el-form-item class="login-animation2" prop="password"
+        :rules="[{ required: true, message: '请输入密码', trigger: ['blur', 'change'] }]">
+        <el-input :type="state.isShowPassword ? 'text' : 'password'"
+          :placeholder="$t('message.account.accountPlaceholder2')" v-model="state.ruleForm.password" autocomplete="off"
+          @keyup.enter="onSignIn">
           <template #prefix>
             <el-icon class="el-input__icon"><ele-Unlock /></el-icon>
           </template>
           <template #suffix>
-            <i
-              class="iconfont el-input__icon login-content-password"
+            <i class="iconfont el-input__icon login-content-password"
               :class="state.isShowPassword ? 'icon-yincangmima' : 'icon-xianshimima'"
-              @click="state.isShowPassword = !state.isShowPassword"
-            >
+              @click="state.isShowPassword = !state.isShowPassword">
             </i>
           </template>
         </el-input>
@@ -57,15 +47,8 @@
       </el-col>
     </el-form-item> -->
       <el-form-item class="login-animation4">
-        <el-button
-          type="primary"
-          class="login-content-submit"
-          round
-          v-waves
-          @click="onSignIn"
-          :disabled="state.disabled.signIn"
-          :loading="state.loading.signIn"
-        >
+        <el-button type="primary" class="login-content-submit" round v-waves @click="onSignIn"
+          :disabled="state.disabled.signIn" :loading="state.loading.signIn">
           <span>{{ $t('message.account.accountBtnText') }}</span>
         </el-button>
       </el-form-item>
@@ -106,8 +89,8 @@ const state = reactive({
   showDialog: false,
   isShowPassword: false,
   ruleForm: {
-    userName: 'admin',
-    password: '111111',
+    userName: '',
+    password: '',
     captchaId: '',
     captchaData: '',
   } as AuthLoginInput,
@@ -155,8 +138,24 @@ const login = async () => {
 // 点击登录
 const onSignIn = async () => {
   formRef.value.validate(async (valid: boolean) => {
-    if (!valid) return;
-    login();
+    if (!valid) return
+    login()
+    // //检查是否开启验证码登录
+    // state.disabled.signIn = true
+    // const res = await new AuthApi()
+    //   .isCaptcha()
+    //   .catch(() => {})
+    //   .finally(() => {
+    //     state.disabled.signIn = false
+    //   })
+
+    // if (res?.success) {
+    //   if (res.data) {
+    //     state.showDialog = true
+    //     //刷新滑块拼图
+    //     myCaptchaDialogRef.value?.refresh()
+    //   } else login()
+    // }
   })
 }
 // 登录成功后的跳转
@@ -191,6 +190,7 @@ const signInSuccess = (isNoPower: boolean | undefined) => {
 <style scoped lang="scss">
 .login-content-form {
   margin-top: 20px;
+
   @for $i from 1 through 4 {
     .login-animation#{$i} {
       opacity: 0;
@@ -200,20 +200,24 @@ const signInSuccess = (isNoPower: boolean | undefined) => {
       animation-delay: calc($i/10) + s;
     }
   }
+
   .login-content-password {
     display: inline-block;
     width: 20px;
     cursor: pointer;
+
     &:hover {
       color: #909399;
     }
   }
+
   .login-content-code {
     width: 100%;
     padding: 0;
     font-weight: bold;
     letter-spacing: 5px;
   }
+
   .login-content-submit {
     width: 100%;
     letter-spacing: 2px;

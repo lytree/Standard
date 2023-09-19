@@ -34,9 +34,11 @@ public class ApiUIMiddleware
 
 		_staticFileMiddleware = CreateStaticFileMiddleware(next, hostingEnv, loggerFactory, options);
 
-		_jsonSerializerOptions = new JsonSerializerOptions();
-		_jsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-		_jsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+		_jsonSerializerOptions = new JsonSerializerOptions
+		{
+			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+			PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+		};
 		_jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false));
 	}
 

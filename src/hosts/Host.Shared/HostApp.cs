@@ -226,7 +226,7 @@ public class HostApp
 		//添加数据库
 		if (!_hostAppOptions.CustomInitDb)
 		{
-			services.AddAdminDb(env);
+			services.AddDb(env);
 		}
 		services.AddScoped<UnitOfWorkManager>();
 		//程序集
