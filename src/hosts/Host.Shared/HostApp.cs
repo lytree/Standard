@@ -127,6 +127,9 @@ public class HostApp
 				// 模块注入
 				builder.RegisterModule(new RegisterModule(appConfig.AssemblyNames));
 
+
+								// 模块注入
+				builder.RegisterModule(new AdminRepositoryRegisterModule());
 				_hostAppOptions?.ConfigureAutofacContainer?.Invoke(builder, hostAppContext);
 			});
 
