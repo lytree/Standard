@@ -7,9 +7,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FreeSql" Version="3.2.698" />
+		<PackageReference Include="FreeSql" Version="3.2.800" />
 		<PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.32.2" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.32.3" />
 	</ItemGroup>
 
 	<ItemGroup>

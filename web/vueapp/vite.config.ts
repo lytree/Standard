@@ -1,29 +1,9 @@
 import vue from '@vitejs/plugin-vue'
-import fs from 'fs';
-import path, { resolve } from 'path';
+import { resolve } from 'path'
 import { defineConfig, ConfigEnv } from 'vite'
 import vueSetupExtend from 'vite-plugin-vue-setup-extend-plus'
 import compression from 'vite-plugin-compression'
 import { loadEnv } from '/@/utils/vite'
-
-
-
-const baseFolder =
-  process.env.APPDATA !== undefined && process.env.APPDATA !== ''
-    ? `${process.env.APPDATA}/ASP.NET/https`
-    : `${process.env.HOME}/.aspnet/https`;
-
-const certificateArg = process.argv.map(arg => arg.match(/--name=(?<value>.+)/i)).filter(Boolean)[0];
-const certificateName = certificateArg ? certificateArg.groups.value : "vueapp";
-
-if (!certificateName) {
-  console.error('Invalid certificate name. Run this script in the context of an npm/yarn script or pass --name=<<app>> explicitly.')
-  process.exit(-1);
-}
-
-const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
-const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
-
 
 const pathResolve = (dir: string): any => {
   return resolve(__dirname, '.', dir)
@@ -63,10 +43,6 @@ const viteConfig = defineConfig(({ mode, command }: ConfigEnv) => {
           rewrite: (path) => path.replace(/^\/gitee/, ''),
         },
       },
-      https: {
-        key: fs.readFileSync(keyFilePath),
-        cert: fs.readFileSync(certFilePath),
-      }
     },
     build: {
       outDir: 'dist',

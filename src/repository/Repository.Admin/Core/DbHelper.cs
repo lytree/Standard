@@ -359,7 +359,7 @@ public class DbHelper
     /// <param name="dbConfig"></param>
     /// <param name="appConfig"></param>
     /// <param name="hostAppOptions"></param>
-    public static IFreeSql<T> RegisterDb<T>(
+    public static IFreeSql RegisterDb(
         IUser user, DbConfig dbConfig)
     {
         //创建数据库
@@ -390,7 +390,7 @@ public class DbHelper
         #endregion 监听所有命令
 
 
-        var fsql = freeSqlBuilder.Build<T>();
+        var fsql = freeSqlBuilder.Build();
 
         //生成数据
         if (dbConfig.GenerateData && !dbConfig.CreateDb && !dbConfig.SyncData)

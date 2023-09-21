@@ -11,7 +11,7 @@ namespace Repository.Admin.Core
 
 		public RepositoryBase(IFreeSql fsql) : base(fsql) { }
 		public RepositoryBase(IFreeSql fsql, Expression<Func<TEntity, bool>> filter) : base(fsql, filter) { }
-		public RepositoryBase(IFreeSql fsql, UnitOfWorkManager uowManger) : base(uowManger?.Orm ?? fsql)
+		public RepositoryBase(UnitOfWorkManager uowManger) : base(uowManger?.Orm, uowManger)
 		{
 			uowManger?.Binding(this);
 		}

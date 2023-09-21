@@ -36,7 +36,7 @@ public class RegisterModule : Module
 			Assembly[] assemblies = AssemblyHelper.GetAssemblyList(_assemblyNames);
 
 			static bool Predicate(Type a) => !a.IsDefined(typeof(NonRegisterIOCAttribute), true)
-				&& (a.Name.EndsWith("Service") || a.Name.EndsWith("Repository") || typeof(IRegisterIOC).IsAssignableFrom(a))
+				&& (a.Name.EndsWith("Service") || typeof(IRegisterIOC).IsAssignableFrom(a))
 				&& !a.IsAbstract && !a.IsInterface && a.IsPublic;
 
 			//有接口实例

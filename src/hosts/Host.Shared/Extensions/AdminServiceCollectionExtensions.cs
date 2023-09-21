@@ -20,14 +20,14 @@ public static class AdminServiceCollectionExtensions
     /// <param name="services"></param>
     /// <param name="env"></param>
     /// <returns></returns>
-    public static void AddAdminDb(this IServiceCollection services, IHostEnvironment env)
+    public static void AddDb(this IServiceCollection services, IHostEnvironment env)
     {
         var dbConfig = ConfigHelper.Get<DbConfig>("dbconfig", env.EnvironmentName);
         var appConfig = ConfigHelper.Get<AppConfig>("appconfig", env.EnvironmentName);
         var user = services.BuildServiceProvider().GetService<Repository.Admin.Core.IUser>();
 
 
-        services.AddSingleton<IFreeSql<AdminDb>>(DbHelper.RegisterDb<AdminDb>(user, dbConfig.AdminDb));
+        services.AddSingleton<IFreeSql>(DbHelper.RegisterDb(user, dbConfig.AdminDb));
     }
 
     /// <summary>

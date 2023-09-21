@@ -4,11 +4,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>Knife4j-OAuth2</title>
-    <script src="axios.min.js"></script>
+    <script src="jquery.min.js"></script>
 </head>
 <body>
 <script type="text/javascript">
-(function(){
+$(function(){
     function OAuth2(url){
         this.url=url;
         this.code=null;
@@ -72,18 +72,7 @@
             "client_id":this.cacheValue.clientId,
             "client_secret":this.cacheValue.clientSecret
         }
-        let instance=axios.create();
-        let requestConfig={
-            url: url,
-            method: 'post',
-            timeout: 0,
-            //此data必传,不然默认是data:undefined,https://github.com/axios/axios/issues/86
-            //否则axios会忽略请求头Content-Type
-            data: null,
-            params:params
-        }
-        instance.request(requestConfig).then(res=>{
-            let data=res.data;
+        $.post(url,params,function(data){
             if(data!=null&&data!=undefined) {
                 that.cacheValue.accessToken=data.token_type+" "+data.access_token;
                 that.cacheValue.tokenType=data.token_type;
@@ -91,13 +80,12 @@
                 window.localStorage.setItem(that.state,JSON.stringify(that.cacheValue))
                 window.close();
             }
-            
         })
     }
     var oauth=new OAuth2(window.location.href);
     oauth.init();
     oauth.auth();
-})()
+})
 </script>
 
 </body>

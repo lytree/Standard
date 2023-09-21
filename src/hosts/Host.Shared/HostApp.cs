@@ -127,6 +127,9 @@ public class HostApp
 				// 模块注入
 				builder.RegisterModule(new RegisterModule(appConfig.AssemblyNames));
 
+
+								// 模块注入
+				builder.RegisterModule(new AdminRepositoryRegisterModule());
 				_hostAppOptions?.ConfigureAutofacContainer?.Invoke(builder, hostAppContext);
 			});
 
@@ -226,7 +229,7 @@ public class HostApp
 		//添加数据库
 		if (!_hostAppOptions.CustomInitDb)
 		{
-			services.AddAdminDb(env);
+			services.AddDb(env);
 		}
 		services.AddScoped<UnitOfWorkManager>();
 		//程序集
@@ -582,9 +585,9 @@ public class HostApp
 		//else
 		//{
 		//    //内存缓存
-		//    services.AddSingleton<ICacheTool, MemoryCacheTool>();
+		services.AddSingleton<ICacheTool, MemoryCacheTool>();
 		//    //分布式内存缓存
-		//    services.AddDistributedMemoryCache();
+		services.AddDistributedMemoryCache();
 		//}
 
 		#endregion 缓存

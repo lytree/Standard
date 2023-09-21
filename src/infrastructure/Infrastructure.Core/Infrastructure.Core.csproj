@@ -17,8 +17,8 @@
 	<ItemGroup>
 		<PackageReference Include="FreeSql.Repository" Version="3.2.800" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="7.0.10" />
-		<PackageReference Include="NRedisStack" Version="0.8.0" />
+		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="7.0.11" />
+		<PackageReference Include="NRedisStack" Version="0.9.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Autofac" Version="7.1.0" />

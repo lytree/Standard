@@ -10,9 +10,7 @@
             <el-form-item>
               <el-button type="primary" icon="ele-Search" @click="onQuery"> 查询 </el-button>
               <el-dropdown v-auth="'api:admin:role:add'" style="margin-left: 12px">
-                <el-button type="primary"
-                  >新增<el-icon class="el-icon--right"><ele-ArrowDown /></el-icon
-                ></el-button>
+                <el-button type="primary">新增<el-icon class="el-icon--right"><ele-ArrowDown /></el-icon></el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item @click="onAdd(1)">新增分组</el-dropdown-item>
@@ -25,43 +23,26 @@
         </el-card>
 
         <el-card class="my-fill mt8" shadow="never">
-          <el-table
-            ref="roleTableRef"
-            v-loading="state.loading"
-            :data="state.roleTreeData"
-            row-key="id"
-            default-expand-all
-            :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-            highlight-current-row
-            style="width: 100%"
-            @current-change="onCurrentChange"
-          >
+          <el-table ref="roleTableRef" v-loading="state.loading" :data="state.roleTreeData" row-key="id"
+            default-expand-all :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" highlight-current-row
+            style="width: 100%" @current-change="onCurrentChange">
             <el-table-column prop="name" label="角色名称" min-width="120" show-overflow-tooltip />
             <el-table-column prop="sort" label="排序" width="80" align="center" show-overflow-tooltip />
             <el-table-column label="操作" width="100" fixed="right" header-align="center" align="right">
               <template #default="{ row }">
-                <el-button
-                  v-if="row.type === 1"
-                  v-auth="'api:admin:role:add'"
-                  icon="ele-Plus"
-                  size="small"
-                  text
-                  type="primary"
-                  @click="onAdd(2, row)"
-                ></el-button>
-                <my-dropdown-more icon-only v-auths="['api:admin:permission:assign', 'api:admin:role:update', 'api:admin:role:delete']">
+                <el-button v-if="row.type === 1" v-auth="'api:admin:role:add'" icon="ele-Plus" size="small" text
+                  type="primary" @click="onAdd(2, row)"></el-button>
+                <my-dropdown-more icon-only
+                  v-auths="['api:admin:permission:assign', 'api:admin:role:update', 'api:admin:role:delete']">
                   <template #dropdown>
                     <el-dropdown-menu>
-                      <el-dropdown-item v-if="row.type === 2 && auth('api:admin:permission:assign')" @click="onSetRoleMenu(row)"
-                        >菜单权限</el-dropdown-item
-                      >
+                      <el-dropdown-item v-if="row.type === 2 && auth('api:admin:permission:assign')"
+                        @click="onSetRoleMenu(row)">菜单权限</el-dropdown-item>
                       <el-dropdown-item v-if="row.type === 2" @click="onSetRoleDataScope(row)">数据权限</el-dropdown-item>
-                      <el-dropdown-item v-if="auth('api:admin:role:update')" @click="onEdit(row)"
-                        >编辑{{ row.type === 1 ? '分组' : '角色' }}</el-dropdown-item
-                      >
-                      <el-dropdown-item v-if="auth('api:admin:role:delete')" @click="onDelete(row)"
-                        >删除{{ row.type === 1 ? '分组' : '角色' }}</el-dropdown-item
-                      >
+                      <el-dropdown-item v-if="auth('api:admin:role:update')" @click="onEdit(row)">编辑{{ row.type === 1 ?
+                        '分组' : '角色' }}</el-dropdown-item>
+                      <el-dropdown-item v-if="auth('api:admin:role:delete')" @click="onDelete(row)">删除{{ row.type === 1 ?
+                        '分组' : '角色' }}</el-dropdown-item>
                     </el-dropdown-menu>
                   </template>
                 </my-dropdown-more>
@@ -80,38 +61,29 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" icon="ele-Search" @click="onGetRoleUserList"> 查询 </el-button>
-              <el-button v-auth="'api:admin:role:add-role-user'" type="primary" icon="ele-Plus" @click="onAddUser"> 添加员工 </el-button>
-              <el-button v-auth="'api:admin:role:remove-role-user'" type="danger" icon="ele-Delete" @click="onRemoveUser"> 移除员工 </el-button>
+              <el-button v-auth="'api:admin:role:add-role-user'" type="primary" icon="ele-Plus" @click="onAddUser"> 添加员工
+              </el-button>
+              <el-button v-auth="'api:admin:role:remove-role-user'" type="danger" icon="ele-Delete" @click="onRemoveUser">
+                移除员工 </el-button>
             </el-form-item>
           </el-form>
         </el-card>
 
         <el-card class="my-fill mt8" shadow="never">
-          <el-table
-            ref="userTableRef"
-            v-loading="state.userListLoading"
-            :data="state.userListData"
-            row-key="id"
-            style="width: 100%"
-            @row-click="onUserRowClick"
-          >
+          <el-table ref="userTableRef" v-loading="state.userListLoading" :data="state.userListData" row-key="id"
+            style="width: 100%" @row-click="onUserRowClick">
             <el-table-column type="selection" width="55" />
             <el-table-column prop="name" label="姓名" min-width="120" show-overflow-tooltip />
             <el-table-column prop="mobile" label="手机号" min-width="120" show-overflow-tooltip />
-            <!-- <el-table-column prop="email" label="邮箱" min-width="120" show-overflow-tooltip /> -->
+            <el-table-column prop="email" label="邮箱" min-width="120" show-overflow-tooltip />
           </el-table>
         </el-card>
       </div>
     </pane>
 
     <role-form ref="roleFormRef" :title="state.roleFormTitle" :role-tree-data="state.roleFormTreeData"></role-form>
-    <user-select
-      ref="userSelectRef"
-      :title="`添加【${state.roleName}】员工`"
-      multiple
-      :sure-loading="state.sureLoading"
-      @sure="onSureUser"
-    ></user-select>
+    <user-select ref="userSelectRef" :title="`添加【${state.roleName}】员工`" multiple :sure-loading="state.sureLoading"
+      @sure="onSureUser"></user-select>
     <set-role-menu ref="setRoleMenuRef"></set-role-menu>
     <set-role-data-scope ref="setRoleDataScopeRef"></set-role-data-scope>
   </my-layout>
@@ -226,7 +198,7 @@ const onDelete = (row: RoleGetListOutput) => {
       await new RoleApi().delete({ id: row.id }, { loading: true })
       onQuery()
     })
-    .catch(() => {})
+    .catch(() => { })
 }
 
 const onGetRoleUserList = async () => {
@@ -302,7 +274,7 @@ const onRemoveUser = () => {
       await new RoleApi().removeRoleUser(input, { loading: true })
       onGetRoleUserList()
     })
-    .catch(() => {})
+    .catch(() => { })
 }
 
 const onSureUser = async (users: UserGetPageOutput[]) => {
