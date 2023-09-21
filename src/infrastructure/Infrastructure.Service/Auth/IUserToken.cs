@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace Repository.Admin.Core;
+namespace Infrastructure.Service;
 
 public interface IUserToken
 {

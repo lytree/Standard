@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.IdentityModel.JsonWebTokens;
-
 using FreeSql;
-
 using Microsoft.AspNetCore.Identity;
 using Service.Admin.Auth.Dto;
 using Service.Admin.LoginLog;
@@ -18,8 +16,6 @@ using Plugin.DynamicApi;
 using Infrastructure.Service;
 using Service.Admin.Captcha;
 using Infrastructure;
-using Plugin.SlideCaptcha.Validator;
-using static Plugin.SlideCaptcha.ValidateResult;
 using Service.Admin.LoginLog.Dto;
 using Repository.Admin.Repository.User;
 using Repository.Admin.Repository.UserRole;
@@ -72,7 +68,7 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 			new Claim(ClaimAttributes.UserType, user.Type.ToInt64().ToString(), ClaimValueTypes.Integer32),
 		};
 
-		var token = LazyGetRequiredService<Repository.Admin.Core.IUserToken>().Create(claims.ToArray());
+		var token = LazyGetRequiredService<IUserToken>().Create(claims.ToArray());
 
 		return token;
 	}
@@ -370,7 +366,7 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 	[AllowAnonymous]
 	public async Task<dynamic> Refresh([BindRequired] string token)
 	{
-		var jwtSecurityToken = LazyGetRequiredService<Repository.Admin.Core.IUserToken>().Decode(token);
+		var jwtSecurityToken = LazyGetRequiredService<IUserToken>().Decode(token);
 		var userClaims = jwtSecurityToken?.Claims?.ToArray();
 		if (userClaims == null || userClaims.Length == 0)
 		{

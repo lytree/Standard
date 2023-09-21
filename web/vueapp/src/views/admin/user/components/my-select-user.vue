@@ -3,7 +3,6 @@
     v-model="state.label"
     placeholder="请选择直属主管"
     remote
-    :suffix-transition="false"
     suffix-icon="ele-MoreFilled"
     class="w100"
     v-bind="$attrs"

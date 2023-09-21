@@ -29,35 +29,6 @@
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
-            <el-form-item label="部门" prop="orgIds" :rules="[{ required: true, message: '请选择部门', trigger: ['change'] }]">
-              <el-tree-select
-                ref="orgTreeSelectRef"
-                v-model="form.orgIds"
-                placeholder="请选择部门"
-                :data="state.orgTreeData"
-                node-key="id"
-                :props="{ label: 'name' }"
-                check-strictly
-                default-expand-all
-                render-after-expand
-                fit-input-width
-                clearable
-                multiple
-                collapse-tags
-                collapse-tags-tooltip
-                filterable
-                class="w100"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
-            <el-form-item label="主属部门" prop="orgId" :rules="[{ required: true, message: '请选择主属部门', trigger: ['change'] }]">
-              <el-select v-model="form.orgId" placeholder="请选择主属部门" class="w100">
-                <el-option v-for="item in state.orgs" :key="item.id" :label="item.name" :value="item.id" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
             <el-form-item label="账号" prop="userName" :rules="[{ required: true, message: '请输入账号', trigger: ['blur', 'change'] }]">
               <el-input v-model="form.userName" autocomplete="off" />
             </el-form-item>
@@ -71,11 +42,6 @@
                   </el-tooltip></div
               ></template>
               <el-input key="password" v-model="form.password" show-password autocomplete="off" />
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
-            <el-form-item label="直属主管" prop="managerUserId">
-              <my-select-user v-model="form.managerUserId" :name="form.managerUserName" clearable></my-select-user>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
@@ -119,7 +85,7 @@
 import { reactive, toRefs, getCurrentInstance, ref, watch, defineAsyncComponent, computed } from 'vue'
 import { UserAddInput, UserUpdateInput, OrgListOutput, RoleGetListOutput } from '/@/api/admin/data-contracts'
 import { UserApi } from '/@/api/admin/User'
-import { OrgApi } from '/@/api/admin/Org'
+// import { OrgApi } from '/@/api/admin/Org'
 import { RoleApi } from '/@/api/admin/Role'
 import { listToTree, treeToList } from '/@/utils/tree'
 import { cloneDeep } from 'lodash-es'
@@ -127,8 +93,6 @@ import { isMobile, testMobile, testEmail } from '/@/utils/test'
 import eventBus from '/@/utils/mitt'
 import { FormInstance } from 'element-plus'
 
-// 引入组件
-const MySelectUser = defineAsyncComponent(() => import('./my-select-user.vue'))
 
 defineProps({
   title: {
@@ -196,16 +160,16 @@ watch(
   }
 )
 
-const getOrgs = async () => {
-  const res = await new OrgApi().getList().catch(() => {
-    state.orgTreeData = []
-  })
-  if (res?.success && res.data && res.data.length > 0) {
-    state.orgTreeData = listToTree(res.data)
-  } else {
-    state.orgTreeData = []
-  }
-}
+// const getOrgs = async () => {
+//   const res = await new OrgApi().getList().catch(() => {
+//     state.orgTreeData = []
+//   })
+//   if (res?.success && res.data && res.data.length > 0) {
+//     state.orgTreeData = listToTree(res.data)
+//   } else {
+//     state.orgTreeData = []
+//   }
+// }
 
 const getRoles = async () => {
   const res = await new RoleApi().getList().catch(() => {
@@ -222,7 +186,7 @@ const getRoles = async () => {
 const open = async (row: UserUpdateInput & UserUpdateInput) => {
   proxy.$modal.loading()
 
-  await getOrgs()
+  // await getOrgs()
   await getRoles()
 
   if (row.id > 0) {

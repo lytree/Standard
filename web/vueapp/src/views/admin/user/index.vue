@@ -1,10 +1,10 @@
 <template>
   <my-layout>
-    <pane size="20" min-size="20" max-size="35">
+    <!-- <pane size="20" min-size="20" max-size="35">
       <div class="my-flex-column w100 h100">
         <org-menu @node-click="onOrgNodeClick" select-first-node></org-menu>
       </div>
-    </pane>
+    </pane> -->
     <pane size="80">
       <div class="my-flex-column w100 h100">
         <el-card class="mt8" shadow="never" :body-style="{ paddingBottom: '0' }">
@@ -29,7 +29,8 @@
           <el-table v-loading="state.loading" :data="state.userListData" row-key="id" style="width: 100%">
             <el-table-column prop="userName" label="账号" width="120" show-overflow-tooltip />
             <el-table-column prop="name" label="姓名" width="120" show-overflow-tooltip>
-              <template #default="{ row }"> {{ row.name }} <el-tag v-if="row.isManager" type="success">主管</el-tag> </template>
+              <template #default="{ row }"> {{ row.name }} <el-tag v-if="row.isManager" type="success">主管</el-tag>
+              </template>
             </el-table-column>
             <el-table-column prop="mobile" label="手机号" width="120" show-overflow-tooltip />
             <el-table-column prop="email" label="邮箱" min-width="180" show-overflow-tooltip />
@@ -40,17 +41,9 @@
             </el-table-column>
             <el-table-column label="状态" width="80" align="center" fixed="right">
               <template #default="{ row }">
-                <el-switch
-                  v-if="auth('api:admin:user:set-enable')"
-                  v-model="row.enabled"
-                  :loading="row.loading"
-                  :active-value="true"
-                  :inactive-value="false"
-                  inline-prompt
-                  active-text="启用"
-                  inactive-text="禁用"
-                  :before-change="() => onSetEnable(row)"
-                />
+                <el-switch v-if="auth('api:admin:user:set-enable')" v-model="row.enabled" :loading="row.loading"
+                  :active-value="true" :inactive-value="false" inline-prompt active-text="启用" inactive-text="禁用"
+                  :before-change="() => onSetEnable(row)" />
                 <template v-else>
                   <el-tag type="success" v-if="row.enabled">启用</el-tag>
                   <el-tag type="danger" v-else>禁用</el-tag>
@@ -59,18 +52,16 @@
             </el-table-column>
             <el-table-column label="操作" width="140" header-align="center" align="center" fixed="right">
               <template #default="{ row }">
-                <el-button v-auth="'api:admin:user:update'" icon="ele-EditPen" size="small" text type="primary" @click="onEdit(row)">编辑</el-button>
+                <el-button v-auth="'api:admin:user:update'" icon="ele-EditPen" size="small" text type="primary"
+                  @click="onEdit(row)">编辑</el-button>
                 <my-dropdown-more
-                  v-auths="['api:admin:user:set-manager', 'api:admin:user:reset-password', 'api:admin:user:delete', 'api:admin:user:one-click-login']"
-                >
+                  v-auths="['api:admin:user:set-manager', 'api:admin:user:reset-password', 'api:admin:user:delete', 'api:admin:user:one-click-login']">
                   <template #dropdown>
                     <el-dropdown-menu>
-                      <el-dropdown-item v-if="auth('api:admin:user:set-manager')" @click="onSetManager(row)"
-                        >{{ row.isManager ? '取消' : '设置' }}主管</el-dropdown-item
-                      >
-                      <el-dropdown-item v-if="auth('api:admin:user:reset-password')" @click="onResetPwd(row)">重置密码</el-dropdown-item>
-                      <el-dropdown-item v-if="auth('api:admin:user:delete')" @click="onDelete(row)">删除用户</el-dropdown-item>
-                      <el-dropdown-item v-if="auth('api:admin:user:one-click-login')" @click="onOneClickLogin(row)">一键登录</el-dropdown-item>
+                      <el-dropdown-item v-if="auth('api:admin:user:reset-password')"
+                        @click="onResetPwd(row)">重置密码</el-dropdown-item>
+                      <el-dropdown-item v-if="auth('api:admin:user:delete')"
+                        @click="onDelete(row)">删除用户</el-dropdown-item>
                     </el-dropdown-menu>
                   </template>
                 </my-dropdown-more>
@@ -78,17 +69,9 @@
             </el-table-column>
           </el-table>
           <div class="my-flex my-flex-end" style="margin-top: 20px">
-            <el-pagination
-              v-model:currentPage="state.pageInput.currentPage"
-              v-model:page-size="state.pageInput.pageSize"
-              :total="state.total"
-              :page-sizes="[10, 20, 50, 100]"
-              small
-              background
-              @size-change="onSizeChange"
-              @current-change="onCurrentChange"
-              layout="total, sizes, prev, pager, next, jumper"
-            />
+            <el-pagination v-model:currentPage="state.pageInput.currentPage" v-model:page-size="state.pageInput.pageSize"
+              :total="state.total" :page-sizes="[10, 20, 50, 100]" small background @size-change="onSizeChange"
+              @current-change="onCurrentChange" layout="total, sizes, prev, pager, next, jumper" />
           </div>
         </el-card>
 
@@ -100,7 +83,7 @@
 
 <script lang="ts" setup name="admin/user">
 import { ref, reactive, onMounted, getCurrentInstance, onBeforeMount, defineAsyncComponent } from 'vue'
-import { UserGetPageOutput, PageInputUserGetPageDto, OrgListOutput, UserSetManagerInput, UserResetPasswordInput } from '/@/api/admin/data-contracts'
+import { UserGetPageOutput, PageInputUserGetPageDto, UserSetManagerInput, UserResetPasswordInput } from '/@/api/admin/data-contracts'
 import { UserApi } from '/@/api/admin/User'
 import eventBus from '/@/utils/mitt'
 import { auth } from '/@/utils/authFunction'
@@ -168,6 +151,7 @@ onMounted(() => {
   eventBus.on('refreshUser', async () => {
     onQuery()
   })
+  onQuery();
 })
 
 onBeforeMount(() => {
@@ -205,7 +189,7 @@ const onDelete = (row: UserGetPageOutput) => {
       await new UserApi().delete({ id: row.id }, { loading: true, showSuccessMessage: true })
       onQuery()
     })
-    .catch(() => {})
+    .catch(() => { })
 }
 
 const onResetPwd = (row: UserGetPageOutput) => {
@@ -218,7 +202,7 @@ const onResetPwd = (row: UserGetPageOutput) => {
       }
       onQuery()
     })
-    .catch(() => {})
+    .catch(() => { })
 }
 
 const onSetManager = (row: UserGetPageOutput) => {
@@ -235,7 +219,7 @@ const onSetManager = (row: UserGetPageOutput) => {
       await new UserApi().setManager(input, { loading: true, showSuccessMessage: true })
       onQuery()
     })
-    .catch(() => {})
+    .catch(() => { })
 }
 
 const onSetEnable = (row: UserGetPageOutput & { loading: boolean }) => {
@@ -277,7 +261,7 @@ const onOneClickLogin = (row: UserGetPageOutput) => {
         window.location.href = '/'
       }
     })
-    .catch(() => {})
+    .catch(() => { })
 }
 
 const onSizeChange = (val: number) => {
@@ -290,12 +274,12 @@ const onCurrentChange = (val: number) => {
   onQuery()
 }
 
-const onOrgNodeClick = (node: OrgListOutput | null) => {
-  if (state.pageInput.filter) {
-    state.pageInput.filter.orgId = node?.id
-  }
-  onQuery()
-}
+// const onOrgNodeClick = (node: OrgListOutput | null) => {
+//   if (state.pageInput.filter) {
+//     state.pageInput.filter.orgId = node?.id
+//   }
+//   onQuery()
+// }
 </script>
 
 <style scoped lang="scss"></style>
