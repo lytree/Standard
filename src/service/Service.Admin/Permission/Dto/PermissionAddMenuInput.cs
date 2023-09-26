@@ -32,7 +32,7 @@ public class PermissionAddMenuInput
 	/// <summary>
 	/// 说明
 	/// </summary>
-	public string Description { get; set; }
+	public string? Description { get; set; }
 
 	/// <summary>
 	/// 隐藏
@@ -67,7 +67,7 @@ public class PermissionAddMenuInput
 	/// <summary>
 	/// 链接地址
 	/// </summary>
-	public string Link { get; set; }
+	public string? Link { get; set; }
 
 	/// <summary>
 	/// 是否内嵌窗口

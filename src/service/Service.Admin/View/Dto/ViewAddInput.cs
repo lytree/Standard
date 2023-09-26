@@ -28,7 +28,7 @@ public class ViewAddInput
 	/// <summary>
 	/// 说明
 	/// </summary>
-	public string Description { get; set; }
+	public string? Description { get; set; }
 
 	/// <summary>
 	/// 缓存

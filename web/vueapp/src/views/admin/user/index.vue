@@ -1,10 +1,5 @@
 <template>
   <my-layout>
-    <!-- <pane size="20" min-size="20" max-size="35">
-      <div class="my-flex-column w100 h100">
-        <org-menu @node-click="onOrgNodeClick" select-first-node></org-menu>
-      </div>
-    </pane> -->
     <pane size="80">
       <div class="my-flex-column w100 h100">
         <el-card class="mt8" shadow="never" :body-style="{ paddingBottom: '0' }">
