@@ -25,7 +25,6 @@ using Plugin.DynamicApi.Attributes;
 using Plugin.DynamicApi;
 using Serilog;
 using Service.Admin;
-using Service.Admin.Captcha;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Text;
@@ -42,9 +41,6 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using System.Text.Json;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using Serilog.Events;
-using Microsoft.AspNetCore.Hosting;
-using System.IO.Compression;
 using Serilog.Sinks.SystemConsole.Themes;
 using FreeSql;
 

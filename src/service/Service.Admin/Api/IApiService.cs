@@ -17,7 +17,7 @@ public interface IApiService
 {
 	Task<ApiGetOutput> GetAsync(long id);
 
-	Task<List<ApiListOutput>> GetListAsync(string key);
+	Task<List<ApiListOutput>> GetListAsync(string? key);
 
 	Task<PageOutput<ApiEntity>> GetPageAsync(Admin.PageInput<ApiGetPageDto> input);
 

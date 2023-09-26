@@ -11,7 +11,7 @@ public interface IViewService
 {
 	Task<ViewGetOutput> GetAsync(long id);
 
-	Task<List<ViewListOutput>> GetListAsync(string key);
+	Task<List<ViewListOutput>> GetListAsync(string? key);
 
 	Task<long> AddAsync(ViewAddInput input);
 
