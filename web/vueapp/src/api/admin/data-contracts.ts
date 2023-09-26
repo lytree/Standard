@@ -9,6 +9,43 @@
  * ---------------------------------------------------------------
  */
 
+/**
+ * Unspecified=0,Unix=1,InterNetwork=2,ImpLink=3,Pup=4,Chaos=5,Ipx=6,Ipx=6,Iso=7,Iso=7,Ecma=8,DataKit=9,Ccitt=10,Sna=11,DecNet=12,DataLink=13,Lat=14,HyperChannel=15,AppleTalk=16,NetBios=17,VoiceView=18,FireFox=19,Banyan=21,Atm=22,InterNetworkV6=23,Cluster=24,Ieee12844=25,Irda=26,NetworkDesigners=28,Max=29,Packet=65536,ControllerAreaNetwork=65537,Unknown=-1
+ * @format int32
+ */
+export type AddressFamily =
+  | 0
+  | 1
+  | 2
+  | 3
+  | 4
+  | 5
+  | 6
+  | 7
+  | 8
+  | 9
+  | 10
+  | 11
+  | 12
+  | 13
+  | 14
+  | 15
+  | 16
+  | 17
+  | 18
+  | 19
+  | 21
+  | 22
+  | 23
+  | 24
+  | 25
+  | 26
+  | 28
+  | 29
+  | 65536
+  | 65537
+  | -1
+
 /** 添加 */
 export interface ApiAddInput {
   /**
@@ -33,66 +70,31 @@ export interface ApiAddInput {
   enabled?: boolean
 }
 
-/** 接口管理 */
 export interface ApiEntity {
-  /**
-   * 主键Id
-   * @format int64
-   */
+  /** @format int64 */
   id?: number
-  /**
-   * 创建者Id
-   * @format int64
-   */
+  /** @format int64 */
   createdUserId?: number | null
-  /**
-   * 创建者
-   * @maxLength 50
-   */
+  /** @maxLength 50 */
   createdUserName?: string | null
-  /**
-   * 创建时间
-   * @format date-time
-   */
+  /** @format date-time */
   createdTime?: string | null
-  /**
-   * 修改者Id
-   * @format int64
-   */
+  /** @format int64 */
   modifiedUserId?: number | null
-  /**
-   * 修改者
-   * @maxLength 50
-   */
+  /** @maxLength 50 */
   modifiedUserName?: string | null
-  /**
-   * 修改时间
-   * @format date-time
-   */
+  /** @format date-time */
   modifiedTime?: string | null
-  /** 是否删除 */
   isDeleted?: boolean
-  /**
-   * 所属模块
-   * @format int64
-   */
+  /** @format int64 */
   parentId?: number
-  /** 接口命名 */
   name?: string | null
-  /** 接口名称 */
   label?: string | null
-  /** 接口地址 */
   path?: string | null
-  /** 接口提交方法 */
   httpMethods?: string | null
-  /** 说明 */
   description?: string | null
-  /**
-   * 排序
-   * @format int32
-   */
+  /** @format int32 */
   sort?: number
-  /** 启用 */
   enabled?: boolean
   childs?: ApiEntity[] | null
   permissions?: PermissionEntity[] | null
@@ -127,7 +129,6 @@ export interface ApiGetOutput {
 }
 
 export interface ApiGetPageDto {
-  /** 接口名称 */
   label?: string | null
 }
 
@@ -207,6 +208,44 @@ export interface ApiUpdateInput {
   id: number
 }
 
+export interface AsnEncodedData {
+  oid?: Oid
+  /** @format byte */
+  rawData?: string | null
+}
+
+export interface Assembly {
+  definedTypes?: TypeInfo[] | null
+  exportedTypes?: Type[] | null
+  codeBase?: string | null
+  entryPoint?: MethodInfo
+  fullName?: string | null
+  imageRuntimeVersion?: string | null
+  isDynamic?: boolean
+  location?: string | null
+  reflectionOnly?: boolean
+  isCollectible?: boolean
+  isFullyTrusted?: boolean
+  customAttributes?: CustomAttributeData[] | null
+  escapedCodeBase?: string | null
+  manifestModule?: Module
+  modules?: Module[] | null
+  /** @deprecated */
+  globalAssemblyCache?: boolean
+  /** @format int64 */
+  hostContext?: number
+  /** None=0,Level1=1,Level2=2 */
+  securityRuleSet?: SecurityRuleSet
+}
+
+export interface AsymmetricAlgorithm {
+  /** @format int32 */
+  keySize?: number
+  legalKeySizes?: KeySizes[] | null
+  signatureAlgorithm?: string | null
+  keyExchangeAlgorithm?: string | null
+}
+
 export interface AuthGetPasswordEncryptKeyOutput {
   /** 缓存键 */
   key?: string | null
@@ -244,29 +283,6 @@ export interface AuthLoginInput {
   password: string
   /** 密码键 */
   passwordKey?: string | null
-  /** 验证码Id */
-  captchaId?: string | null
-  /** 验证码数据 */
-  captchaData?: string | null
-}
-
-/** 手机号登录信息 */
-export interface AuthMobileLoginInput {
-  /**
-   * 手机号
-   * @minLength 1
-   */
-  mobile: string
-  /**
-   * 验证码
-   * @minLength 1
-   */
-  code: string
-  /**
-   * 验证码Id
-   * @minLength 1
-   */
-  codeId: string
 }
 
 export interface AuthUserMenuDto {
@@ -308,11 +324,6 @@ export interface AuthUserMenuDto {
   link?: string | null
   /** 是否内嵌窗口 */
   isIframe?: boolean
-  /**
-   * 排序
-   * @format int32
-   */
-  sort?: number | null
 }
 
 /** 用户个人信息 */
@@ -327,23 +338,221 @@ export interface AuthUserProfileDto {
   avatar?: string | null
 }
 
+/**
+ * Standard=1,VarArgs=2,Any=3,HasThis=32,ExplicitThis=64
+ * @format int32
+ */
+export type CallingConventions = 1 | 2 | 3 | 32 | 64
+
+export interface CancellationToken {
+  isCancellationRequested?: boolean
+  canBeCanceled?: boolean
+  waitHandle?: WaitHandle
+}
+
 export interface CaptchaData {
   id?: string | null
   backgroundImage?: string | null
   sliderImage?: string | null
 }
 
-/**
- * 数据范围:All=1,DeptWithChild=2,Dept=3,Self=4,Custom=5
- * @format int32
- */
-export type DataScope = 1 | 2 | 3 | 4 | 5
+export interface Claim {
+  issuer?: string | null
+  originalIssuer?: string | null
+  properties?: Record<string, string>
+  subject?: ClaimsIdentity
+  type?: string | null
+  value?: string | null
+  valueType?: string | null
+}
 
-/**
- * MySql=0,SqlServer=1,PostgreSQL=2,Oracle=3,Sqlite=4,OdbcOracle=5,OdbcSqlServer=6,OdbcMySql=7,OdbcPostgreSQL=8,Odbc=9,OdbcDameng=10,MsAccess=11,Dameng=12,OdbcKingbaseES=13,ShenTong=14,KingbaseES=15,Firebird=16,Custom=17,ClickHouse=18,GBase=19,QuestDb=20,Xugu=21,CustomOracle=22,CustomSqlServer=23,CustomMySql=24,CustomPostgreSQL=25
- * @format int32
- */
-export type DataType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25
+export interface ClaimsIdentity {
+  authenticationType?: string | null
+  isAuthenticated?: boolean
+  actor?: ClaimsIdentity
+  bootstrapContext?: any
+  claims?: Claim[] | null
+  label?: string | null
+  name?: string | null
+  nameClaimType?: string | null
+  roleClaimType?: string | null
+}
+
+export interface ClaimsPrincipal {
+  claims?: Claim[] | null
+  identities?: ClaimsIdentity[] | null
+  identity?: IIdentity
+}
+
+/** 添加字典 */
+export interface ConfigAddInput {
+  /**
+   * 配置项名称
+   * @minLength 1
+   */
+  name: string
+  /** 配置项编码 */
+  code?: string | null
+  /** 配置项值 */
+  value?: string | null
+  /** 描述 */
+  description?: string | null
+  /** 启用 */
+  enabled?: boolean
+  /**
+   * 排序
+   * @format int32
+   */
+  sort?: number
+}
+
+export interface ConfigGetOutput {
+  /**
+   * 配置项名称
+   * @minLength 1
+   */
+  name: string
+  /** 配置项编码 */
+  code?: string | null
+  /** 配置项值 */
+  value?: string | null
+  /** 描述 */
+  description?: string | null
+  /** 启用 */
+  enabled?: boolean
+  /**
+   * 排序
+   * @format int32
+   */
+  sort?: number
+  /**
+   * 主键Id
+   * @format int64
+   */
+  id: number
+}
+
+export interface ConfigGetPageDto {
+  name?: string | null
+}
+
+export interface ConfigGetPageOutput {
+  /**
+   * 主键Id
+   * @format int64
+   */
+  id?: number
+  /** 字典名称 */
+  name?: string | null
+  /** 字典编码 */
+  code?: string | null
+  /** 字典值 */
+  value?: string | null
+  /** 启用 */
+  enabled?: boolean
+  /**
+   * 排序
+   * @format int32
+   */
+  sort?: number
+}
+
+/** 修改 */
+export interface ConfigUpdateInput {
+  /**
+   * 配置项名称
+   * @minLength 1
+   */
+  name: string
+  /** 配置项编码 */
+  code?: string | null
+  /** 配置项值 */
+  value?: string | null
+  /** 描述 */
+  description?: string | null
+  /** 启用 */
+  enabled?: boolean
+  /**
+   * 排序
+   * @format int32
+   */
+  sort?: number
+  /**
+   * 主键Id
+   * @format int64
+   */
+  id: number
+}
+
+export interface ConnectionInfo {
+  id?: string | null
+  remoteIpAddress?: IPAddress
+  /** @format int32 */
+  remotePort?: number
+  localIpAddress?: IPAddress
+  /** @format int32 */
+  localPort?: number
+  clientCertificate?: X509Certificate2
+}
+
+export interface ConstructorInfo {
+  name?: string | null
+  declaringType?: Type
+  reflectedType?: Type
+  module?: Module
+  customAttributes?: CustomAttributeData[] | null
+  isCollectible?: boolean
+  /** @format int32 */
+  metadataToken?: number
+  /** ReuseSlot=0,ReuseSlot=0,Private=1,FamANDAssem=2,Assembly=3,Family=4,FamORAssem=5,Public=6,MemberAccessMask=7,UnmanagedExport=8,Static=16,Final=32,Virtual=64,HideBySig=128,VtableLayoutMask=256,VtableLayoutMask=256,CheckAccessOnOverride=512,Abstract=1024,SpecialName=2048,RTSpecialName=4096,PinvokeImpl=8192,HasSecurity=16384,RequireSecObject=32768,ReservedMask=53248 */
+  attributes?: MethodAttributes
+  /** Managed=0,Managed=0,Native=1,OPTIL=2,CodeTypeMask=3,CodeTypeMask=3,Unmanaged=4,Unmanaged=4,NoInlining=8,ForwardRef=16,Synchronized=32,NoOptimization=64,PreserveSig=128,AggressiveInlining=256,AggressiveOptimization=512,InternalCall=4096,MaxMethodImplVal=65535 */
+  methodImplementationFlags?: MethodImplAttributes
+  /** Standard=1,VarArgs=2,Any=3,HasThis=32,ExplicitThis=64 */
+  callingConvention?: CallingConventions
+  isAbstract?: boolean
+  isConstructor?: boolean
+  isFinal?: boolean
+  isHideBySig?: boolean
+  isSpecialName?: boolean
+  isStatic?: boolean
+  isVirtual?: boolean
+  isAssembly?: boolean
+  isFamily?: boolean
+  isFamilyAndAssembly?: boolean
+  isFamilyOrAssembly?: boolean
+  isPrivate?: boolean
+  isPublic?: boolean
+  isConstructedGenericMethod?: boolean
+  isGenericMethod?: boolean
+  isGenericMethodDefinition?: boolean
+  containsGenericParameters?: boolean
+  methodHandle?: RuntimeMethodHandle
+  isSecurityCritical?: boolean
+  isSecuritySafeCritical?: boolean
+  isSecurityTransparent?: boolean
+  /** Constructor=1,Event=2,Field=4,Method=8,Property=16,TypeInfo=32,Custom=64,NestedType=128,All=191 */
+  memberType?: MemberTypes
+}
+
+export interface CustomAttributeData {
+  attributeType?: Type
+  constructor?: ConstructorInfo
+  constructorArguments?: CustomAttributeTypedArgument[] | null
+  namedArguments?: CustomAttributeNamedArgument[] | null
+}
+
+export interface CustomAttributeNamedArgument {
+  memberInfo?: MemberInfo
+  typedValue?: CustomAttributeTypedArgument
+  memberName?: string | null
+  isField?: boolean
+}
+
+export interface CustomAttributeTypedArgument {
+  argumentType?: Type
+  value?: any
+}
 
 /** 添加字典 */
 export interface DictAddInput {
@@ -422,12 +631,8 @@ export interface DictGetOutput {
 }
 
 export interface DictGetPageDto {
-  /**
-   * 字典类型Id
-   * @format int64
-   */
+  /** @format int64 */
   dictTypeId?: number
-  /** 字典名称 */
   name?: string | null
 }
 
@@ -497,7 +702,6 @@ export interface DictTypeGetOutput {
 }
 
 export interface DictTypeGetPageDto {
-  /** 字典名称 */
   name?: string | null
 }
 
@@ -577,187 +781,6 @@ export interface DictUpdateInput {
   id: number
 }
 
-export interface DocumentAddGroupInput {
-  /**
-   * 父级节点
-   * @format int64
-   */
-  parentId?: number
-  /** 文档类型:Group=1,Markdown=2 */
-  type?: DocumentType
-  /** 名称 */
-  label?: string | null
-  /** 命名 */
-  name?: string | null
-  /** 打开 */
-  opened?: boolean | null
-}
-
-export interface DocumentAddImageInput {
-  /**
-   * 用户Id
-   * @format int64
-   */
-  documentId?: number
-  /** 请求路径 */
-  url?: string | null
-}
-
-export interface DocumentAddMenuInput {
-  /**
-   * 父级节点
-   * @format int64
-   */
-  parentId?: number
-  /** 文档类型:Group=1,Markdown=2 */
-  type?: DocumentType
-  /** 命名 */
-  name?: string | null
-  /** 名称 */
-  label?: string | null
-  /** 说明 */
-  description?: string | null
-}
-
-export interface DocumentGetContentOutput {
-  /**
-   * 编号
-   * @format int64
-   */
-  id?: number
-  /** 名称 */
-  label?: string | null
-  /** 内容 */
-  content?: string | null
-}
-
-export interface DocumentGetGroupOutput {
-  /**
-   * 父级节点
-   * @format int64
-   */
-  parentId?: number
-  /** 文档类型:Group=1,Markdown=2 */
-  type?: DocumentType
-  /** 名称 */
-  label?: string | null
-  /** 命名 */
-  name?: string | null
-  /** 打开 */
-  opened?: boolean | null
-  /**
-   * 编号
-   * @format int64
-   */
-  id: number
-}
-
-export interface DocumentGetMenuOutput {
-  /**
-   * 父级节点
-   * @format int64
-   */
-  parentId?: number
-  /** 文档类型:Group=1,Markdown=2 */
-  type?: DocumentType
-  /** 命名 */
-  name?: string | null
-  /** 名称 */
-  label?: string | null
-  /** 说明 */
-  description?: string | null
-  /**
-   * 编号
-   * @format int64
-   */
-  id: number
-}
-
-export interface DocumentListOutput {
-  /**
-   * 编号
-   * @format int64
-   */
-  id?: number
-  /**
-   * 父级节点
-   * @format int64
-   */
-  parentId?: number
-  /** 名称 */
-  label?: string | null
-  /** 文档类型:Group=1,Markdown=2 */
-  type?: DocumentType
-  /** 命名 */
-  name?: string | null
-  /** 描述 */
-  description?: string | null
-  /** 组打开 */
-  opened?: boolean | null
-}
-
-/**
- * 文档类型:Group=1,Markdown=2
- * @format int32
- */
-export type DocumentType = 1 | 2
-
-export interface DocumentUpdateContentInput {
-  /**
-   * 编号
-   * @format int64
-   */
-  id: number
-  /** 名称 */
-  label?: string | null
-  /** 内容 */
-  content?: string | null
-  /** Html */
-  html?: string | null
-}
-
-export interface DocumentUpdateGroupInput {
-  /**
-   * 父级节点
-   * @format int64
-   */
-  parentId?: number
-  /** 文档类型:Group=1,Markdown=2 */
-  type?: DocumentType
-  /** 名称 */
-  label?: string | null
-  /** 命名 */
-  name?: string | null
-  /** 打开 */
-  opened?: boolean | null
-  /**
-   * 编号
-   * @format int64
-   */
-  id: number
-}
-
-export interface DocumentUpdateMenuInput {
-  /**
-   * 父级节点
-   * @format int64
-   */
-  parentId?: number
-  /** 文档类型:Group=1,Markdown=2 */
-  type?: DocumentType
-  /** 命名 */
-  name?: string | null
-  /** 名称 */
-  label?: string | null
-  /** 说明 */
-  description?: string | null
-  /**
-   * 编号
-   * @format int64
-   */
-  id: number
-}
-
 export interface DynamicFilterInfo {
   field?: string | null
   /** Contains=0,StartsWith=1,EndsWith=2,NotContains=3,NotStartsWith=4,NotEndsWith=5,Equal=6,Equals=7,Eq=8,NotEqual=9,GreaterThan=10,GreaterThanOrEqual=11,LessThan=12,LessThanOrEqual=13,Range=14,DateRange=15,Any=16,NotAny=17,Custom=18 */
@@ -780,141 +803,210 @@ export type DynamicFilterLogic = 0 | 1
  */
 export type DynamicFilterOperator = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18
 
-export interface FileDeleteInput {
-  /**
-   * 文件Id
-   * @format int64
-   */
-  id: number
+/**
+ * None=0,SpecialName=512,ReservedMask=1024,ReservedMask=1024
+ * @format int32
+ */
+export type EventAttributes = 0 | 512 | 1024
+
+export interface EventInfo {
+  name?: string | null
+  declaringType?: Type
+  reflectedType?: Type
+  module?: Module
+  customAttributes?: CustomAttributeData[] | null
+  isCollectible?: boolean
+  /** @format int32 */
+  metadataToken?: number
+  /** Constructor=1,Event=2,Field=4,Method=8,Property=16,TypeInfo=32,Custom=64,NestedType=128,All=191 */
+  memberType?: MemberTypes
+  /** None=0,SpecialName=512,ReservedMask=1024,ReservedMask=1024 */
+  attributes?: EventAttributes
+  isSpecialName?: boolean
+  addMethod?: MethodInfo
+  removeMethod?: MethodInfo
+  raiseMethod?: MethodInfo
+  isMulticast?: boolean
+  eventHandlerType?: Type
 }
 
-/** 文件 */
-export interface FileEntity {
-  /**
-   * 主键Id
-   * @format int64
-   */
-  id?: number
-  /**
-   * 创建者Id
-   * @format int64
-   */
-  createdUserId?: number | null
-  /**
-   * 创建者
-   * @maxLength 50
-   */
-  createdUserName?: string | null
-  /**
-   * 创建时间
-   * @format date-time
-   */
-  createdTime?: string | null
-  /**
-   * 修改者Id
-   * @format int64
-   */
-  modifiedUserId?: number | null
-  /**
-   * 修改者
-   * @maxLength 50
-   */
-  modifiedUserName?: string | null
-  /**
-   * 修改时间
-   * @format date-time
-   */
-  modifiedTime?: string | null
-  /** 是否删除 */
-  isDeleted?: boolean
-  /** Invalid=0,Minio=1,Aliyun=2,QCloud=3,Qiniu=4,HuaweiCloud=5 */
-  provider?: OSSProvider
-  /** 存储桶名称 */
-  bucketName?: string | null
-  /** 文件目录 */
-  fileDirectory?: string | null
-  /**
-   * 文件Guid
-   * @format uuid
-   */
-  fileGuid?: string
-  /** 保存文件名 */
-  saveFileName?: string | null
-  /** 文件名 */
-  fileName?: string | null
-  /** 文件扩展名 */
-  extension?: string | null
-  /**
-   * 文件字节长度
-   * @format int64
-   */
-  size?: number
-  /** 文件大小格式化 */
-  sizeFormat?: string | null
-  /** 链接地址 */
-  linkUrl?: string | null
-  /** md5码，防止上传重复文件 */
-  md5?: string | null
+/**
+ * PrivateScope=0,Private=1,FamANDAssem=2,Assembly=3,Family=4,FamORAssem=5,Public=6,FieldAccessMask=7,Static=16,InitOnly=32,Literal=64,NotSerialized=128,HasFieldRVA=256,SpecialName=512,RTSpecialName=1024,HasFieldMarshal=4096,PinvokeImpl=8192,HasDefault=32768,ReservedMask=38144
+ * @format int32
+ */
+export type FieldAttributes = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 16 | 32 | 64 | 128 | 256 | 512 | 1024 | 4096 | 8192 | 32768 | 38144
+
+export interface FieldInfo {
+  name?: string | null
+  declaringType?: Type
+  reflectedType?: Type
+  module?: Module
+  customAttributes?: CustomAttributeData[] | null
+  isCollectible?: boolean
+  /** @format int32 */
+  metadataToken?: number
+  /** Constructor=1,Event=2,Field=4,Method=8,Property=16,TypeInfo=32,Custom=64,NestedType=128,All=191 */
+  memberType?: MemberTypes
+  /** PrivateScope=0,Private=1,FamANDAssem=2,Assembly=3,Family=4,FamORAssem=5,Public=6,FieldAccessMask=7,Static=16,InitOnly=32,Literal=64,NotSerialized=128,HasFieldRVA=256,SpecialName=512,RTSpecialName=1024,HasFieldMarshal=4096,PinvokeImpl=8192,HasDefault=32768,ReservedMask=38144 */
+  attributes?: FieldAttributes
+  fieldType?: Type
+  isInitOnly?: boolean
+  isLiteral?: boolean
+  isNotSerialized?: boolean
+  isPinvokeImpl?: boolean
+  isSpecialName?: boolean
+  isStatic?: boolean
+  isAssembly?: boolean
+  isFamily?: boolean
+  isFamilyAndAssembly?: boolean
+  isFamilyOrAssembly?: boolean
+  isPrivate?: boolean
+  isPublic?: boolean
+  isSecurityCritical?: boolean
+  isSecuritySafeCritical?: boolean
+  isSecurityTransparent?: boolean
+  fieldHandle?: RuntimeFieldHandle
 }
 
-export interface FileGetPageDto {
-  /** 文件名 */
-  fileName?: string | null
+/**
+ * None=0,Covariant=1,Contravariant=2,VarianceMask=3,ReferenceTypeConstraint=4,NotNullableValueTypeConstraint=8,DefaultConstructorConstraint=16,SpecialConstraintMask=28
+ * @format int32
+ */
+export type GenericParameterAttributes = 0 | 1 | 2 | 3 | 4 | 8 | 16 | 28
+
+export interface HostString {
+  value?: string | null
+  hasValue?: boolean
+  host?: string | null
+  /** @format int32 */
+  port?: number | null
 }
 
-export interface FileGetPageOutput {
+export interface HttpContext {
+  features?: KeyValuePairTypeObject[] | null
+  request?: HttpRequest
+  response?: HttpResponse
+  connection?: ConnectionInfo
+  webSockets?: WebSocketManager
+  user?: ClaimsPrincipal
+  items?: Record<string, any>
+  requestServices?: IServiceProvider
+  requestAborted?: CancellationToken
+  traceIdentifier?: string | null
+  session?: ISession
+}
+
+export interface HttpRequest {
+  httpContext?: HttpContext
+  method?: string | null
+  scheme?: string | null
+  isHttps?: boolean
+  host?: HostString
+  pathBase?: PathString
+  path?: PathString
+  queryString?: QueryString
+  query?: KeyValuePairStringStringValues[] | null
+  protocol?: string | null
+  headers?: Record<string, string[]>
+  cookies?: KeyValuePairStringString[] | null
+  /** @format int64 */
+  contentLength?: number | null
+  contentType?: string | null
+  body?: Stream
+  bodyReader?: PipeReader
+  hasFormContentType?: boolean
+  form?: KeyValuePairStringStringValues[] | null
+  routeValues?: Record<string, any>
+}
+
+export interface HttpResponse {
+  httpContext?: HttpContext
+  /** @format int32 */
+  statusCode?: number
+  headers?: Record<string, string[]>
+  body?: Stream
+  bodyWriter?: PipeWriter
+  /** @format int64 */
+  contentLength?: number | null
+  contentType?: string | null
+  cookies?: IResponseCookies
+  hasStarted?: boolean
+}
+
+export type ICustomAttributeProvider = object
+
+export interface IIdentity {
+  name?: string | null
+  authenticationType?: string | null
+  isAuthenticated?: boolean
+}
+
+export interface IPAddress {
+  /** Unspecified=0,Unix=1,InterNetwork=2,ImpLink=3,Pup=4,Chaos=5,Ipx=6,Ipx=6,Iso=7,Iso=7,Ecma=8,DataKit=9,Ccitt=10,Sna=11,DecNet=12,DataLink=13,Lat=14,HyperChannel=15,AppleTalk=16,NetBios=17,VoiceView=18,FireFox=19,Banyan=21,Atm=22,InterNetworkV6=23,Cluster=24,Ieee12844=25,Irda=26,NetworkDesigners=28,Max=29,Packet=65536,ControllerAreaNetwork=65537,Unknown=-1 */
+  addressFamily?: AddressFamily
+  /** @format int64 */
+  scopeId?: number
+  isIPv6Multicast?: boolean
+  isIPv6LinkLocal?: boolean
+  isIPv6SiteLocal?: boolean
+  isIPv6Teredo?: boolean
+  isIPv6UniqueLocal?: boolean
+  isIPv4MappedToIPv6?: boolean
   /**
-   * 文件Id
+   * @deprecated
    * @format int64
    */
-  id?: number
-  /** OSS供应商 */
-  providerName?: string | null
-  /** 存储桶名称 */
-  bucketName?: string | null
-  /** 文件目录 */
-  fileDirectory?: string | null
-  /**
-   * 文件Guid
-   * @format uuid
-   */
-  fileGuid?: string
-  /** 文件名 */
-  fileName?: string | null
-  /** 文件扩展名 */
-  extension?: string | null
-  /** 文件大小格式化 */
-  sizeFormat?: string | null
-  /** 链接地址 */
-  linkUrl?: string | null
-  /** 创建者 */
-  createdUserName?: string | null
-  /**
-   * 创建时间
-   * @format date-time
-   */
-  createdTime?: string | null
-  /** 修改者 */
-  modifiedUserName?: string | null
-  /**
-   * 修改时间
-   * @format date-time
-   */
-  modifiedTime?: string | null
+  address?: number
 }
+
+export type IResponseCookies = object
+
+export type IServiceProvider = object
+
+export interface ISession {
+  isAvailable?: boolean
+  id?: string | null
+  keys?: string[] | null
+}
+
+export type IntPtr = object
+
+export interface KeySizes {
+  /** @format int32 */
+  minSize?: number
+  /** @format int32 */
+  maxSize?: number
+  /** @format int32 */
+  skipSize?: number
+}
+
+export interface KeyValuePairStringString {
+  key?: string | null
+  value?: string | null
+}
+
+export interface KeyValuePairStringStringValues {
+  key?: string | null
+  value?: string[]
+}
+
+export interface KeyValuePairTypeObject {
+  key?: Type
+  value?: any
+}
+
+/**
+ * Sequential=0,Explicit=2,Auto=3
+ * @format int32
+ */
+export type LayoutKind = 0 | 2 | 3
 
 export interface LogGetPageDto {
-  /** 创建者 */
   createdUserName?: string | null
 }
 
 /** 添加 */
 export interface LoginLogAddInput {
-  /**
-   * 租户Id
-   * @format int64
-   */
-  tenantId?: number | null
   /** 姓名 */
   name?: string | null
   /** IP */
@@ -981,11 +1073,144 @@ export interface LoginLogListOutput {
   createdTime?: string | null
 }
 
+export interface MemberInfo {
+  /** Constructor=1,Event=2,Field=4,Method=8,Property=16,TypeInfo=32,Custom=64,NestedType=128,All=191 */
+  memberType?: MemberTypes
+  declaringType?: Type
+  reflectedType?: Type
+  name?: string | null
+  module?: Module
+  customAttributes?: CustomAttributeData[] | null
+  isCollectible?: boolean
+  /** @format int32 */
+  metadataToken?: number
+}
+
 /**
- * Invalid=0,Minio=1,Aliyun=2,QCloud=3,Qiniu=4,HuaweiCloud=5
+ * Constructor=1,Event=2,Field=4,Method=8,Property=16,TypeInfo=32,Custom=64,NestedType=128,All=191
  * @format int32
  */
-export type OSSProvider = 0 | 1 | 2 | 3 | 4 | 5
+export type MemberTypes = 1 | 2 | 4 | 8 | 16 | 32 | 64 | 128 | 191
+
+/**
+ * ReuseSlot=0,ReuseSlot=0,Private=1,FamANDAssem=2,Assembly=3,Family=4,FamORAssem=5,Public=6,MemberAccessMask=7,UnmanagedExport=8,Static=16,Final=32,Virtual=64,HideBySig=128,VtableLayoutMask=256,VtableLayoutMask=256,CheckAccessOnOverride=512,Abstract=1024,SpecialName=2048,RTSpecialName=4096,PinvokeImpl=8192,HasSecurity=16384,RequireSecObject=32768,ReservedMask=53248
+ * @format int32
+ */
+export type MethodAttributes = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 16 | 32 | 64 | 128 | 256 | 512 | 1024 | 2048 | 4096 | 8192 | 16384 | 32768 | 53248
+
+export interface MethodBase {
+  /** Constructor=1,Event=2,Field=4,Method=8,Property=16,TypeInfo=32,Custom=64,NestedType=128,All=191 */
+  memberType?: MemberTypes
+  name?: string | null
+  declaringType?: Type
+  reflectedType?: Type
+  module?: Module
+  customAttributes?: CustomAttributeData[] | null
+  isCollectible?: boolean
+  /** @format int32 */
+  metadataToken?: number
+  /** ReuseSlot=0,ReuseSlot=0,Private=1,FamANDAssem=2,Assembly=3,Family=4,FamORAssem=5,Public=6,MemberAccessMask=7,UnmanagedExport=8,Static=16,Final=32,Virtual=64,HideBySig=128,VtableLayoutMask=256,VtableLayoutMask=256,CheckAccessOnOverride=512,Abstract=1024,SpecialName=2048,RTSpecialName=4096,PinvokeImpl=8192,HasSecurity=16384,RequireSecObject=32768,ReservedMask=53248 */
+  attributes?: MethodAttributes
+  /** Managed=0,Managed=0,Native=1,OPTIL=2,CodeTypeMask=3,CodeTypeMask=3,Unmanaged=4,Unmanaged=4,NoInlining=8,ForwardRef=16,Synchronized=32,NoOptimization=64,PreserveSig=128,AggressiveInlining=256,AggressiveOptimization=512,InternalCall=4096,MaxMethodImplVal=65535 */
+  methodImplementationFlags?: MethodImplAttributes
+  /** Standard=1,VarArgs=2,Any=3,HasThis=32,ExplicitThis=64 */
+  callingConvention?: CallingConventions
+  isAbstract?: boolean
+  isConstructor?: boolean
+  isFinal?: boolean
+  isHideBySig?: boolean
+  isSpecialName?: boolean
+  isStatic?: boolean
+  isVirtual?: boolean
+  isAssembly?: boolean
+  isFamily?: boolean
+  isFamilyAndAssembly?: boolean
+  isFamilyOrAssembly?: boolean
+  isPrivate?: boolean
+  isPublic?: boolean
+  isConstructedGenericMethod?: boolean
+  isGenericMethod?: boolean
+  isGenericMethodDefinition?: boolean
+  containsGenericParameters?: boolean
+  methodHandle?: RuntimeMethodHandle
+  isSecurityCritical?: boolean
+  isSecuritySafeCritical?: boolean
+  isSecurityTransparent?: boolean
+}
+
+/**
+ * Managed=0,Managed=0,Native=1,OPTIL=2,CodeTypeMask=3,CodeTypeMask=3,Unmanaged=4,Unmanaged=4,NoInlining=8,ForwardRef=16,Synchronized=32,NoOptimization=64,PreserveSig=128,AggressiveInlining=256,AggressiveOptimization=512,InternalCall=4096,MaxMethodImplVal=65535
+ * @format int32
+ */
+export type MethodImplAttributes = 0 | 1 | 2 | 3 | 4 | 8 | 16 | 32 | 64 | 128 | 256 | 512 | 4096 | 65535
+
+export interface MethodInfo {
+  name?: string | null
+  declaringType?: Type
+  reflectedType?: Type
+  module?: Module
+  customAttributes?: CustomAttributeData[] | null
+  isCollectible?: boolean
+  /** @format int32 */
+  metadataToken?: number
+  /** ReuseSlot=0,ReuseSlot=0,Private=1,FamANDAssem=2,Assembly=3,Family=4,FamORAssem=5,Public=6,MemberAccessMask=7,UnmanagedExport=8,Static=16,Final=32,Virtual=64,HideBySig=128,VtableLayoutMask=256,VtableLayoutMask=256,CheckAccessOnOverride=512,Abstract=1024,SpecialName=2048,RTSpecialName=4096,PinvokeImpl=8192,HasSecurity=16384,RequireSecObject=32768,ReservedMask=53248 */
+  attributes?: MethodAttributes
+  /** Managed=0,Managed=0,Native=1,OPTIL=2,CodeTypeMask=3,CodeTypeMask=3,Unmanaged=4,Unmanaged=4,NoInlining=8,ForwardRef=16,Synchronized=32,NoOptimization=64,PreserveSig=128,AggressiveInlining=256,AggressiveOptimization=512,InternalCall=4096,MaxMethodImplVal=65535 */
+  methodImplementationFlags?: MethodImplAttributes
+  /** Standard=1,VarArgs=2,Any=3,HasThis=32,ExplicitThis=64 */
+  callingConvention?: CallingConventions
+  isAbstract?: boolean
+  isConstructor?: boolean
+  isFinal?: boolean
+  isHideBySig?: boolean
+  isSpecialName?: boolean
+  isStatic?: boolean
+  isVirtual?: boolean
+  isAssembly?: boolean
+  isFamily?: boolean
+  isFamilyAndAssembly?: boolean
+  isFamilyOrAssembly?: boolean
+  isPrivate?: boolean
+  isPublic?: boolean
+  isConstructedGenericMethod?: boolean
+  isGenericMethod?: boolean
+  isGenericMethodDefinition?: boolean
+  containsGenericParameters?: boolean
+  methodHandle?: RuntimeMethodHandle
+  isSecurityCritical?: boolean
+  isSecuritySafeCritical?: boolean
+  isSecurityTransparent?: boolean
+  /** Constructor=1,Event=2,Field=4,Method=8,Property=16,TypeInfo=32,Custom=64,NestedType=128,All=191 */
+  memberType?: MemberTypes
+  returnParameter?: ParameterInfo
+  returnType?: Type
+  returnTypeCustomAttributes?: ICustomAttributeProvider
+}
+
+export interface Module {
+  assembly?: Assembly
+  fullyQualifiedName?: string | null
+  name?: string | null
+  /** @format int32 */
+  mdStreamVersion?: number
+  /** @format uuid */
+  moduleVersionId?: string
+  scopeName?: string | null
+  moduleHandle?: ModuleHandle
+  customAttributes?: CustomAttributeData[] | null
+  /** @format int32 */
+  metadataToken?: number
+}
+
+export interface ModuleHandle {
+  /** @format int32 */
+  mdStreamVersion?: number
+}
+
+export interface Oid {
+  value?: string | null
+  friendlyName?: string | null
+}
 
 /** 添加 */
 export interface OprationLogAddInput {
@@ -1062,540 +1287,164 @@ export interface OprationLogListOutput {
   createdTime?: string | null
 }
 
-/** 添加 */
-export interface OrgAddInput {
-  /**
-   * 父级
-   * @format int64
-   */
-  parentId?: number
-  /** 名称 */
-  name?: string | null
-  /** 编码 */
-  code?: string | null
-  /** 值 */
-  value?: string | null
-  /** 启用 */
-  enabled?: boolean
-  /**
-   * 排序
-   * @format int32
-   */
-  sort?: number
-  /** 描述 */
-  description?: string | null
-}
-
-/** 组织架构 */
-export interface OrgEntity {
-  /**
-   * 主键Id
-   * @format int64
-   */
-  id?: number
-  /**
-   * 创建者Id
-   * @format int64
-   */
-  createdUserId?: number | null
-  /**
-   * 创建者
-   * @maxLength 50
-   */
-  createdUserName?: string | null
-  /**
-   * 创建时间
-   * @format date-time
-   */
-  createdTime?: string | null
-  /**
-   * 修改者Id
-   * @format int64
-   */
-  modifiedUserId?: number | null
-  /**
-   * 修改者
-   * @maxLength 50
-   */
-  modifiedUserName?: string | null
-  /**
-   * 修改时间
-   * @format date-time
-   */
-  modifiedTime?: string | null
-  /** 是否删除 */
-  isDeleted?: boolean
-  /**
-   * 租户Id
-   * @format int64
-   */
-  tenantId?: number | null
-  /**
-   * 父级
-   * @format int64
-   */
-  parentId?: number
-  /** 名称 */
-  name?: string | null
-  /** 编码 */
-  code?: string | null
-  /** 值 */
-  value?: string | null
-  /**
-   * 成员数
-   * @format int32
-   */
-  memberCount?: number
-  /** 启用 */
-  enabled?: boolean
-  /**
-   * 排序
-   * @format int32
-   */
-  sort?: number
-  /** 描述 */
-  description?: string | null
-  /** 员工列表 */
-  staffs?: UserStaffEntity[] | null
-  /** 用户列表 */
-  users?: UserEntity[] | null
-  /** 角色列表 */
-  roles?: RoleEntity[] | null
-  /** 子级列表 */
-  childs?: OrgEntity[] | null
-}
-
-export interface OrgGetOutput {
-  /**
-   * 父级
-   * @format int64
-   */
-  parentId?: number
-  /** 名称 */
-  name?: string | null
-  /** 编码 */
-  code?: string | null
-  /** 值 */
-  value?: string | null
-  /** 启用 */
-  enabled?: boolean
-  /**
-   * 排序
-   * @format int32
-   */
-  sort?: number
-  /** 描述 */
-  description?: string | null
-  /**
-   * 主键Id
-   * @format int64
-   */
-  id: number
-}
-
-export interface OrgListOutput {
-  /**
-   * 主键Id
-   * @format int64
-   */
-  id?: number
-  /**
-   * 父级
-   * @format int64
-   */
-  parentId?: number
-  /** 名称 */
-  name?: string | null
-  /** 编码 */
-  code?: string | null
-  /** 值 */
-  value?: string | null
-  /** 启用 */
-  enabled?: boolean
-  /**
-   * 排序
-   * @format int32
-   */
-  sort?: number
-  /** 描述 */
-  description?: string | null
-  /**
-   * 创建时间
-   * @format date-time
-   */
-  createdTime?: string | null
-}
-
-/** 修改 */
-export interface OrgUpdateInput {
-  /**
-   * 父级
-   * @format int64
-   */
-  parentId?: number
-  /** 名称 */
-  name?: string | null
-  /** 编码 */
-  code?: string | null
-  /** 值 */
-  value?: string | null
-  /** 启用 */
-  enabled?: boolean
-  /**
-   * 排序
-   * @format int32
-   */
-  sort?: number
-  /** 描述 */
-  description?: string | null
-  /**
-   * 主键Id
-   * @format int64
-   */
-  id: number
-}
-
-/** 分页信息输入 */
 export interface PageInputApiGetPageDto {
-  /**
-   * 当前页标
-   * @format int32
-   */
+  /** @format int32 */
   currentPage?: number
-  /**
-   * 每页大小
-   * @format int32
-   */
+  /** @format int32 */
   pageSize?: number
-  dynamicFilter?: DynamicFilterInfo
   filter?: ApiGetPageDto
+  dynamicFilter?: DynamicFilterInfo
 }
 
-/** 分页信息输入 */
+export interface PageInputConfigGetPageDto {
+  /** @format int32 */
+  currentPage?: number
+  /** @format int32 */
+  pageSize?: number
+  filter?: ConfigGetPageDto
+  dynamicFilter?: DynamicFilterInfo
+}
+
 export interface PageInputDictGetPageDto {
-  /**
-   * 当前页标
-   * @format int32
-   */
+  /** @format int32 */
   currentPage?: number
-  /**
-   * 每页大小
-   * @format int32
-   */
+  /** @format int32 */
   pageSize?: number
-  dynamicFilter?: DynamicFilterInfo
   filter?: DictGetPageDto
+  dynamicFilter?: DynamicFilterInfo
 }
 
-/** 分页信息输入 */
 export interface PageInputDictTypeGetPageDto {
-  /**
-   * 当前页标
-   * @format int32
-   */
+  /** @format int32 */
   currentPage?: number
-  /**
-   * 每页大小
-   * @format int32
-   */
+  /** @format int32 */
   pageSize?: number
-  dynamicFilter?: DynamicFilterInfo
   filter?: DictTypeGetPageDto
-}
-
-/** 分页信息输入 */
-export interface PageInputFileGetPageDto {
-  /**
-   * 当前页标
-   * @format int32
-   */
-  currentPage?: number
-  /**
-   * 每页大小
-   * @format int32
-   */
-  pageSize?: number
   dynamicFilter?: DynamicFilterInfo
-  filter?: FileGetPageDto
 }
 
-/** 分页信息输入 */
 export interface PageInputLogGetPageDto {
-  /**
-   * 当前页标
-   * @format int32
-   */
+  /** @format int32 */
   currentPage?: number
-  /**
-   * 每页大小
-   * @format int32
-   */
+  /** @format int32 */
   pageSize?: number
-  dynamicFilter?: DynamicFilterInfo
   filter?: LogGetPageDto
+  dynamicFilter?: DynamicFilterInfo
 }
 
-/** 分页信息输入 */
 export interface PageInputPkgGetPageDto {
-  /**
-   * 当前页标
-   * @format int32
-   */
+  /** @format int32 */
   currentPage?: number
-  /**
-   * 每页大小
-   * @format int32
-   */
+  /** @format int32 */
   pageSize?: number
-  dynamicFilter?: DynamicFilterInfo
   filter?: PkgGetPageDto
-}
-
-/** 分页信息输入 */
-export interface PageInputPkgGetPkgTenantListInput {
-  /**
-   * 当前页标
-   * @format int32
-   */
-  currentPage?: number
-  /**
-   * 每页大小
-   * @format int32
-   */
-  pageSize?: number
   dynamicFilter?: DynamicFilterInfo
-  filter?: PkgGetPkgTenantListInput
 }
 
-/** 分页信息输入 */
 export interface PageInputRoleGetPageDto {
-  /**
-   * 当前页标
-   * @format int32
-   */
+  /** @format int32 */
   currentPage?: number
-  /**
-   * 每页大小
-   * @format int32
-   */
+  /** @format int32 */
   pageSize?: number
-  dynamicFilter?: DynamicFilterInfo
   filter?: RoleGetPageDto
-}
-
-/** 分页信息输入 */
-export interface PageInputTaskGetPageDto {
-  /**
-   * 当前页标
-   * @format int32
-   */
-  currentPage?: number
-  /**
-   * 每页大小
-   * @format int32
-   */
-  pageSize?: number
   dynamicFilter?: DynamicFilterInfo
-  filter?: TaskGetPageDto
 }
 
-/** 分页信息输入 */
-export interface PageInputTaskLogGetPageDto {
-  /**
-   * 当前页标
-   * @format int32
-   */
-  currentPage?: number
-  /**
-   * 每页大小
-   * @format int32
-   */
-  pageSize?: number
-  dynamicFilter?: DynamicFilterInfo
-  filter?: TaskLogGetPageDto
-}
-
-/** 分页信息输入 */
-export interface PageInputTenantGetPageDto {
-  /**
-   * 当前页标
-   * @format int32
-   */
-  currentPage?: number
-  /**
-   * 每页大小
-   * @format int32
-   */
-  pageSize?: number
-  dynamicFilter?: DynamicFilterInfo
-  filter?: TenantGetPageDto
-}
-
-/** 分页信息输入 */
 export interface PageInputUserGetPageDto {
-  /**
-   * 当前页标
-   * @format int32
-   */
+  /** @format int32 */
   currentPage?: number
-  /**
-   * 每页大小
-   * @format int32
-   */
+  /** @format int32 */
   pageSize?: number
-  dynamicFilter?: DynamicFilterInfo
   /** 用户分页查询条件 */
   filter?: UserGetPageDto
+  dynamicFilter?: DynamicFilterInfo
 }
 
-/** 分页信息输出 */
 export interface PageOutputApiEntity {
-  /**
-   * 数据总数
-   * @format int64
-   */
+  /** @format int64 */
   total?: number
-  /** 数据 */
   list?: ApiEntity[] | null
 }
 
-/** 分页信息输出 */
-export interface PageOutputDictGetPageOutput {
-  /**
-   * 数据总数
-   * @format int64
-   */
+export interface PageOutputConfigGetPageOutput {
+  /** @format int64 */
   total?: number
-  /** 数据 */
+  list?: ConfigGetPageOutput[] | null
+}
+
+export interface PageOutputDictGetPageOutput {
+  /** @format int64 */
+  total?: number
   list?: DictGetPageOutput[] | null
 }
 
-/** 分页信息输出 */
 export interface PageOutputDictTypeGetPageOutput {
-  /**
-   * 数据总数
-   * @format int64
-   */
+  /** @format int64 */
   total?: number
-  /** 数据 */
   list?: DictTypeGetPageOutput[] | null
 }
 
-/** 分页信息输出 */
-export interface PageOutputFileGetPageOutput {
-  /**
-   * 数据总数
-   * @format int64
-   */
-  total?: number
-  /** 数据 */
-  list?: FileGetPageOutput[] | null
-}
-
-/** 分页信息输出 */
 export interface PageOutputLoginLogListOutput {
-  /**
-   * 数据总数
-   * @format int64
-   */
+  /** @format int64 */
   total?: number
-  /** 数据 */
   list?: LoginLogListOutput[] | null
 }
 
-/** 分页信息输出 */
 export interface PageOutputOprationLogListOutput {
-  /**
-   * 数据总数
-   * @format int64
-   */
+  /** @format int64 */
   total?: number
-  /** 数据 */
   list?: OprationLogListOutput[] | null
 }
 
-/** 分页信息输出 */
 export interface PageOutputPkgGetPageOutput {
-  /**
-   * 数据总数
-   * @format int64
-   */
+  /** @format int64 */
   total?: number
-  /** 数据 */
   list?: PkgGetPageOutput[] | null
 }
 
-/** 分页信息输出 */
-export interface PageOutputPkgGetPkgTenantListOutput {
-  /**
-   * 数据总数
-   * @format int64
-   */
-  total?: number
-  /** 数据 */
-  list?: PkgGetPkgTenantListOutput[] | null
-}
-
-/** 分页信息输出 */
 export interface PageOutputRoleGetPageOutput {
-  /**
-   * 数据总数
-   * @format int64
-   */
+  /** @format int64 */
   total?: number
-  /** 数据 */
   list?: RoleGetPageOutput[] | null
 }
 
-/** 分页信息输出 */
-export interface PageOutputTaskListOutput {
-  /**
-   * 数据总数
-   * @format int64
-   */
-  total?: number
-  /** 数据 */
-  list?: TaskListOutput[] | null
-}
-
-/** 分页信息输出 */
-export interface PageOutputTaskLog {
-  /**
-   * 数据总数
-   * @format int64
-   */
-  total?: number
-  /** 数据 */
-  list?: TaskLog[] | null
-}
-
-/** 分页信息输出 */
-export interface PageOutputTenantListOutput {
-  /**
-   * 数据总数
-   * @format int64
-   */
-  total?: number
-  /** 数据 */
-  list?: TenantListOutput[] | null
-}
-
-/** 分页信息输出 */
 export interface PageOutputUserGetPageOutput {
-  /**
-   * 数据总数
-   * @format int64
-   */
+  /** @format int64 */
   total?: number
-  /** 数据 */
   list?: UserGetPageOutput[] | null
 }
 
 /**
- * 密码加密类型:MD5Encrypt32=0,PasswordHasher=1
+ * None=0,In=1,Out=2,Lcid=4,Retval=8,Optional=16,HasDefault=4096,HasFieldMarshal=8192,Reserved3=16384,Reserved4=32768,ReservedMask=61440
  * @format int32
  */
-export type PasswordEncryptType = 0 | 1
+export type ParameterAttributes = 0 | 1 | 2 | 4 | 8 | 16 | 4096 | 8192 | 16384 | 32768 | 61440
+
+export interface ParameterInfo {
+  /** None=0,In=1,Out=2,Lcid=4,Retval=8,Optional=16,HasDefault=4096,HasFieldMarshal=8192,Reserved3=16384,Reserved4=32768,ReservedMask=61440 */
+  attributes?: ParameterAttributes
+  member?: MemberInfo
+  name?: string | null
+  parameterType?: Type
+  /** @format int32 */
+  position?: number
+  isIn?: boolean
+  isLcid?: boolean
+  isOptional?: boolean
+  isOut?: boolean
+  isRetval?: boolean
+  defaultValue?: any
+  rawDefaultValue?: any
+  hasDefaultValue?: boolean
+  customAttributes?: CustomAttributeData[] | null
+  /** @format int32 */
+  metadataToken?: number
+}
+
+export interface PathString {
+  value?: string | null
+  hasValue?: boolean
+}
 
 export interface PermissionAddApiInput {
   /**
@@ -1736,95 +1585,46 @@ export interface PermissionAssignInput {
   permissionIds: number[]
 }
 
-/** 权限 */
 export interface PermissionEntity {
-  /**
-   * 主键Id
-   * @format int64
-   */
+  /** @format int64 */
   id?: number
-  /**
-   * 创建者Id
-   * @format int64
-   */
+  /** @format int64 */
   createdUserId?: number | null
-  /**
-   * 创建者
-   * @maxLength 50
-   */
+  /** @maxLength 50 */
   createdUserName?: string | null
-  /**
-   * 创建时间
-   * @format date-time
-   */
+  /** @format date-time */
   createdTime?: string | null
-  /**
-   * 修改者Id
-   * @format int64
-   */
+  /** @format int64 */
   modifiedUserId?: number | null
-  /**
-   * 修改者
-   * @maxLength 50
-   */
+  /** @maxLength 50 */
   modifiedUserName?: string | null
-  /**
-   * 修改时间
-   * @format date-time
-   */
+  /** @format date-time */
   modifiedTime?: string | null
-  /** 是否删除 */
   isDeleted?: boolean
-  /**
-   * 父级节点
-   * @format int64
-   */
+  /** @format int64 */
   parentId?: number
-  /** 权限名称 */
   label?: string | null
-  /** 权限编码 */
   code?: string | null
-  /** 权限类型:Group=1,Menu=2,Dot=3 */
+  /** Group=1,Menu=2,Dot=3 */
   type?: PermissionType
-  /**
-   * 视图Id
-   * @format int64
-   */
+  /** @format int64 */
   viewId?: number | null
-  /** 视图管理 */
   view?: ViewEntity
-  /** 路由命名 */
   name?: string | null
-  /** 路由地址 */
   path?: string | null
-  /** 重定向地址 */
   redirect?: string | null
-  /** 图标 */
   icon?: string | null
-  /** 隐藏 */
   hidden?: boolean
-  /** 展开分组 */
   opened?: boolean
-  /** 打开新窗口 */
   newWindow?: boolean
-  /** 链接外显 */
   external?: boolean
-  /** 是否缓存 */
   isKeepAlive?: boolean
-  /** 是否固定 */
   isAffix?: boolean
-  /** 链接地址 */
   link?: string | null
-  /** 是否内嵌窗口 */
   isIframe?: boolean
-  /**
-   * 排序
-   * @format int32
-   */
+  /** @format int32 */
   sort?: number
-  /** 描述 */
   description?: string | null
-  /** 启用 */
   enabled?: boolean
   apis?: ApiEntity[] | null
   childs?: PermissionEntity[] | null
@@ -1996,7 +1796,7 @@ export interface PermissionListOutput {
   parentId?: number
   /** 权限名称 */
   label?: string | null
-  /** 权限类型:Group=1,Menu=2,Dot=3 */
+  /** Group=1,Menu=2,Dot=3 */
   type?: PermissionType
   /** 路由地址 */
   path?: string | null
@@ -2023,14 +1823,8 @@ export interface PermissionListOutput {
   enabled?: boolean
 }
 
-export interface PermissionSaveTenantPermissionsInput {
-  /** @format int64 */
-  tenantId: number
-  permissionIds: number[]
-}
-
 /**
- * 权限类型:Group=1,Menu=2,Dot=3
+ * Group=1,Menu=2,Dot=3
  * @format int32
  */
 export type PermissionType = 1 | 2 | 3
@@ -2188,6 +1982,14 @@ export interface PermissionUpdateMenuInput {
   id: number
 }
 
+export type PipeReader = object
+
+export interface PipeWriter {
+  canGetUnflushedBytes?: boolean
+  /** @format int64 */
+  unflushedBytes?: number
+}
+
 /** 添加 */
 export interface PkgAddInput {
   /**
@@ -2217,73 +2019,6 @@ export interface PkgAddPkgTenantListInput {
    * @format int64
    */
   pkgId: number
-  /** 租户列表 */
-  tenantIds?: number[] | null
-}
-
-/** 套餐 */
-export interface PkgEntity {
-  /**
-   * 主键Id
-   * @format int64
-   */
-  id?: number
-  /**
-   * 创建者Id
-   * @format int64
-   */
-  createdUserId?: number | null
-  /**
-   * 创建者
-   * @maxLength 50
-   */
-  createdUserName?: string | null
-  /**
-   * 创建时间
-   * @format date-time
-   */
-  createdTime?: string | null
-  /**
-   * 修改者Id
-   * @format int64
-   */
-  modifiedUserId?: number | null
-  /**
-   * 修改者
-   * @maxLength 50
-   */
-  modifiedUserName?: string | null
-  /**
-   * 修改时间
-   * @format date-time
-   */
-  modifiedTime?: string | null
-  /** 是否删除 */
-  isDeleted?: boolean
-  /**
-   * 父级Id
-   * @format int64
-   */
-  parentId?: number
-  /** 子级列表 */
-  childs?: PkgEntity[] | null
-  /** 名称 */
-  name?: string | null
-  /** 编码 */
-  code?: string | null
-  /** 说明 */
-  description?: string | null
-  /** 启用 */
-  enabled?: boolean
-  /**
-   * 排序
-   * @format int32
-   */
-  sort?: number
-  /** 租户列表 */
-  tenants?: TenantEntity[] | null
-  /** 权限列表 */
-  permissions?: PermissionEntity[] | null
 }
 
 export interface PkgGetListOutput {
@@ -2374,28 +2109,6 @@ export interface PkgGetPageOutput {
   createdTime?: string | null
 }
 
-export interface PkgGetPkgTenantListInput {
-  /** 租户名 */
-  tenantName?: string | null
-  /**
-   * 套餐Id
-   * @format int64
-   */
-  pkgId?: number | null
-}
-
-export interface PkgGetPkgTenantListOutput {
-  /**
-   * 主键Id
-   * @format int64
-   */
-  id?: number
-  /** 租户名 */
-  name?: string | null
-  /** 租户编码 */
-  code?: string | null
-}
-
 export interface PkgSetPkgPermissionsInput {
   /** @format int64 */
   pkgId: number
@@ -2429,690 +2142,344 @@ export interface PkgUpdateInput {
   id: number
 }
 
-/** 结果输出 */
+/**
+ * None=0,SpecialName=512,RTSpecialName=1024,HasDefault=4096,Reserved2=8192,Reserved3=16384,Reserved4=32768,ReservedMask=62464
+ * @format int32
+ */
+export type PropertyAttributes = 0 | 512 | 1024 | 4096 | 8192 | 16384 | 32768 | 62464
+
+export interface PropertyInfo {
+  name?: string | null
+  declaringType?: Type
+  reflectedType?: Type
+  module?: Module
+  customAttributes?: CustomAttributeData[] | null
+  isCollectible?: boolean
+  /** @format int32 */
+  metadataToken?: number
+  /** Constructor=1,Event=2,Field=4,Method=8,Property=16,TypeInfo=32,Custom=64,NestedType=128,All=191 */
+  memberType?: MemberTypes
+  propertyType?: Type
+  /** None=0,SpecialName=512,RTSpecialName=1024,HasDefault=4096,Reserved2=8192,Reserved3=16384,Reserved4=32768,ReservedMask=62464 */
+  attributes?: PropertyAttributes
+  isSpecialName?: boolean
+  canRead?: boolean
+  canWrite?: boolean
+  getMethod?: MethodInfo
+  setMethod?: MethodInfo
+}
+
+export interface PublicKey {
+  encodedKeyValue?: AsnEncodedData
+  encodedParameters?: AsnEncodedData
+  key?: AsymmetricAlgorithm
+  oid?: Oid
+}
+
+export interface QueryString {
+  value?: string | null
+  hasValue?: boolean
+}
+
 export interface ResultOutputApiGetOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: ApiGetOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputAuthGetPasswordEncryptKeyOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: AuthGetPasswordEncryptKeyOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputAuthGetUserInfoOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: AuthGetUserInfoOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputAuthGetUserPermissionsOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: AuthGetUserPermissionsOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputAuthUserProfileDto {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   /** 用户个人信息 */
   data?: AuthUserProfileDto
 }
 
-/** 结果输出 */
-export interface ResultOutputBoolean {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  /** 数据 */
-  data?: boolean
-}
-
-/** 结果输出 */
 export interface ResultOutputCaptchaData {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: CaptchaData
 }
 
-/** 结果输出 */
-export interface ResultOutputDictGetOutput {
-  /** 是否成功标记 */
+export interface ResultOutputConfigGetOutput {
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
+  msg?: string | null
+  data?: ConfigGetOutput
+}
+
+export interface ResultOutputDictGetOutput {
+  success?: boolean
+  code?: string | null
   msg?: string | null
   data?: DictGetOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputDictTypeGetOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: DictTypeGetOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputDictionaryStringListDictGetListDto {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 数据 */
-  data?: Record<string, DictGetListDto[] | null>
+  data?: Record<string, DictGetListDto[]>
 }
 
-/** 结果输出 */
-export interface ResultOutputDocumentGetContentOutput {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  data?: DocumentGetContentOutput
-}
-
-/** 结果输出 */
-export interface ResultOutputDocumentGetGroupOutput {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  data?: DocumentGetGroupOutput
-}
-
-/** 结果输出 */
-export interface ResultOutputDocumentGetMenuOutput {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  data?: DocumentGetMenuOutput
-}
-
-/** 结果输出 */
-export interface ResultOutputFileEntity {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  /** 文件 */
-  data?: FileEntity
-}
-
-/** 结果输出 */
 export interface ResultOutputIEnumerableObject {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 数据 */
   data?: any[] | null
 }
 
-/** 结果输出 */
 export interface ResultOutputIListUserPermissionsOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 数据 */
   data?: UserPermissionsOutput[] | null
 }
 
-/** 结果输出 */
 export interface ResultOutputInt64 {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /**
-   * 数据
-   * @format int64
-   */
+  /** @format int64 */
   data?: number
 }
 
-/** 结果输出 */
 export interface ResultOutputListApiListOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 数据 */
   data?: ApiListOutput[] | null
 }
 
-/** 结果输出 */
 export interface ResultOutputListAuthUserMenuDto {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 数据 */
   data?: AuthUserMenuDto[] | null
 }
 
-/** 结果输出 */
-export interface ResultOutputListDocumentListOutput {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  /** 数据 */
-  data?: DocumentListOutput[] | null
-}
-
-/** 结果输出 */
-export interface ResultOutputListFileEntity {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  /** 数据 */
-  data?: FileEntity[] | null
-}
-
-/** 结果输出 */
 export interface ResultOutputListInt64 {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 数据 */
   data?: number[] | null
 }
 
-/** 结果输出 */
 export interface ResultOutputListObject {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 数据 */
   data?: any[] | null
 }
 
-/** 结果输出 */
-export interface ResultOutputListOrgListOutput {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  /** 数据 */
-  data?: OrgListOutput[] | null
-}
-
-/** 结果输出 */
 export interface ResultOutputListPermissionListOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 数据 */
   data?: PermissionListOutput[] | null
 }
 
-/** 结果输出 */
 export interface ResultOutputListPkgGetListOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 数据 */
   data?: PkgGetListOutput[] | null
 }
 
-/** 结果输出 */
-export interface ResultOutputListPkgGetPkgTenantListOutput {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  /** 数据 */
-  data?: PkgGetPkgTenantListOutput[] | null
-}
-
-/** 结果输出 */
 export interface ResultOutputListRoleGetListOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 数据 */
   data?: RoleGetListOutput[] | null
 }
 
-/** 结果输出 */
 export interface ResultOutputListRoleGetRoleUserListOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 数据 */
   data?: RoleGetRoleUserListOutput[] | null
 }
 
-/** 结果输出 */
-export interface ResultOutputListString {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  /** 数据 */
-  data?: string[] | null
-}
-
-/** 结果输出 */
 export interface ResultOutputListViewListOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 数据 */
   data?: ViewListOutput[] | null
 }
 
-/** 结果输出 */
 export interface ResultOutputObject {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 数据 */
   data?: any
 }
 
-/** 结果输出 */
-export interface ResultOutputOrgGetOutput {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  data?: OrgGetOutput
-}
-
-/** 结果输出 */
 export interface ResultOutputPageOutputApiEntity {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 分页信息输出 */
   data?: PageOutputApiEntity
 }
 
-/** 结果输出 */
-export interface ResultOutputPageOutputDictGetPageOutput {
-  /** 是否成功标记 */
+export interface ResultOutputPageOutputConfigGetPageOutput {
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 分页信息输出 */
+  data?: PageOutputConfigGetPageOutput
+}
+
+export interface ResultOutputPageOutputDictGetPageOutput {
+  success?: boolean
+  code?: string | null
+  msg?: string | null
   data?: PageOutputDictGetPageOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputPageOutputDictTypeGetPageOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 分页信息输出 */
   data?: PageOutputDictTypeGetPageOutput
 }
 
-/** 结果输出 */
-export interface ResultOutputPageOutputFileGetPageOutput {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  /** 分页信息输出 */
-  data?: PageOutputFileGetPageOutput
-}
-
-/** 结果输出 */
 export interface ResultOutputPageOutputLoginLogListOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 分页信息输出 */
   data?: PageOutputLoginLogListOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputPageOutputOprationLogListOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 分页信息输出 */
   data?: PageOutputOprationLogListOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputPageOutputPkgGetPageOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 分页信息输出 */
   data?: PageOutputPkgGetPageOutput
 }
 
-/** 结果输出 */
-export interface ResultOutputPageOutputPkgGetPkgTenantListOutput {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  /** 分页信息输出 */
-  data?: PageOutputPkgGetPkgTenantListOutput
-}
-
-/** 结果输出 */
 export interface ResultOutputPageOutputRoleGetPageOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 分页信息输出 */
   data?: PageOutputRoleGetPageOutput
 }
 
-/** 结果输出 */
-export interface ResultOutputPageOutputTaskListOutput {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  /** 分页信息输出 */
-  data?: PageOutputTaskListOutput
-}
-
-/** 结果输出 */
-export interface ResultOutputPageOutputTaskLog {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  /** 分页信息输出 */
-  data?: PageOutputTaskLog
-}
-
-/** 结果输出 */
-export interface ResultOutputPageOutputTenantListOutput {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  /** 分页信息输出 */
-  data?: PageOutputTenantListOutput
-}
-
-/** 结果输出 */
 export interface ResultOutputPageOutputUserGetPageOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 分页信息输出 */
   data?: PageOutputUserGetPageOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputPermissionGetApiOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: PermissionGetApiOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputPermissionGetDotOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: PermissionGetDotOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputPermissionGetGroupOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: PermissionGetGroupOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputPermissionGetMenuOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: PermissionGetMenuOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputPkgGetOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: PkgGetOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputRoleGetOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: RoleGetOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputString {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
-  /** 数据 */
   data?: string | null
 }
 
-/** 结果输出 */
-export interface ResultOutputTaskGetOutput {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  data?: TaskGetOutput
-}
-
-/** 结果输出 */
-export interface ResultOutputTenantGetOutput {
-  /** 是否成功标记 */
-  success?: boolean
-  /** 编码 */
-  code?: string | null
-  /** 消息 */
-  msg?: string | null
-  data?: TenantGetOutput
-}
-
-/** 结果输出 */
 export interface ResultOutputUserGetBasicOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: UserGetBasicOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputUserGetOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: UserGetOutput
 }
 
-/** 结果输出 */
 export interface ResultOutputValidateResult {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: ValidateResult
 }
 
-/** 结果输出 */
 export interface ResultOutputViewGetOutput {
-  /** 是否成功标记 */
   success?: boolean
-  /** 编码 */
   code?: string | null
-  /** 消息 */
   msg?: string | null
   data?: ViewGetOutput
 }
@@ -3128,14 +2495,8 @@ export interface RoleAddInput {
   name?: string | null
   /** 编码 */
   code?: string | null
-  /** 角色类型:Group=1,Role=2 */
+  /** Group=1,Role=2 */
   type?: RoleType
-  /** 数据范围:All=1,DeptWithChild=2,Dept=3,Self=4,Custom=5 */
-  dataScope?: DataScope
-  /** 指定部门 */
-  orgIds?: number[] | null
-  /** 部门列表 */
-  orgs?: OrgEntity[] | null
   /** 说明 */
   description?: string | null
   /**
@@ -3156,82 +2517,6 @@ export interface RoleAddRoleUserListInput {
   userIds?: number[] | null
 }
 
-/** 角色 */
-export interface RoleEntity {
-  /**
-   * 主键Id
-   * @format int64
-   */
-  id?: number
-  /**
-   * 创建者Id
-   * @format int64
-   */
-  createdUserId?: number | null
-  /**
-   * 创建者
-   * @maxLength 50
-   */
-  createdUserName?: string | null
-  /**
-   * 创建时间
-   * @format date-time
-   */
-  createdTime?: string | null
-  /**
-   * 修改者Id
-   * @format int64
-   */
-  modifiedUserId?: number | null
-  /**
-   * 修改者
-   * @maxLength 50
-   */
-  modifiedUserName?: string | null
-  /**
-   * 修改时间
-   * @format date-time
-   */
-  modifiedTime?: string | null
-  /** 是否删除 */
-  isDeleted?: boolean
-  /**
-   * 租户Id
-   * @format int64
-   */
-  tenantId?: number | null
-  /**
-   * 父级Id
-   * @format int64
-   */
-  parentId?: number
-  /** 子级列表 */
-  childs?: RoleEntity[] | null
-  /** 名称 */
-  name?: string | null
-  /** 编码 */
-  code?: string | null
-  /** 角色类型:Group=1,Role=2 */
-  type?: RoleType
-  /** 数据范围:All=1,DeptWithChild=2,Dept=3,Self=4,Custom=5 */
-  dataScope?: DataScope
-  /** 说明 */
-  description?: string | null
-  /** 隐藏 */
-  hidden?: boolean
-  /**
-   * 排序
-   * @format int32
-   */
-  sort?: number
-  /** 用户列表 */
-  users?: UserEntity[] | null
-  /** 部门列表 */
-  orgs?: OrgEntity[] | null
-  /** 权限列表 */
-  permissions?: PermissionEntity[] | null
-}
-
 export interface RoleGetListOutput {
   /**
    * 主键
@@ -3247,7 +2532,7 @@ export interface RoleGetListOutput {
   name?: string | null
   /** 编码 */
   code?: string | null
-  /** 角色类型:Group=1,Role=2 */
+  /** Group=1,Role=2 */
   type?: RoleType
   /**
    * 排序
@@ -3268,14 +2553,8 @@ export interface RoleGetOutput {
   name?: string | null
   /** 编码 */
   code?: string | null
-  /** 角色类型:Group=1,Role=2 */
+  /** Group=1,Role=2 */
   type?: RoleType
-  /** 数据范围:All=1,DeptWithChild=2,Dept=3,Self=4,Custom=5 */
-  dataScope?: DataScope
-  /** 指定部门 */
-  orgIds?: number[] | null
-  /** 部门列表 */
-  orgs?: OrgEntity[] | null
   /** 说明 */
   description?: string | null
   /**
@@ -3291,7 +2570,6 @@ export interface RoleGetOutput {
 }
 
 export interface RoleGetPageDto {
-  /** 名称 */
   name?: string | null
 }
 
@@ -3328,21 +2606,8 @@ export interface RoleGetRoleUserListOutput {
   mobile?: string | null
 }
 
-/** 设置数据范围 */
-export interface RoleSetDataScopeInput {
-  /**
-   * 角色Id
-   * @format int64
-   */
-  roleId: number
-  /** 数据范围:All=1,DeptWithChild=2,Dept=3,Self=4,Custom=5 */
-  dataScope?: DataScope
-  /** 指定部门 */
-  orgIds?: number[] | null
-}
-
 /**
- * 角色类型:Group=1,Role=2
+ * Group=1,Role=2
  * @format int32
  */
 export type RoleType = 1 | 2
@@ -3358,14 +2623,8 @@ export interface RoleUpdateInput {
   name?: string | null
   /** 编码 */
   code?: string | null
-  /** 角色类型:Group=1,Role=2 */
+  /** Group=1,Role=2 */
   type?: RoleType
-  /** 数据范围:All=1,DeptWithChild=2,Dept=3,Self=4,Custom=5 */
-  dataScope?: DataScope
-  /** 指定部门 */
-  orgIds?: number[] | null
-  /** 部门列表 */
-  orgs?: OrgEntity[] | null
   /** 说明 */
   description?: string | null
   /**
@@ -3380,28 +2639,28 @@ export interface RoleUpdateInput {
   id: number
 }
 
-/** 发送短信验证码 */
-export interface SendSmsCodeInput {
-  /**
-   * 手机号
-   * @minLength 1
-   */
-  mobile: string
-  /** 验证码Id */
-  codeId?: string | null
-  /**
-   * 验证码Id
-   * @minLength 1
-   */
-  captchaId: string
-  track: SlideTrack
+export interface RuntimeFieldHandle {
+  value?: IntPtr
+}
+
+export interface RuntimeMethodHandle {
+  value?: IntPtr
+}
+
+export interface RuntimeTypeHandle {
+  value?: IntPtr
+}
+
+export interface SafeWaitHandle {
+  isClosed?: boolean
+  isInvalid?: boolean
 }
 
 /**
- * 性别:Unknown(未知)=0,Male(男)=1,Female(女)=2
+ * None=0,Level1=1,Level2=2
  * @format int32
  */
-export type Sex = 0 | 1 | 2
+export type SecurityRuleSet = 0 | 1 | 2
 
 export interface SlideTrack {
   /** @format int32 */
@@ -3421,426 +2680,25 @@ export interface SlideTrack {
   percent?: number
 }
 
-/** 员工添加 */
-export interface StaffAddInput {
-  /** 工号 */
-  jobNumber?: string | null
-  /** 职位 */
-  position?: string | null
-  /** 性别:Unknown(未知)=0,Male(男)=1,Female(女)=2 */
-  sex?: Sex
-  /**
-   * 入职时间
-   * @format date-time
-   */
-  entryTime?: string | null
-  /** 企业微信名片 */
-  workWeChatCard?: string | null
-  /** 个人简介 */
-  introduce?: string | null
-}
-
-/** 添加 */
-export interface TaskAddInput {
-  /** 任务标题 */
-  topic?: string | null
-  /** 任务数据 */
-  body?: string | null
-  /**
-   * 任务执行多少轮，-1为永久循环
-   * @format int32
-   */
-  round?: number
-  /** SEC=1,RunOnDay=11,RunOnWeek=12,RunOnMonth=13,Custom=21 */
-  interval?: TaskInterval
-  /** 定时参数值 60,60,60,120,120,1200,1200 */
-  intervalArgument?: string | null
-}
-
-export interface TaskGetOutput {
-  /** 任务标题 */
-  topic?: string | null
-  /** 任务数据 */
-  body?: string | null
-  /**
-   * 任务执行多少轮，-1为永久循环
-   * @format int32
-   */
-  round?: number
-  /** SEC=1,RunOnDay=11,RunOnWeek=12,RunOnMonth=13,Custom=21 */
-  interval?: TaskInterval
-  /** 定时参数值 60,60,60,120,120,1200,1200 */
-  intervalArgument?: string | null
-  /**
-   * 任务Id
-   * @minLength 1
-   */
-  id: string
-}
-
-export interface TaskGetPageDto {
-  /** 任务名称名称 */
-  topic?: string | null
-}
-
-/**
- * SEC=1,RunOnDay=11,RunOnWeek=12,RunOnMonth=13,Custom=21
- * @format int32
- */
-export type TaskInterval = 1 | 11 | 12 | 13 | 21
-
-export interface TaskListOutput {
-  /** 主键 */
-  id?: string | null
-  /** 任务标题 */
-  topic?: string | null
-  /** 任务数据 */
-  body?: string | null
-  /**
-   * 任务执行多少轮
-   * @format int32
-   */
-  round?: number
-  /** SEC=1,RunOnDay=11,RunOnWeek=12,RunOnMonth=13,Custom=21 */
-  interval?: TaskInterval
-  /** 定时参数值 */
-  intervalArgument?: string | null
-  /** Running=0,Paused=1,Completed=2 */
-  status?: TaskStatus
-  /**
-   * 创建时间
-   * @format date-time
-   */
-  createTime?: string
-  /**
-   * 最后运行时间
-   * @format date-time
-   */
-  lastRunTime?: string
-  /**
-   * 当前运行到第几轮
-   * @format int32
-   */
-  currentRound?: number
-  /**
-   * 错次数
-   * @format int32
-   */
-  errorTimes?: number
-}
-
-export interface TaskLog {
-  taskId?: string | null
-  /** @format int32 */
-  round?: number
+export interface Stream {
+  canRead?: boolean
+  canWrite?: boolean
+  canSeek?: boolean
+  canTimeout?: boolean
   /** @format int64 */
-  elapsedMilliseconds?: number
-  success?: boolean
-  exception?: string | null
-  remark?: string | null
-  /** @format date-time */
-  createTime?: string
+  length?: number
+  /** @format int64 */
+  position?: number
+  /** @format int32 */
+  readTimeout?: number
+  /** @format int32 */
+  writeTimeout?: number
 }
 
-export interface TaskLogGetPageDto {
-  taskId?: string | null
-}
-
-/**
- * Running=0,Paused=1,Completed=2
- * @format int32
- */
-export type TaskStatus = 0 | 1 | 2
-
-/** 修改 */
-export interface TaskUpdateInput {
-  /** 任务标题 */
-  topic?: string | null
-  /** 任务数据 */
-  body?: string | null
-  /**
-   * 任务执行多少轮，-1为永久循环
-   * @format int32
-   */
-  round?: number
-  /** SEC=1,RunOnDay=11,RunOnWeek=12,RunOnMonth=13,Custom=21 */
-  interval?: TaskInterval
-  /** 定时参数值 60,60,60,120,120,1200,1200 */
-  intervalArgument?: string | null
-  /**
-   * 任务Id
-   * @minLength 1
-   */
-  id: string
-}
-
-/** 添加 */
-export interface TenantAddInput {
-  /**
-   * 租户Id
-   * @format int64
-   */
-  id?: number
-  /**
-   * 企业名称
-   * @minLength 1
-   */
-  name: string
-  /**
-   * 编码
-   * @minLength 1
-   */
-  code: string
-  /** 套餐Ids */
-  pkgIds?: number[] | null
-  /**
-   * 姓名
-   * @minLength 1
-   */
-  realName: string
-  /**
-   * 账号
-   * @minLength 1
-   */
-  userName: string
-  /** 密码 */
-  password?: string | null
-  /** 手机号码 */
-  phone?: string | null
-  /** 邮箱地址 */
-  email?: string | null
-  /** 数据库注册键 */
-  dbKey?: string | null
-  /** MySql=0,SqlServer=1,PostgreSQL=2,Oracle=3,Sqlite=4,OdbcOracle=5,OdbcSqlServer=6,OdbcMySql=7,OdbcPostgreSQL=8,Odbc=9,OdbcDameng=10,MsAccess=11,Dameng=12,OdbcKingbaseES=13,ShenTong=14,KingbaseES=15,Firebird=16,Custom=17,ClickHouse=18,GBase=19,QuestDb=20,Xugu=21,CustomOracle=22,CustomSqlServer=23,CustomMySql=24,CustomPostgreSQL=25 */
-  dbType?: DataType
-  /** 连接字符串 */
-  connectionString?: string | null
-  /** 启用 */
-  enabled?: boolean
-  /** 说明 */
-  description?: string | null
-}
-
-/** 租户 */
-export interface TenantEntity {
-  /**
-   * 主键Id
-   * @format int64
-   */
-  id?: number
-  /**
-   * 创建者Id
-   * @format int64
-   */
-  createdUserId?: number | null
-  /**
-   * 创建者
-   * @maxLength 50
-   */
-  createdUserName?: string | null
-  /**
-   * 创建时间
-   * @format date-time
-   */
-  createdTime?: string | null
-  /**
-   * 修改者Id
-   * @format int64
-   */
-  modifiedUserId?: number | null
-  /**
-   * 修改者
-   * @maxLength 50
-   */
-  modifiedUserName?: string | null
-  /**
-   * 修改时间
-   * @format date-time
-   */
-  modifiedTime?: string | null
-  /** 是否删除 */
-  isDeleted?: boolean
-  /**
-   * 授权用户
-   * @format int64
-   */
-  userId?: number
-  /** 用户 */
-  user?: UserEntity
-  /**
-   * 授权部门
-   * @format int64
-   */
-  orgId?: number
-  /** 组织架构 */
-  org?: OrgEntity
-  /** 租户类型:Platform=1,Tenant=2 */
-  tenantType?: TenantType
-  /** 数据库注册键 */
-  dbKey?: string | null
-  /** MySql=0,SqlServer=1,PostgreSQL=2,Oracle=3,Sqlite=4,OdbcOracle=5,OdbcSqlServer=6,OdbcMySql=7,OdbcPostgreSQL=8,Odbc=9,OdbcDameng=10,MsAccess=11,Dameng=12,OdbcKingbaseES=13,ShenTong=14,KingbaseES=15,Firebird=16,Custom=17,ClickHouse=18,GBase=19,QuestDb=20,Xugu=21,CustomOracle=22,CustomSqlServer=23,CustomMySql=24,CustomPostgreSQL=25 */
-  dbType?: DataType
-  /** 连接字符串 */
-  connectionString?: string | null
-  /** 启用 */
-  enabled?: boolean
-  /** 说明 */
-  description?: string | null
-  /** 套餐列表 */
-  pkgs?: PkgEntity[] | null
-}
-
-export interface TenantGetOutput {
-  /**
-   * 企业名称
-   * @minLength 1
-   */
-  name: string
-  /**
-   * 编码
-   * @minLength 1
-   */
-  code: string
-  /**
-   * 姓名
-   * @minLength 1
-   */
-  realName: string
-  /**
-   * 账号
-   * @minLength 1
-   */
-  userName: string
-  /** 密码 */
-  password?: string | null
-  /** 手机号码 */
-  phone?: string | null
-  /** 邮箱地址 */
-  email?: string | null
-  /** 数据库注册键 */
-  dbKey?: string | null
-  /** MySql=0,SqlServer=1,PostgreSQL=2,Oracle=3,Sqlite=4,OdbcOracle=5,OdbcSqlServer=6,OdbcMySql=7,OdbcPostgreSQL=8,Odbc=9,OdbcDameng=10,MsAccess=11,Dameng=12,OdbcKingbaseES=13,ShenTong=14,KingbaseES=15,Firebird=16,Custom=17,ClickHouse=18,GBase=19,QuestDb=20,Xugu=21,CustomOracle=22,CustomSqlServer=23,CustomMySql=24,CustomPostgreSQL=25 */
-  dbType?: DataType
-  /** 连接字符串 */
-  connectionString?: string | null
-  /** 启用 */
-  enabled?: boolean
-  /** 说明 */
-  description?: string | null
-  /**
-   * 租户Id
-   * @format int64
-   */
-  id: number
-  /** 套餐列表 */
-  pkgs?: PkgEntity[] | null
-  /** 套餐Ids */
-  pkgIds?: number[] | null
-}
-
-export interface TenantGetPageDto {
-  /** 企业名称 */
-  name?: string | null
-}
-
-export interface TenantListOutput {
-  /**
-   * 主键
-   * @format int64
-   */
-  id?: number
-  /** 企业名称 */
-  name?: string | null
-  /** 企业编码 */
-  code?: string | null
-  pkgs?: PkgEntity[] | null
-  /** 套餐 */
-  pkgNames?: string[] | null
-  /** 姓名 */
-  realName?: string | null
-  /** 账号 */
-  userName?: string | null
-  /** 手机号码 */
-  phone?: string | null
-  /** 邮箱地址 */
-  email?: string | null
-  /** MySql=0,SqlServer=1,PostgreSQL=2,Oracle=3,Sqlite=4,OdbcOracle=5,OdbcSqlServer=6,OdbcMySql=7,OdbcPostgreSQL=8,Odbc=9,OdbcDameng=10,MsAccess=11,Dameng=12,OdbcKingbaseES=13,ShenTong=14,KingbaseES=15,Firebird=16,Custom=17,ClickHouse=18,GBase=19,QuestDb=20,Xugu=21,CustomOracle=22,CustomSqlServer=23,CustomMySql=24,CustomPostgreSQL=25 */
-  dbType?: DataType
-  /** 数据库名称 */
-  dbTypeName?: string | null
-  /** 启用 */
-  enabled?: boolean
-  /** 说明 */
-  description?: string | null
-  /**
-   * 创建时间
-   * @format date-time
-   */
-  createdTime?: string | null
-}
-
-/** 设置启用 */
-export interface TenantSetEnableInput {
-  /**
-   * 租户Id
-   * @format int64
-   */
-  tenantId?: number
-  /** 是否启用 */
-  enabled?: boolean
-}
-
-/**
- * 租户类型:Platform=1,Tenant=2
- * @format int32
- */
-export type TenantType = 1 | 2
-
-/** 修改 */
-export interface TenantUpdateInput {
-  /**
-   * 企业名称
-   * @minLength 1
-   */
-  name: string
-  /**
-   * 编码
-   * @minLength 1
-   */
-  code: string
-  /** 套餐Ids */
-  pkgIds?: number[] | null
-  /**
-   * 姓名
-   * @minLength 1
-   */
-  realName: string
-  /**
-   * 账号
-   * @minLength 1
-   */
-  userName: string
-  /** 密码 */
-  password?: string | null
-  /** 手机号码 */
-  phone?: string | null
-  /** 邮箱地址 */
-  email?: string | null
-  /** 数据库注册键 */
-  dbKey?: string | null
-  /** MySql=0,SqlServer=1,PostgreSQL=2,Oracle=3,Sqlite=4,OdbcOracle=5,OdbcSqlServer=6,OdbcMySql=7,OdbcPostgreSQL=8,Odbc=9,OdbcDameng=10,MsAccess=11,Dameng=12,OdbcKingbaseES=13,ShenTong=14,KingbaseES=15,Firebird=16,Custom=17,ClickHouse=18,GBase=19,QuestDb=20,Xugu=21,CustomOracle=22,CustomSqlServer=23,CustomMySql=24,CustomPostgreSQL=25 */
-  dbType?: DataType
-  /** 连接字符串 */
-  connectionString?: string | null
-  /** 启用 */
-  enabled?: boolean
-  /** 说明 */
-  description?: string | null
-  /**
-   * 租户Id
-   * @format int64
-   */
-  id: number
+export interface StructLayoutAttribute {
+  typeId?: any
+  /** Sequential=0,Explicit=2,Auto=3 */
+  value?: LayoutKind
 }
 
 export interface Track {
@@ -3850,6 +2708,207 @@ export interface Track {
   y?: number
   /** @format int32 */
   t?: number
+}
+
+export interface Type {
+  name?: string | null
+  customAttributes?: CustomAttributeData[] | null
+  isCollectible?: boolean
+  /** @format int32 */
+  metadataToken?: number
+  isInterface?: boolean
+  /** Constructor=1,Event=2,Field=4,Method=8,Property=16,TypeInfo=32,Custom=64,NestedType=128,All=191 */
+  memberType?: MemberTypes
+  namespace?: string | null
+  assemblyQualifiedName?: string | null
+  fullName?: string | null
+  assembly?: Assembly
+  module?: Module
+  isNested?: boolean
+  declaringType?: Type
+  declaringMethod?: MethodBase
+  reflectedType?: Type
+  underlyingSystemType?: Type
+  isTypeDefinition?: boolean
+  isArray?: boolean
+  isByRef?: boolean
+  isPointer?: boolean
+  isConstructedGenericType?: boolean
+  isGenericParameter?: boolean
+  isGenericTypeParameter?: boolean
+  isGenericMethodParameter?: boolean
+  isGenericType?: boolean
+  isGenericTypeDefinition?: boolean
+  isSZArray?: boolean
+  isVariableBoundArray?: boolean
+  isByRefLike?: boolean
+  hasElementType?: boolean
+  genericTypeArguments?: Type[] | null
+  /** @format int32 */
+  genericParameterPosition?: number
+  /** None=0,Covariant=1,Contravariant=2,VarianceMask=3,ReferenceTypeConstraint=4,NotNullableValueTypeConstraint=8,DefaultConstructorConstraint=16,SpecialConstraintMask=28 */
+  genericParameterAttributes?: GenericParameterAttributes
+  /** NotPublic=0,NotPublic=0,NotPublic=0,NotPublic=0,Public=1,NestedPublic=2,NestedPrivate=3,NestedFamily=4,NestedAssembly=5,NestedFamANDAssem=6,VisibilityMask=7,VisibilityMask=7,SequentialLayout=8,ExplicitLayout=16,LayoutMask=24,ClassSemanticsMask=32,ClassSemanticsMask=32,Abstract=128,Sealed=256,SpecialName=1024,RTSpecialName=2048,Import=4096,Serializable=8192,WindowsRuntime=16384,UnicodeClass=65536,AutoClass=131072,StringFormatMask=196608,StringFormatMask=196608,HasSecurity=262144,ReservedMask=264192,BeforeFieldInit=1048576,CustomFormatMask=12582912 */
+  attributes?: TypeAttributes
+  isAbstract?: boolean
+  isImport?: boolean
+  isSealed?: boolean
+  isSpecialName?: boolean
+  isClass?: boolean
+  isNestedAssembly?: boolean
+  isNestedFamANDAssem?: boolean
+  isNestedFamily?: boolean
+  isNestedFamORAssem?: boolean
+  isNestedPrivate?: boolean
+  isNestedPublic?: boolean
+  isNotPublic?: boolean
+  isPublic?: boolean
+  isAutoLayout?: boolean
+  isExplicitLayout?: boolean
+  isLayoutSequential?: boolean
+  isAnsiClass?: boolean
+  isAutoClass?: boolean
+  isUnicodeClass?: boolean
+  isCOMObject?: boolean
+  isContextful?: boolean
+  isEnum?: boolean
+  isMarshalByRef?: boolean
+  isPrimitive?: boolean
+  isValueType?: boolean
+  isSignatureType?: boolean
+  isSecurityCritical?: boolean
+  isSecuritySafeCritical?: boolean
+  isSecurityTransparent?: boolean
+  structLayoutAttribute?: StructLayoutAttribute
+  typeInitializer?: ConstructorInfo
+  typeHandle?: RuntimeTypeHandle
+  /** @format uuid */
+  guid?: string
+  baseType?: Type
+  isSerializable?: boolean
+  containsGenericParameters?: boolean
+  isVisible?: boolean
+}
+
+/**
+ * NotPublic=0,NotPublic=0,NotPublic=0,NotPublic=0,Public=1,NestedPublic=2,NestedPrivate=3,NestedFamily=4,NestedAssembly=5,NestedFamANDAssem=6,VisibilityMask=7,VisibilityMask=7,SequentialLayout=8,ExplicitLayout=16,LayoutMask=24,ClassSemanticsMask=32,ClassSemanticsMask=32,Abstract=128,Sealed=256,SpecialName=1024,RTSpecialName=2048,Import=4096,Serializable=8192,WindowsRuntime=16384,UnicodeClass=65536,AutoClass=131072,StringFormatMask=196608,StringFormatMask=196608,HasSecurity=262144,ReservedMask=264192,BeforeFieldInit=1048576,CustomFormatMask=12582912
+ * @format int32
+ */
+export type TypeAttributes =
+  | 0
+  | 1
+  | 2
+  | 3
+  | 4
+  | 5
+  | 6
+  | 7
+  | 8
+  | 16
+  | 24
+  | 32
+  | 128
+  | 256
+  | 1024
+  | 2048
+  | 4096
+  | 8192
+  | 16384
+  | 65536
+  | 131072
+  | 196608
+  | 262144
+  | 264192
+  | 1048576
+  | 12582912
+
+export interface TypeInfo {
+  name?: string | null
+  customAttributes?: CustomAttributeData[] | null
+  isCollectible?: boolean
+  /** @format int32 */
+  metadataToken?: number
+  isInterface?: boolean
+  /** Constructor=1,Event=2,Field=4,Method=8,Property=16,TypeInfo=32,Custom=64,NestedType=128,All=191 */
+  memberType?: MemberTypes
+  namespace?: string | null
+  assemblyQualifiedName?: string | null
+  fullName?: string | null
+  assembly?: Assembly
+  module?: Module
+  isNested?: boolean
+  declaringType?: Type
+  declaringMethod?: MethodBase
+  reflectedType?: Type
+  underlyingSystemType?: Type
+  isTypeDefinition?: boolean
+  isArray?: boolean
+  isByRef?: boolean
+  isPointer?: boolean
+  isConstructedGenericType?: boolean
+  isGenericParameter?: boolean
+  isGenericTypeParameter?: boolean
+  isGenericMethodParameter?: boolean
+  isGenericType?: boolean
+  isGenericTypeDefinition?: boolean
+  isSZArray?: boolean
+  isVariableBoundArray?: boolean
+  isByRefLike?: boolean
+  hasElementType?: boolean
+  genericTypeArguments?: Type[] | null
+  /** @format int32 */
+  genericParameterPosition?: number
+  /** None=0,Covariant=1,Contravariant=2,VarianceMask=3,ReferenceTypeConstraint=4,NotNullableValueTypeConstraint=8,DefaultConstructorConstraint=16,SpecialConstraintMask=28 */
+  genericParameterAttributes?: GenericParameterAttributes
+  /** NotPublic=0,NotPublic=0,NotPublic=0,NotPublic=0,Public=1,NestedPublic=2,NestedPrivate=3,NestedFamily=4,NestedAssembly=5,NestedFamANDAssem=6,VisibilityMask=7,VisibilityMask=7,SequentialLayout=8,ExplicitLayout=16,LayoutMask=24,ClassSemanticsMask=32,ClassSemanticsMask=32,Abstract=128,Sealed=256,SpecialName=1024,RTSpecialName=2048,Import=4096,Serializable=8192,WindowsRuntime=16384,UnicodeClass=65536,AutoClass=131072,StringFormatMask=196608,StringFormatMask=196608,HasSecurity=262144,ReservedMask=264192,BeforeFieldInit=1048576,CustomFormatMask=12582912 */
+  attributes?: TypeAttributes
+  isAbstract?: boolean
+  isImport?: boolean
+  isSealed?: boolean
+  isSpecialName?: boolean
+  isClass?: boolean
+  isNestedAssembly?: boolean
+  isNestedFamANDAssem?: boolean
+  isNestedFamily?: boolean
+  isNestedFamORAssem?: boolean
+  isNestedPrivate?: boolean
+  isNestedPublic?: boolean
+  isNotPublic?: boolean
+  isPublic?: boolean
+  isAutoLayout?: boolean
+  isExplicitLayout?: boolean
+  isLayoutSequential?: boolean
+  isAnsiClass?: boolean
+  isAutoClass?: boolean
+  isUnicodeClass?: boolean
+  isCOMObject?: boolean
+  isContextful?: boolean
+  isEnum?: boolean
+  isMarshalByRef?: boolean
+  isPrimitive?: boolean
+  isValueType?: boolean
+  isSignatureType?: boolean
+  isSecurityCritical?: boolean
+  isSecuritySafeCritical?: boolean
+  isSecurityTransparent?: boolean
+  structLayoutAttribute?: StructLayoutAttribute
+  typeInitializer?: ConstructorInfo
+  typeHandle?: RuntimeTypeHandle
+  /** @format uuid */
+  guid?: string
+  baseType?: Type
+  isSerializable?: boolean
+  containsGenericParameters?: boolean
+  isVisible?: boolean
+  genericTypeParameters?: Type[] | null
+  declaredConstructors?: ConstructorInfo[] | null
+  declaredEvents?: EventInfo[] | null
+  declaredFields?: FieldInfo[] | null
+  declaredMembers?: MemberInfo[] | null
+  declaredMethods?: MethodInfo[] | null
+  declaredNestedTypes?: TypeInfo[] | null
+  declaredProperties?: PropertyInfo[] | null
+  implementedInterfaces?: Type[] | null
 }
 
 /** 添加 */
@@ -3875,53 +2934,10 @@ export interface UserAddInput {
   email?: string | null
   /** 角色Ids */
   roleIds?: number[] | null
-  /** 所属部门Ids */
-  orgIds?: number[] | null
-  /**
-   * 主属部门Id
-   * @format int64
-   */
-  orgId?: number
-  /**
-   * 直属主管Id
-   * @format int64
-   */
-  managerUserId?: number | null
-  /** 直属主管姓名 */
-  managerUserName?: string | null
-  /** 员工添加 */
-  staff?: StaffAddInput
   /** 密码 */
   password?: string | null
   /** 启用 */
   enabled?: boolean
-}
-
-/** 添加会员 */
-export interface UserAddMemberInput {
-  /**
-   * 会员Id
-   * @format int64
-   */
-  id?: number
-  /**
-   * 账号
-   * @minLength 1
-   */
-  userName: string
-  /** 姓名 */
-  name?: string | null
-  /** 手机号 */
-  mobile?: string | null
-  /** 邮箱 */
-  email?: string | null
-  /**
-   * 密码
-   * @minLength 1
-   */
-  password: string
-  /** 用户状态:WaitChangePasssword=2,WaitActive=3 */
-  status?: UserStatus
 }
 
 /** 修改密码 */
@@ -3941,96 +2957,6 @@ export interface UserChangePasswordInput {
    * @minLength 1
    */
   confirmPassword: string
-}
-
-/** 用户 */
-export interface UserEntity {
-  /**
-   * 主键Id
-   * @format int64
-   */
-  id?: number
-  /**
-   * 创建者Id
-   * @format int64
-   */
-  createdUserId?: number | null
-  /**
-   * 创建者
-   * @maxLength 50
-   */
-  createdUserName?: string | null
-  /**
-   * 创建时间
-   * @format date-time
-   */
-  createdTime?: string | null
-  /**
-   * 修改者Id
-   * @format int64
-   */
-  modifiedUserId?: number | null
-  /**
-   * 修改者
-   * @maxLength 50
-   */
-  modifiedUserName?: string | null
-  /**
-   * 修改时间
-   * @format date-time
-   */
-  modifiedTime?: string | null
-  /** 是否删除 */
-  isDeleted?: boolean
-  /**
-   * 租户Id
-   * @format int64
-   */
-  tenantId?: number | null
-  /** 租户 */
-  tenant?: TenantEntity
-  /** 账号 */
-  userName?: string | null
-  /** 密码 */
-  password?: string | null
-  /** 密码加密类型:MD5Encrypt32=0,PasswordHasher=1 */
-  passwordEncryptType?: PasswordEncryptType
-  /** 姓名 */
-  name?: string | null
-  /** 手机号 */
-  mobile?: string | null
-  /** 邮箱 */
-  email?: string | null
-  /**
-   * 主属部门Id
-   * @format int64
-   */
-  orgId?: number
-  /** 组织架构 */
-  org?: OrgEntity
-  /**
-   * 直属主管Id
-   * @format int64
-   */
-  managerUserId?: number | null
-  /** 用户 */
-  managerUser?: UserEntity
-  /** 昵称 */
-  nickName?: string | null
-  /** 头像 */
-  avatar?: string | null
-  /** 用户状态:WaitChangePasssword=2,WaitActive=3 */
-  status?: UserStatus
-  /** 用户类型:Member=0,DefaultUser=1,TenantAdmin=10,PlatformAdmin=100 */
-  type?: UserType
-  /** 启用 */
-  enabled?: boolean
-  /** 角色列表 */
-  roles?: RoleEntity[] | null
-  /** 部门列表 */
-  orgs?: OrgEntity[] | null
-  /** 用户员工 */
-  staff?: UserStaffEntity
 }
 
 export interface UserGetBasicOutput {
@@ -4068,20 +2994,6 @@ export interface UserGetOutput {
   /** 邮箱 */
   email?: string | null
   /**
-   * 主属部门Id
-   * @format int64
-   */
-  orgId?: number
-  /**
-   * 直属主管Id
-   * @format int64
-   */
-  managerUserId?: number | null
-  /** 直属主管姓名 */
-  managerUserName?: string | null
-  /** 员工添加 */
-  staff?: StaffAddInput
-  /**
    * 主键Id
    * @format int64
    */
@@ -4090,20 +3002,12 @@ export interface UserGetOutput {
   roles?: UserGetRoleDto[] | null
   /** 部门列表 */
   orgs?: UserGetOrgDto[] | null
-  /** 所属部门Ids */
-  orgIds?: number[] | null
   /** 角色Ids */
   roleIds?: number[] | null
 }
 
 /** 用户分页查询条件 */
-export interface UserGetPageDto {
-  /**
-   * 部门Id
-   * @format int64
-   */
-  orgId?: number | null
-}
+export type UserGetPageDto = object
 
 export interface UserGetPageOutput {
   /**
@@ -4119,9 +3023,8 @@ export interface UserGetPageOutput {
   mobile?: string | null
   /** 邮箱 */
   email?: string | null
-  /** 用户类型:Member=0,DefaultUser=1,TenantAdmin=10,PlatformAdmin=100 */
+  /** DefaultUser=1,PlatformAdmin=100 */
   type?: UserType
-  roles?: RoleEntity[] | null
   /** 角色 */
   roleNames?: string[] | null
   /** 是否主管 */
@@ -4148,114 +3051,17 @@ export interface UserPermissionsOutput {
 
 /** 重置密码 */
 export interface UserResetPasswordInput {
-  /**
-   * 主键Id
-   * @format int64
-   */
+  /** @format int64 */
   id?: number
   /** 密码 */
   password?: string | null
 }
 
-/** 设置启用 */
-export interface UserSetEnableInput {
-  /**
-   * 用户Id
-   * @format int64
-   */
-  userId?: number
-  /** 是否启用 */
-  enabled?: boolean
-}
-
-/** 设置主管 */
-export interface UserSetManagerInput {
-  /**
-   * 用户Id
-   * @format int64
-   */
-  userId?: number
-  /**
-   * 部门Id
-   * @format int64
-   */
-  orgId?: number
-  /** 是否主管 */
-  isManager?: boolean
-}
-
-/** 用户员工 */
-export interface UserStaffEntity {
-  /**
-   * 主键Id
-   * @format int64
-   */
-  id?: number
-  /**
-   * 创建者Id
-   * @format int64
-   */
-  createdUserId?: number | null
-  /**
-   * 创建者
-   * @maxLength 50
-   */
-  createdUserName?: string | null
-  /**
-   * 创建时间
-   * @format date-time
-   */
-  createdTime?: string | null
-  /**
-   * 修改者Id
-   * @format int64
-   */
-  modifiedUserId?: number | null
-  /**
-   * 修改者
-   * @maxLength 50
-   */
-  modifiedUserName?: string | null
-  /**
-   * 修改时间
-   * @format date-time
-   */
-  modifiedTime?: string | null
-  /** 是否删除 */
-  isDeleted?: boolean
-  /**
-   * 租户Id
-   * @format int64
-   */
-  tenantId?: number | null
-  /** 职位 */
-  position?: string | null
-  /** 工号 */
-  jobNumber?: string | null
-  /** 性别:Unknown(未知)=0,Male(男)=1,Female(女)=2 */
-  sex?: Sex
-  /**
-   * 入职时间
-   * @format date-time
-   */
-  entryTime?: string | null
-  /** 企业微信名片 */
-  workWeChatCard?: string | null
-  /** 个人简介 */
-  introduce?: string | null
-}
-
 /**
- * 用户状态:WaitChangePasssword=2,WaitActive=3
+ * DefaultUser=1,PlatformAdmin=100
  * @format int32
  */
-export type UserStatus = 2 | 3
-
-/**
- * 用户类型:Member=0,DefaultUser=1,TenantAdmin=10,PlatformAdmin=100
- * @format int32
- */
-export type UserType = 0 | 1 | 10 | 100
+export type UserType = 1 | 100
 
 /** 更新基本信息 */
 export interface UserUpdateBasicInput {
@@ -4286,42 +3092,6 @@ export interface UserUpdateInput {
   email?: string | null
   /** 角色Ids */
   roleIds?: number[] | null
-  /** 所属部门Ids */
-  orgIds?: number[] | null
-  /**
-   * 主属部门Id
-   * @format int64
-   */
-  orgId?: number
-  /**
-   * 直属主管Id
-   * @format int64
-   */
-  managerUserId?: number | null
-  /** 直属主管姓名 */
-  managerUserName?: string | null
-  /** 员工添加 */
-  staff?: StaffAddInput
-  /**
-   * 主键Id
-   * @format int64
-   */
-  id: number
-}
-
-/** 修改会员 */
-export interface UserUpdateMemberInput {
-  /**
-   * 账号
-   * @minLength 1
-   */
-  userName: string
-  /** 姓名 */
-  name?: string | null
-  /** 手机号 */
-  mobile?: string | null
-  /** 邮箱 */
-  email?: string | null
   /**
    * 主键Id
    * @format int64
@@ -4367,66 +3137,31 @@ export interface ViewAddInput {
   enabled?: boolean
 }
 
-/** 视图管理 */
 export interface ViewEntity {
-  /**
-   * 主键Id
-   * @format int64
-   */
+  /** @format int64 */
   id?: number
-  /**
-   * 创建者Id
-   * @format int64
-   */
+  /** @format int64 */
   createdUserId?: number | null
-  /**
-   * 创建者
-   * @maxLength 50
-   */
+  /** @maxLength 50 */
   createdUserName?: string | null
-  /**
-   * 创建时间
-   * @format date-time
-   */
+  /** @format date-time */
   createdTime?: string | null
-  /**
-   * 修改者Id
-   * @format int64
-   */
+  /** @format int64 */
   modifiedUserId?: number | null
-  /**
-   * 修改者
-   * @maxLength 50
-   */
+  /** @maxLength 50 */
   modifiedUserName?: string | null
-  /**
-   * 修改时间
-   * @format date-time
-   */
+  /** @format date-time */
   modifiedTime?: string | null
-  /** 是否删除 */
   isDeleted?: boolean
-  /**
-   * 所属节点
-   * @format int64
-   */
+  /** @format int64 */
   parentId?: number
-  /** 视图命名 */
   name?: string | null
-  /** 视图名称 */
   label?: string | null
-  /** 视图路径 */
   path?: string | null
-  /** 说明 */
   description?: string | null
-  /** 缓存 */
   cache?: boolean
-  /**
-   * 排序
-   * @format int32
-   */
+  /** @format int32 */
   sort?: number
-  /** 启用 */
   enabled?: boolean
   childs?: ViewEntity[] | null
 }
@@ -4537,4 +3272,53 @@ export interface ViewUpdateInput {
    * @format int64
    */
   id: number
+}
+
+export interface WaitHandle {
+  handle?: IntPtr
+  safeWaitHandle?: SafeWaitHandle
+}
+
+export interface WebSocketManager {
+  isWebSocketRequest?: boolean
+  webSocketRequestedProtocols?: string[] | null
+}
+
+export interface X500DistinguishedName {
+  oid?: Oid
+  /** @format byte */
+  rawData?: string | null
+  name?: string | null
+}
+
+export interface X509Certificate2 {
+  handle?: IntPtr
+  issuer?: string | null
+  subject?: string | null
+  archived?: boolean
+  extensions?: X509Extension[] | null
+  friendlyName?: string | null
+  hasPrivateKey?: boolean
+  privateKey?: AsymmetricAlgorithm
+  issuerName?: X500DistinguishedName
+  /** @format date-time */
+  notAfter?: string
+  /** @format date-time */
+  notBefore?: string
+  publicKey?: PublicKey
+  /** @format byte */
+  rawData?: string | null
+  serialNumber?: string | null
+  signatureAlgorithm?: Oid
+  subjectName?: X500DistinguishedName
+  thumbprint?: string | null
+  /** @format int32 */
+  version?: number
+}
+
+export interface X509Extension {
+  oid?: Oid
+  /** @format byte */
+  rawData?: string | null
+  critical?: boolean
 }

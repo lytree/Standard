@@ -1,6 +1,6 @@
 <template>
   <my-layout>
-    <pane size="50" min-size="30" max-size="70">
+    <pane size="50" min-size="30" max-size="100">
       <div class="my-flex-column w100 h100">
         <el-card class="mt8" shadow="never" :body-style="{ paddingBottom: '0' }">
           <el-form :inline="true" @submit.stop.prevent>
@@ -52,7 +52,7 @@
         </el-card>
       </div>
     </pane>
-    <pane>
+    <!-- <pane>
       <div class="my-flex-column w100 h100">
         <el-card class="mt8" shadow="never" :body-style="{ paddingBottom: '0' }">
           <el-form :inline="true" @submit.stop.prevent>
@@ -79,13 +79,13 @@
           </el-table>
         </el-card>
       </div>
-    </pane>
+    </pane> -->
 
     <role-form ref="roleFormRef" :title="state.roleFormTitle" :role-tree-data="state.roleFormTreeData"></role-form>
-    <user-select ref="userSelectRef" :title="`添加【${state.roleName}】员工`" multiple :sure-loading="state.sureLoading"
-      @sure="onSureUser"></user-select>
+    <!-- <user-select ref="userSelectRef" :title="`添加【${state.roleName}】员工`" multiple :sure-loading="state.sureLoading"
+      @sure="onSureUser"></user-select> -->
     <set-role-menu ref="setRoleMenuRef"></set-role-menu>
-    <set-role-data-scope ref="setRoleDataScopeRef"></set-role-data-scope>
+    <!-- <set-role-data-scope ref="setRoleDataScopeRef"></set-role-data-scope> -->
   </my-layout>
 </template>
 

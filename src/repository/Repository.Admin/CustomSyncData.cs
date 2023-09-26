@@ -15,7 +15,6 @@ using Repository.Admin.Repository.DictType;
 using Repository.Admin.Repository.Dict;
 using Repository.Admin.Repository.Api;
 using Repository.Admin.Repository.PermissionApi;
-using Repository.Admin.Core;
 
 namespace Repository.Admin;
 /// <summary>

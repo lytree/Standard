@@ -1,11 +1,11 @@
 <template>
   <my-layout>
-    <pane size="50" min-size="30" max-size="70">
+    <pane size="50" min-size="30" max-size="100">
       <div class="my-flex-column w100 h100">
         <el-card class="mt8" shadow="never" :body-style="{ paddingBottom: '0' }">
           <el-form :inline="true" @submit.stop.prevent>
-            <el-form-item label="套餐名">
-              <el-input v-model="state.filter.pkgName" placeholder="套餐名" @keyup.enter="onQuery" />
+            <el-form-item label="企业名">
+              <el-input v-model="state.filter.pkgName" placeholder="企业名" @keyup.enter="onQuery" />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" icon="ele-Search" @click="onQuery"> 查询 </el-button>
@@ -24,7 +24,7 @@
             style="width: 100%"
             @current-change="onTableCurrentChange"
           >
-            <el-table-column prop="name" label="套餐名" min-width="120" show-overflow-tooltip />
+            <el-table-column prop="name" label="企业名" min-width="120" show-overflow-tooltip />
             <el-table-column prop="sort" label="排序" width="80" align="center" show-overflow-tooltip />
             <el-table-column label="操作" width="100" fixed="right" header-align="center" align="center">
               <template #default="{ row }">
@@ -59,7 +59,7 @@
         </el-card>
       </div>
     </pane>
-    <pane>
+    <!-- <pane>
       <div class="my-flex-column w100 h100">
         <el-card class="mt8" shadow="never" :body-style="{ paddingBottom: '0' }">
           <el-form :inline="true" @submit.stop.prevent>
@@ -102,16 +102,16 @@
           </div>
         </el-card>
       </div>
-    </pane>
+    </pane> -->
 
     <pkg-form ref="pkgFormRef" :title="state.pkgFormTitle"></pkg-form>
-    <tenant-select
+    <!-- <tenant-select
       ref="tenantSelectRef"
       :title="`添加【${state.pkgName}】企业`"
       multiple
       :sure-loading="state.sureLoading"
       @sure="onSureTenant"
-    ></tenant-select>
+    ></tenant-select> -->
     <set-pkg-menu ref="setPkgMenuRef"></set-pkg-menu>
   </my-layout>
 </template>

@@ -78,7 +78,7 @@
 
 <script lang="ts" setup name="admin/user">
 import { ref, reactive, onMounted, getCurrentInstance, onBeforeMount, defineAsyncComponent } from 'vue'
-import { UserGetPageOutput, PageInputUserGetPageDto, UserSetManagerInput, UserResetPasswordInput } from '/@/api/admin/data-contracts'
+import { UserGetPageOutput, PageInputUserGetPageDto, UserResetPasswordInput } from '/@/api/admin/data-contracts'
 import { UserApi } from '/@/api/admin/User'
 import eventBus from '/@/utils/mitt'
 import { auth } from '/@/utils/authFunction'
@@ -167,8 +167,6 @@ const onQuery = async () => {
 const onAdd = () => {
   state.userFormTitle = '新增用户'
   userFormRef.value.open({
-    orgIds: state.pageInput.filter?.orgId && state.pageInput.filter.orgId > 0 ? [state.pageInput.filter?.orgId] : [],
-    orgId: state.pageInput.filter?.orgId,
   })
 }
 
@@ -200,22 +198,22 @@ const onResetPwd = (row: UserGetPageOutput) => {
     .catch(() => { })
 }
 
-const onSetManager = (row: UserGetPageOutput) => {
-  if (!((state.pageInput.filter?.orgId as number) > 0)) {
-    proxy.$modal.msgWarning('请选择部门')
-    return
-  }
+// const onSetManager = (row: UserGetPageOutput) => {
+//   if (!((state.pageInput.filter?.orgId as number) > 0)) {
+//     proxy.$modal.msgWarning('请选择部门')
+//     return
+//   }
 
-  const title = row.isManager ? `确定要取消【${row.name}】的主管?` : `确定要设置【${row.name}】为主管?`
-  proxy.$modal
-    .confirm(title)
-    .then(async () => {
-      const input = { userId: row.id, orgId: state.pageInput.filter?.orgId, isManager: !row.isManager } as UserSetManagerInput
-      await new UserApi().setManager(input, { loading: true, showSuccessMessage: true })
-      onQuery()
-    })
-    .catch(() => { })
-}
+//   const title = row.isManager ? `确定要取消【${row.name}】的主管?` : `确定要设置【${row.name}】为主管?`
+//   proxy.$modal
+//     .confirm(title)
+//     .then(async () => {
+//       const input = { userId: row.id, orgId: state.pageInput.filter?.orgId, isManager: !row.isManager } as UserSetManagerInput
+//       await new UserApi().setManager(input, { loading: true, showSuccessMessage: true })
+//       onQuery()
+//     })
+//     .catch(() => { })
+// }
 
 const onSetEnable = (row: UserGetPageOutput & { loading: boolean }) => {
   return new Promise((resolve, reject) => {
