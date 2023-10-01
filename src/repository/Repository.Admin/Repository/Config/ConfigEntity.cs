@@ -23,7 +23,7 @@ public class ConfigEntity : EntityBase
 
 	public ConfigType Type { get; set; }
 
-	public string Remark { get; set; }
+	public string Description { get; set; }
 
 	public int Sort { get; set; }
 }

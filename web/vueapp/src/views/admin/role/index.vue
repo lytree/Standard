@@ -103,7 +103,6 @@ import { Pane } from 'splitpanes'
 // 引入组件
 const RoleForm = defineAsyncComponent(() => import('./components/role-form.vue'))
 const SetRoleMenu = defineAsyncComponent(() => import('./components/set-role-menu.vue'))
-const SetRoleDataScope = defineAsyncComponent(() => import('./components/set-role-data-scope.vue'))
 const UserSelect = defineAsyncComponent(() => import('/@/views/admin/user/components/user-select.vue'))
 const MyDropdownMore = defineAsyncComponent(() => import('/@/components/my-dropdown-more/index.vue'))
 const MyLayout = defineAsyncComponent(() => import('/@/components/my-layout/index.vue'))

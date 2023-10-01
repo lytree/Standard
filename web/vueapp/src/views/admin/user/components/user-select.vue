@@ -11,11 +11,6 @@
   >
     <div style="padding: 0px 0px 8px 8px; background-color: var(--ba-bg-color)">
       <el-row :gutter="8" style="width: 100%">
-        <el-col :xs="24" :sm="9">
-          <div class="my-flex-column h100">
-            <org-menu @node-click="onOrgNodeClick" class="my-flex-fill"></org-menu>
-          </div>
-        </el-col>
         <el-col :xs="24" :sm="15">
           <el-card shadow="never" :body-style="{ paddingBottom: '0' }" style="margin-top: 8px">
             <el-form :model="state.filter" :inline="true" @submit.stop.prevent>
@@ -76,11 +71,9 @@
 <script lang="ts" setup name="admin/user/components/user-select">
 import { ref, reactive, defineAsyncComponent } from 'vue'
 import { ElTable } from 'element-plus'
-import { UserGetPageOutput, PageInputUserGetPageDto, OrgListOutput } from '/@/api/admin/data-contracts'
+import { UserGetPageOutput, PageInputUserGetPageDto } from '/@/api/admin/data-contracts'
 import { UserApi } from '/@/api/admin/User'
 
-// 引入组件
-const OrgMenu = defineAsyncComponent(() => import('/@/views/admin/org/components/org-menu.vue'))
 
 const props = defineProps({
   title: {
@@ -122,7 +115,7 @@ const state = reactive({
 const open = () => {
   state.showDialog = true
   if (state.pageInput.filter) {
-    state.pageInput.filter.orgId = null
+   
   }
 
   onQuery()
@@ -159,12 +152,6 @@ const onCurrentChange = (val: number) => {
   onQuery()
 }
 
-const onOrgNodeClick = (node: OrgListOutput | null) => {
-  if (state.pageInput.filter) {
-    state.pageInput.filter.orgId = node?.id
-  }
-  onQuery()
-}
 
 const onRowClick = (row: UserGetPageOutput) => {
   // TODO: improvement typing when refactor table
