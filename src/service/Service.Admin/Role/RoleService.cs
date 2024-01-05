@@ -131,7 +131,7 @@ public class RoleService : BaseService, IRoleService, IDynamicApi
 		var clearUserIds = userIds.Concat(input.UserIds).Distinct();
 		foreach (var userId in clearUserIds)
 		{
-			await Cache.DelAsync(CacheKeys.DataPermission + userId);
+			await Cache.DelAsync(CacheKeys.UserPermissions + userId);
 		}
 	}
 
@@ -151,7 +151,7 @@ public class RoleService : BaseService, IRoleService, IDynamicApi
 
 		foreach (var userId in userIds)
 		{
-			await Cache.DelAsync(CacheKeys.DataPermission + userId);
+			await Cache.DelAsync(CacheKeys.UserPermissions + userId);
 		}
 	}
 
@@ -214,7 +214,7 @@ public class RoleService : BaseService, IRoleService, IDynamicApi
 		var userIds = await _userRoleRepository.Select.Where(a => a.RoleId == entity.Id).ToListAsync(a => a.UserId);
 		foreach (var userId in userIds)
 		{
-			await Cache.DelAsync(CacheKeys.DataPermission + userId);
+			await Cache.DelAsync(CacheKeys.UserPermissions + userId);
 		}
 	}
 
@@ -238,7 +238,7 @@ public class RoleService : BaseService, IRoleService, IDynamicApi
 
 		foreach (var userId in userIds)
 		{
-			await Cache.DelAsync(CacheKeys.DataPermission + userId);
+			await Cache.DelAsync(CacheKeys.UserPermissions + userId);
 		}
 	}
 
@@ -262,7 +262,7 @@ public class RoleService : BaseService, IRoleService, IDynamicApi
 
 		foreach (var userId in userIds)
 		{
-			await Cache.DelAsync(CacheKeys.DataPermission + userId);
+			await Cache.DelAsync(CacheKeys.UserPermissions + userId);
 		}
 	}
 
@@ -281,7 +281,7 @@ public class RoleService : BaseService, IRoleService, IDynamicApi
 		await _roleRepository.SoftDeleteRecursiveAsync(a => roleIdList.Contains(a.Id));
 		foreach (var userId in userIds)
 		{
-			await Cache.DelAsync(CacheKeys.DataPermission + userId);
+			await Cache.DelAsync(CacheKeys.UserPermissions + userId);
 		}
 	}
 
@@ -300,7 +300,7 @@ public class RoleService : BaseService, IRoleService, IDynamicApi
 		await _roleRepository.SoftDeleteRecursiveAsync(a => roleIdList.Contains(a.Id));
 		foreach (var userId in userIds)
 		{
-			await Cache.DelAsync(CacheKeys.DataPermission + userId);
+			await Cache.DelAsync(CacheKeys.UserPermissions + userId);
 		}
 	}
 }

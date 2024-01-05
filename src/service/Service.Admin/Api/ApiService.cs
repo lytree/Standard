@@ -42,7 +42,7 @@ public class ApiService : BaseService, IApiService, IDynamicApi
 	/// </summary>
 	/// <param name="key"></param>
 	/// <returns></returns>
-	public async Task<List<ApiListOutput>> GetListAsync(string key)
+	public async Task<List<ApiListOutput>> GetListAsync(string? key)
 	{
 		var data = await _apiRepository
 			.WhereIf(key != null, a => a.Path.Contains(key) || a.Label.Contains(key))

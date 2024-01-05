@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Service.Admin.Dict.Dto;
 using Plugin.DynamicApi.Attributes;
 using Plugin.DynamicApi;
-using Infrastructure.Service;
+
 using Repository.Admin.Repository.Dict;
 using Repository.Admin.Repository.Dict.Dto;
 using Infrastructure;

@@ -7,8 +7,8 @@ using Plugin.DynamicApi;
 using Infrastructure.Service;
 using Infrastructure;
 using Repository.Admin.Repository.LoginLog;
-using Infrastructure;
 using Repository.Admin.Repository;
+using Repository.Admin.Repository.Dict;
 
 namespace Service.Admin.LoginLog;
 

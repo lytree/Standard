@@ -271,7 +271,7 @@ public partial class UserService : BaseService, IUserService, IDynamicApi
         }
 
 
-        await Cache.DelAsync(CacheKeys.DataPermission + user.Id);
+        await Cache.DelAsync(CacheKeys.UserPermissions + user.Id);
     }
 
     /// <summary>
@@ -367,7 +367,7 @@ public partial class UserService : BaseService, IUserService, IDynamicApi
         await _userRepository.DeleteAsync(a => a.Id == id);
 
         //删除用户数据权限缓存
-        await Cache.DelAsync(CacheKeys.DataPermission + id);
+        await Cache.DelAsync(CacheKeys.UserPermissions + id);
     }
 
     /// <summary>
@@ -393,7 +393,7 @@ public partial class UserService : BaseService, IUserService, IDynamicApi
 
         foreach (var userId in ids)
         {
-            await Cache.DelAsync(CacheKeys.DataPermission + userId);
+            await Cache.DelAsync(CacheKeys.UserPermissions + userId);
         }
     }
 
@@ -419,7 +419,7 @@ public partial class UserService : BaseService, IUserService, IDynamicApi
         await _userRoleRepository.DeleteAsync(a => a.UserId == id);
         await _userRepository.SoftDeleteAsync(id);
 
-        await Cache.DelAsync(CacheKeys.DataPermission + id);
+        await Cache.DelAsync(CacheKeys.UserPermissions + id);
     }
 
     /// <summary>
@@ -444,7 +444,7 @@ public partial class UserService : BaseService, IUserService, IDynamicApi
 
         foreach (var userId in ids)
         {
-            await Cache.DelAsync(CacheKeys.DataPermission + userId);
+            await Cache.DelAsync(CacheKeys.UserPermissions + userId);
         }
     }
 
