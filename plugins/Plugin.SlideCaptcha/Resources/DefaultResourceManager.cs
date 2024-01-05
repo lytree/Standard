@@ -12,10 +12,10 @@ namespace Plugin.SlideCaptcha.Resources
 {
 	public class DefaultResourceManager : IResourceManager
 	{
-		private readonly Random _random = new Random();
+		private readonly Random _random = new();
 		private readonly IResourceHandlerManager _resourceProviderManager;
-		private readonly List<Resource> _backgrounds = new List<Resource>();
-		private readonly List<TemplatePair> _templates = new List<TemplatePair>();
+		private readonly List<Resource> _backgrounds = new();
+		private readonly List<TemplatePair> _templates = new();
 
 		public DefaultResourceManager(IEnumerable<IResourceProvider> resourceProviders, IResourceHandlerManager resourceProviderManager)
 		{

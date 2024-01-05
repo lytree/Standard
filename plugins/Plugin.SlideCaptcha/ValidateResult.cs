@@ -7,7 +7,7 @@ namespace Plugin.SlideCaptcha
 	public class ValidateResult
 	{
 		public ValidateResultType Result { get; set; }
-		public string Message { get; set; }
+		public string Message { get; set; } = string.Empty;
 
 		public static ValidateResult Success()
 		{

@@ -6,20 +6,20 @@ using System.Text;
 
 namespace Plugin.SlideCaptcha
 {
-	public static class ServiceCollectionExtensions
+	internal static class ServiceCollectionExtensions
 	{
-		public static IServiceCollection Replace<TService, TImplementation>(this IServiceCollection services)
+		internal static IServiceCollection Replace<TService, TImplementation>(this IServiceCollection services)
 			where TImplementation : TService
 		{
 			return services.Replace<TService>(typeof(TImplementation));
 		}
 
-		public static IServiceCollection Replace<TService>(this IServiceCollection services, Type implementationType)
+		internal static IServiceCollection Replace<TService>(this IServiceCollection services, Type implementationType)
 		{
 			return services.Replace(typeof(TService), implementationType);
 		}
 
-		public static IServiceCollection Replace(this IServiceCollection services, Type serviceType, Type implementationType)
+		internal static IServiceCollection Replace(this IServiceCollection services, Type serviceType, Type implementationType)
 		{
 			if (services == null)
 			{

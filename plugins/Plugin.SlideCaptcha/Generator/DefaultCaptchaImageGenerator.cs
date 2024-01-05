@@ -2,13 +2,16 @@
 using Microsoft.Extensions.Options;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Drawing;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 namespace Plugin.SlideCaptcha.Generator;
 
 public class DefaultCaptchaImageGenerator : ICaptchaImageGenerator
 {
-	private IResourceManager _resourceManager;
-	private Random _random = new Random();
+	private readonly IResourceManager _resourceManager;
+	private readonly Random _random = new();
 
 	public DefaultCaptchaImageGenerator(IResourceManager resourceManager)
 	{

@@ -10,8 +10,8 @@ namespace Plugin.SlideCaptcha.Resources.Handler
 {
 	public class CachedResourceHandlerManager : IResourceHandlerManager
 	{
-		private IEnumerable<IResourceHandler> _resourceHandlers;
-		private Dictionary<Resource, byte[]> _cache = new Dictionary<Resource, byte[]>();
+		private readonly IEnumerable<IResourceHandler> _resourceHandlers;
+		private readonly Dictionary<Resource, byte[]> _cache = new();
 
 		public CachedResourceHandlerManager(IEnumerable<IResourceHandler> resourceHandlers)
 		{
