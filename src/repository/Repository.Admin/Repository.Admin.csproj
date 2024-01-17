@@ -6,11 +6,11 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="7.1.0" />
-		<PackageReference Include="FreeSql" Version="3.2.808" />
-		<PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.808" />
-		<PackageReference Include="FreeSql.Repository" Version="3.2.808" />
-		<PackageReference Include="Mapster" Version="7.3.0" />
+		<PackageReference Include="Autofac" Version="8.0.0" />
+		<PackageReference Include="FreeSql" Version="3.2.810" />
+		<PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.810" />
+		<PackageReference Include="FreeSql.Repository" Version="3.2.810" />
+		<PackageReference Include="Mapster" Version="7.4.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="7.0.0" />
 		<PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
 	</ItemGroup>
