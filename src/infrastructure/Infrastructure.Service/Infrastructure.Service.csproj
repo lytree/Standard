@@ -9,7 +9,7 @@
 	<ItemGroup>
 		<PackageReference Include="FreeSql" Version="3.2.810" />
 		<PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
