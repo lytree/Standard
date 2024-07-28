@@ -10,10 +10,10 @@ namespace Plugin.SlideCaptcha
 {
 	public class DefaultCaptcha : ICaptcha
 	{
-		private CaptchaOptions _options;
-		private ICaptchaImageGenerator _captchaImageGenerator;
-		private IValidator _validator;
-		private IStorage _storage;
+		private readonly CaptchaOptions _options;
+		private readonly ICaptchaImageGenerator _captchaImageGenerator;
+		private readonly IValidator _validator;
+		private readonly IStorage _storage;
 
 		public DefaultCaptcha(ICaptchaImageGenerator captchaImageGenerator, IValidator validator, IStorage storage, IOptionsSnapshot<CaptchaOptions> options)
 		{
@@ -23,7 +23,7 @@ namespace Plugin.SlideCaptcha
 			_validator = validator;
 		}
 
-		public CaptchaData Generate(string captchaId = null)
+		public CaptchaData Generate(string? captchaId = null)
 		{
 			captchaId = string.IsNullOrWhiteSpace(captchaId) ? Guid.NewGuid().ToString() : captchaId;
 			var captchImageInfo = _captchaImageGenerator.Generate();

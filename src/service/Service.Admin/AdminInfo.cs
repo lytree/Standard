@@ -1,20 +1,12 @@
-﻿using Repository.Admin.Core;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Loader;
-using System.Text;
-using System.Threading.Tasks;
+using Repository.Admin.Core;
 
 namespace Service.Admin
 {
@@ -22,18 +14,9 @@ namespace Service.Admin
 	{
 		static AdminInfo()
 		{
-			EffectiveTypes = EffectiveAssemblies.SelectMany(GetTypes);
+			
 		}
 
-		/// <summary>
-		/// 有效程序集
-		/// </summary>
-		public static readonly IEnumerable<Assembly> EffectiveAssemblies = GetAllAssemblies();
-
-		/// <summary>
-		/// 有效程序集类型
-		/// </summary>
-		public static readonly IEnumerable<Type> EffectiveTypes;
 
 		/// <summary>
 		/// 服务提供程序
@@ -69,45 +52,6 @@ namespace Service.Admin
 		/// 日志
 		/// </summary>
 		public static ILogger Log => (ServiceProvider?.GetService<ILoggerFactory>() ?? NullLoggerFactory.Instance).CreateLogger(typeof(AdminInfo));
-
-		#region private
-
-		private static IEnumerable<Type> GetTypes(Assembly ass)
-		{
-			Type[] source = Array.Empty<Type>();
-			try
-			{
-				source = ass.GetTypes();
-			}
-			catch (Exception e)
-			{
-				Log.LogError(e, "GetTypes Exception:{msg}", e.Message);
-				Console.WriteLine($@"Error load `{ass.FullName}` assembly.");
-			}
-
-			return source.Where(u => u.IsPublic);
-		}
-
-		private static IList<Assembly> GetAllAssemblies()
-		{
-			var list = new List<Assembly>();
-			var deps = DependencyContext.Default;
-			var libs = deps.CompileLibraries.Where(lib => !lib.Serviceable && lib.Type != "package");
-			foreach (var lib in libs)
-			{
-				try
-				{
-					var assembly = AssemblyLoadContext.Default.LoadFromAssemblyName(new AssemblyName(lib.Name));
-					list.Add(assembly);
-				}
-				catch (Exception e)
-				{
-					Log.LogError(e, "GetAllAssemblies Exception:{msg}", e.Message);
-				}
-			}
-			return list;
-		}
-		#endregion
 
 		#region Service
 		/// <summary>

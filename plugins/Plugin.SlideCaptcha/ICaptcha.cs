@@ -12,7 +12,7 @@ namespace Plugin.SlideCaptcha
 		/// </summary>
 		/// <param name="captchaId">验证码id</param>
 		/// <returns></returns>
-		CaptchaData Generate(string captchaId = null);
+		CaptchaData Generate(string? captchaId = null);
 
 		/// <summary>
 		/// 校验
