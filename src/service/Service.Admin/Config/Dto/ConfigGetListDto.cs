@@ -4,17 +4,6 @@ namespace Service.Admin.Config.Dto;
 
 public class ConfigGetListDto
 {
-	/// <summary>
-	/// 字典类型编码
-	/// </summary>
-	[JsonIgnore]
-	public string DictTypeCode { get; set; }
-
-	/// <summary>
-	/// 字典类型名称
-	/// </summary>
-	[JsonIgnore]
-	public string DictTypeName { get; set; }
 
 	/// <summary>
 	/// 主键Id

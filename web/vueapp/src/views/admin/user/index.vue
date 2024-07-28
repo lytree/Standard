@@ -88,7 +88,6 @@ import { Session } from '/@/utils/storage'
 
 // 引入组件
 const UserForm = defineAsyncComponent(() => import('./components/user-form.vue'))
-const OrgMenu = defineAsyncComponent(() => import('/@/views/admin/org/components/org-menu.vue'))
 const MyDropdownMore = defineAsyncComponent(() => import('/@/components/my-dropdown-more/index.vue'))
 const MySelectInput = defineAsyncComponent(() => import('/@/components/my-select-input/index.vue'))
 const MyLayout = defineAsyncComponent(() => import('/@/components/my-layout/index.vue'))

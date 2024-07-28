@@ -120,10 +120,8 @@
 import { ref, reactive, onMounted, getCurrentInstance, onBeforeMount, nextTick, defineAsyncComponent } from 'vue'
 import {
   PageInputPkgGetPageDto,
-  PkgGetPkgTenantListOutput,
   PkgGetPageOutput,
   PkgAddPkgTenantListInput,
-  PageInputPkgGetPkgTenantListInput,
 } from '/@/api/admin/data-contracts'
 import { PkgApi } from '/@/api/admin/Pkg'
 import { ElTable } from 'element-plus'
@@ -134,7 +132,6 @@ import { Pane } from 'splitpanes'
 // 引入组件
 const PkgForm = defineAsyncComponent(() => import('./components/pkg-form.vue'))
 const SetPkgMenu = defineAsyncComponent(() => import('./components/set-pkg-menu.vue'))
-const TenantSelect = defineAsyncComponent(() => import('/@/views/admin/tenant/components/tenant-select.vue'))
 const MyDropdownMore = defineAsyncComponent(() => import('/@/components/my-dropdown-more/index.vue'))
 const MyLayout = defineAsyncComponent(() => import('/@/components/my-layout/index.vue'))
 
@@ -164,16 +161,6 @@ const state = reactive({
     },
   } as PageInputPkgGetPageDto,
   pkgData: [] as any,
-  tenantPageInput: {
-    currentPage: 1,
-    pageSize: 20,
-    filter: {
-      pkgId: null,
-      tenantName: '',
-    },
-  } as PageInputPkgGetPkgTenantListInput,
-  tenantData: [] as PkgGetPkgTenantListOutput[],
-  tenantTotal: 0,
   pkgId: undefined as number | undefined,
   pkgName: '' as string | null | undefined,
 })
@@ -224,7 +211,6 @@ const onTableCurrentChange = (currentRow: PkgGetPageOutput) => {
 
   state.pkgId = currentRow.id
   state.pkgName = currentRow.name
-  onGetPkgTenantList()
 }
 
 const onAdd = () => {
@@ -245,85 +231,6 @@ const onDelete = (row: PkgGetPageOutput) => {
       onQuery()
     })
     .catch(() => {})
-}
-
-const onGetPkgTenantList = async () => {
-  state.tenantListLoading = true
-  state.tenantPageInput.filter = { pkgId: state.pkgId, tenantName: state.filter.name }
-  const res = await new PkgApi().getPkgTenantPage(state.tenantPageInput).catch(() => {
-    state.tenantListLoading = false
-  })
-  state.tenantListLoading = false
-  if (res?.success) {
-    state.tenantData = res?.data?.list ?? []
-    state.tenantTotal = res?.data?.total ?? 0
-  }
-}
-
-const onTenantSizeChange = (val: number) => {
-  state.tenantPageInput.pageSize = val
-  onGetPkgTenantList()
-}
-
-const onTenantCurrentChange = (val: number) => {
-  state.tenantPageInput.currentPage = val
-  onGetPkgTenantList()
-}
-
-const onTenantRowClick = (row: PkgGetPkgTenantListOutput) => {
-  // TODO: improvement typing when refactor table
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  tenantTableRef.value!.toggleRowSelection(row, undefined)
-}
-
-const onAddTenant = () => {
-  if (!((state.pkgId as number) > 0)) {
-    proxy.$modal.msgWarning('请选择套餐')
-    return
-  }
-  tenantSelectRef.value.open({ pkgId: state.pkgId })
-}
-
-const onRemoveTenant = () => {
-  if (!((state.pkgId as number) > 0)) {
-    proxy.$modal.msgWarning('请选择套餐')
-    return
-  }
-
-  const selectionRows = tenantTableRef.value!.getSelectionRows() as PkgGetPageOutput[]
-
-  if (!((selectionRows.length as number) > 0)) {
-    proxy.$modal.msgWarning('请选择租户')
-    return
-  }
-
-  proxy.$modal
-    .confirm(`确定要移除吗?`)
-    .then(async () => {
-      const tenantIds = selectionRows?.map((a) => a.id)
-      const input = { pkgId: state.pkgId, tenantIds } as PkgAddPkgTenantListInput
-      await new PkgApi().removePkgTenant(input, { loading: true })
-      onGetPkgTenantList()
-    })
-    .catch(() => {})
-}
-
-const onSureTenant = async (tenants: PkgGetPageOutput[]) => {
-  if (!(tenants?.length > 0)) {
-    tenantSelectRef.value.close()
-    return
-  }
-
-  state.sureLoading = true
-  const tenantIds = tenants?.map((a) => a.id)
-  const input = { pkgId: state.pkgId, tenantIds } as PkgAddPkgTenantListInput
-  await new PkgApi().addPkgTenant(input, { showSuccessMessage: true }).catch(() => {
-    state.sureLoading = false
-  })
-  state.sureLoading = false
-  tenantSelectRef.value.close()
-  onGetPkgTenantList()
 }
 
 const onSetPkgMenu = (pkg: PkgGetPageOutput) => {
