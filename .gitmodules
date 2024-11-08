@@ -7,4 +7,4 @@
 	url = https://github.com/lytree/Admin.Plugins
 [submodule "clients"]
 	path = clients
-	url = https://github.com/lytree/Admin.Client.git
+	url = https://github.com/lytree/Admin.Clients.git
