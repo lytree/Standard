@@ -15,15 +15,15 @@
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="FreeSql" Version="3.2.810" />
-		<PackageReference Include="FreeSql.Repository" Version="3.2.810" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.1" />
-		<PackageReference Include="NRedisStack" Version="0.11.0" />
+		<PackageReference Include="FreeSql" />
+		<PackageReference Include="FreeSql.Repository" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" />
+		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
+		<PackageReference Include="NRedisStack" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="8.0.0" />
-		<PackageReference Include="Autofac.Extras.DynamicProxy" Version="7.1.0" />
+		<PackageReference Include="Autofac" />
+		<PackageReference Include="Autofac.Extras.DynamicProxy" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\plugins\Plugin.DynamicApi\Plugin.DynamicApi.csproj" />
